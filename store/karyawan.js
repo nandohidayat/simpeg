@@ -2,10 +2,10 @@ import KaryawanService from '@/services/KaryawanService.js'
 
 export const namespaced = true
 
-export const state = {
+export const state = () => ({
   karyawans: [],
   karyawan: {}
-}
+})
 
 export const mutations = {
   SET_KARYAWANS(state, karyawans) {

@@ -2,11 +2,11 @@ import AksesService from '@/services/AksesService.js'
 
 export const namespaced = true
 
-export const state = {
+export const state = () => ({
   aksess: [],
   akses: [],
   loaded: false
-}
+})
 
 export const mutations = {
   SET_AKSESS(state, aksess) {

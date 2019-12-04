@@ -2,11 +2,11 @@ import ScheduleService from '@/services/ScheduleService.js'
 
 export const namespaced = true
 
-export const state = {
+export const state = () => ({
   schedules: [],
   schedule: [],
   ruang: undefined
-}
+})
 
 export const mutations = {
   SET_SCHEDULES(state, schedules) {

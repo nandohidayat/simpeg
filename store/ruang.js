@@ -2,10 +2,10 @@ import RuangService from '@/services/RuangService.js'
 
 export const namespaced = true
 
-export const state = {
+export const state = () => ({
   ruangs: [],
   loaded: false
-}
+})
 
 export const mutations = {
   SET_RUANGS(state, ruangs) {

@@ -2,10 +2,10 @@ import BagianService from '@/services/BagianService.js'
 
 export const namespaced = true
 
-export const state = {
+export const state = () => ({
   bagians: [],
   loaded: false
-}
+})
 
 export const mutations = {
   SET_BAGIANS(state, bagians) {

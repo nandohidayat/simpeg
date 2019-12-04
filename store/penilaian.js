@@ -2,10 +2,10 @@ import PenilaianService from '@/services/PenilaianService.js'
 
 export const namespaced = true
 
-export const state = {
+export const state = () => ({
   penilaians: [],
   update: {}
-}
+})
 
 export const mutations = {
   ADD_PENILAIANS(state, penilaians) {

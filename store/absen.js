@@ -2,11 +2,11 @@ import AbsenService from '@/services/AbsenService'
 
 export const namespaced = true
 
-export const state = {
+export const state = () => ({
   absens: [],
   absen: [],
   loaded: false
-}
+})
 
 export const mutations = {
   SET_ABSENS(state, absens) {

@@ -1,7 +1,7 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="4">
-      <v-card class="elevation-12">
+      <v-card class="elevation-12" tile>
         <v-form @submit.prevent="login">
           <v-toolbar color="teal" dark flat dense>
             <v-toolbar-title class="mx-auto">Schedule Manager</v-toolbar-title>
@@ -9,12 +9,14 @@
           <v-card-text>
             <v-text-field
               v-model="newUser.username"
+              :error="error"
               label="Username"
               type="text"
             ></v-text-field>
 
             <v-text-field
               v-model="newUser.password"
+              :error="error"
               label="Password"
               type="password"
             ></v-text-field>
@@ -22,9 +24,7 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn @click="login" color="teal" dark small type="submit"
-              >Login</v-btn
-            >
+            <v-btn color="teal" dark small type="submit">Login</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -34,16 +34,38 @@
 
 <script>
 export default {
+  head() {
+    return {
+      title: 'Login',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Login'
+        }
+      ]
+    }
+  },
   data() {
     return {
       newUser: {
         username: undefined,
         password: undefined
-      }
+      },
+      error: false
     }
   },
   methods: {
-    login() {}
+    async login() {
+      this.$nuxt.$loading.start()
+      try {
+        await this.$store.dispatch('user/login', this.newUser)
+        this.$router.push('/')
+      } catch (e) {
+        this.$nuxt.$loading.finish()
+        this.error = true
+      }
+    }
   },
   layout: 'blank'
 }

@@ -2,10 +2,10 @@ import ShiftService from '@/services/ShiftService.js'
 
 export const namespaced = true
 
-export const state = {
+export const state = () => ({
   shifts: [],
   departemen: []
-}
+})
 
 export const mutations = {
   SET_SHIFTS(state, shifts) {

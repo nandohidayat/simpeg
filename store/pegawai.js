@@ -2,10 +2,10 @@ import PegawaiService from '@/services/PegawaiService.js'
 
 export const namespaced = true
 
-export const state = {
+export const state = () => ({
   pegawais: [],
   rekans: {}
-}
+})
 
 export const mutations = {
   ADD_PEGAWAIS(state, pegawais) {

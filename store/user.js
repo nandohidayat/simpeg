@@ -1,15 +1,13 @@
-import UserService from '@/services/UserService.js'
+import UserService from '@/services/UserService'
 import client from '@/services/client'
 
-export const namespaced = true
-
-export const state = {
+export const state = () => ({
   user: undefined,
   menu: [],
   akses: [],
   karyawan: {},
   loaded: false
-}
+})
 
 export const mutations = {
   SET_USER(state, user) {
@@ -34,8 +32,8 @@ export const actions = {
     await UserService.register(user)
   },
   async login({ commit }, user) {
-    const res = await UserService.login(user)
-    commit('SET_USER', res.data)
+    const { data } = await UserService.login(user)
+    commit('SET_USER', data)
   },
   logout({ commit }) {
     UserService.logout()
