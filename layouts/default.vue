@@ -1,92 +1,109 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
+    <v-navigation-drawer v-model="drawer" temporary app>
+      <v-list dense>
+        <v-list-item to="/">
           <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>mdi-home</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-group v-for="(m, i) in user.menu" :key="i" no-action>
+          <template v-slot:activator>
+            <v-list-item-action>
+              <v-icon>{{ m.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ m.header }}</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item
+            :to="c.link"
+            v-for="(c, idx) in m.children"
+            :key="idx"
+            router
+            exact
+          >
+            <v-list-item-title>{{ c.header }}</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn @click.stop="miniVariant = !miniVariant" icon>
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn @click.stop="clipped = !clipped" icon>
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn @click.stop="fixed = !fixed" icon>
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn @click.stop="rightDrawer = !rightDrawer" icon>
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+    <v-app-bar app color="teal" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>Alpha System</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" outlined>
+            <v-icon class="mr-2">mdi-account-circle</v-icon>
+            {{ user.user.username }}
+          </v-btn>
+        </template>
+        <v-card tile>
+          <v-list dense>
+            <v-subheader>Data</v-subheader>
+            <v-list-item :to="`/karyawan/${user.user.nik}`">
+              <v-list-item-icon
+                ><v-icon>mdi-account-box</v-icon></v-list-item-icon
+              >
+              <v-list-item-content>
+                <v-list-item-title>Profile</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider class="my-1"></v-divider>
+            <v-list-item @click="logout">
+              <v-list-item-icon
+                ><v-icon>mdi-exit-to-app</v-icon></v-list-item-icon
+              >
+              <v-list-item-content>
+                <v-list-item-title>Log Out</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-menu>
     </v-app-bar>
     <v-content>
       <v-container>
         <nuxt />
       </v-container>
     </v-content>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; 2019</span>
+    <v-footer color="teal">
+      <span class="white--text">&copy; 2019</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
+  head() {
+    return {
+      titleTemplate: '%s - Schedule Manager',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Penjadwalan Karyawan'
+        }
+      ]
+    }
+  },
   data() {
     return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+      drawer: false
+    }
+  },
+  computed: {
+    ...mapState(['user'])
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('user/logout')
     }
   }
 }
