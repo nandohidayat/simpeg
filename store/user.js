@@ -1,25 +1,26 @@
+import jsCookie from 'js-cookie'
+
 import UserService from '@/services/UserService'
-import client from '@/services/client'
 
 export const state = () => ({
   user: undefined,
+  token: undefined,
   menu: [],
   akses: [],
-  karyawan: {},
-  loaded: false
+  karyawan: {}
 })
 
 export const mutations = {
   SET_USER(state, user) {
-    localStorage.setItem('user', JSON.stringify(user))
-    client.defaults.headers.common.Authorization = `Bearer ${user.token}`
+    jsCookie.set('user', JSON.stringify(user))
+    this.$axios.defaults.headers.common.Authorization = `Bearer ${user.token}`
+    state.token = user.token
     state.user = user.user
     state.menu = user.menu
     state.akses = user.akses
-    state.loaded = true
   },
-  REMOVE_USER() {
-    localStorage.removeItem('user')
+  REMOVE_USER(state) {
+    jsCookie.remove('user')
     location.reload()
   },
   SET_KARYAWAN(state, user) {
@@ -32,15 +33,21 @@ export const actions = {
     await UserService.register(user)
   },
   async login({ commit }, user) {
-    const { data } = await UserService.login(user)
-    commit('SET_USER', data)
+    const res = await this.$auth.login(user)
+    commit('SET_USER', res)
   },
   logout({ commit }) {
-    UserService.logout()
+    this.$auth.logout()
     commit('REMOVE_USER')
   },
   async fetchUser({ commit }, nik) {
     const res = await UserService.user(nik)
     commit('SET_KARYAWAN', res.data.data)
+  }
+}
+
+export const getters = {
+  isLogged(state) {
+    return state.token !== undefined
   }
 }

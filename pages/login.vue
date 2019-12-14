@@ -2,7 +2,7 @@
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="4">
       <v-card class="elevation-12" tile>
-        <v-form @submit.prevent="login">
+        <v-form @submit.prevent="login()">
           <v-toolbar color="teal" dark flat dense>
             <v-toolbar-title class="mx-auto">Schedule Manager</v-toolbar-title>
           </v-toolbar>
@@ -12,6 +12,7 @@
               :error="error"
               label="Username"
               type="text"
+              name="username"
             ></v-text-field>
 
             <v-text-field
@@ -19,6 +20,7 @@
               :error="error"
               label="Password"
               type="password"
+              name="password"
             ></v-text-field>
           </v-card-text>
           <v-divider></v-divider>
@@ -67,6 +69,7 @@ export default {
       }
     }
   },
-  layout: 'blank'
+  layout: 'blank',
+  auth: false
 }
 </script>

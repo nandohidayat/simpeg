@@ -1,16 +1,14 @@
-import client from './client'
-
 export default {
   register(user) {
-    return client.post('/api/register', user)
+    return this.$axios.$post('/api/register', user)
   },
   login(user) {
-    return client.post('/api/login', user)
+    return this.$axios.post('/api/login', user)
   },
   logout() {
-    return client.get('/api/logout')
+    return this.$axios.$get('/api/logout')
   },
   user(nik) {
-    return client.get(`/api/user/${nik}`)
+    return this.$axios.$get(`/api/user/${nik}`)
   }
 }
