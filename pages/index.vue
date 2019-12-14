@@ -6,6 +6,10 @@
 
 <script>
 export default {
-  auth: 'guest'
+  head() {
+    return {
+      title: 'Dashboard'
+    }
+  }
 }
 </script>
