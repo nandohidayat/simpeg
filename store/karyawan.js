@@ -1,5 +1,3 @@
-import KaryawanService from '@/services/KaryawanService.js'
-
 export const namespaced = true
 
 export const state = () => ({
@@ -21,15 +19,15 @@ export const mutations = {
 
 export const actions = {
   async fetchKaryawans({ commit }, { select }) {
-    const res = await KaryawanService.getKaryawans(select)
+    const res = await this.$karyawanApi.index(select)
     commit('SET_KARYAWANS', res.data.data)
   },
   async fetchKaryawan({ commit }, nik) {
-    const res = await KaryawanService.getKaryawan(nik)
+    const res = await this.$karyawanApi.show(nik)
     commit('SET_KARYAWAN', res.data.data)
   },
   async createKaryawan({ commit, rootState }, karyawan) {
-    await KaryawanService.postKaryawan(karyawan)
+    await this.$karyawanApi.create(karyawan)
 
     const k = {
       ...karyawan,
@@ -44,7 +42,7 @@ export const actions = {
     commit('ADD_KARYAWAN', k)
   },
   async updateKaryawan({ commit, rootState }, karyawan) {
-    await KaryawanService.putKaryawan(karyawan, karyawan.nik)
+    await this.$karyawanApi.updaete(karyawan.nik, karyawan)
 
     const k = {
       ...karyawan,
@@ -59,6 +57,6 @@ export const actions = {
     commit('SET_KARYAWAN', k)
   },
   async deleteKaryawan({ commit }, nik) {
-    await KaryawanService.deleteKaryawan(nik)
+    await this.$karyawanApi.delete(nik)
   }
 }

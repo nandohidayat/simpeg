@@ -1,5 +1,3 @@
-import RuangService from '@/services/RuangService.js'
-
 export const namespaced = true
 
 export const state = () => ({
@@ -26,19 +24,19 @@ export const mutations = {
 
 export const actions = {
   async fetchRuangs({ commit }) {
-    const res = await RuangService.getRuangs()
+    const res = await this.$ruangApi.index({})
     commit('SET_RUANGS', res.data.data)
   },
   async createRuang({ commit }, ruang) {
-    const res = await RuangService.postRuang(ruang)
+    const res = await this.$ruangApi.create(ruang)
     commit('ADD_RUANG', res.data.data)
   },
   async updateRuang({ commit }, ruang) {
-    await RuangService.putRuang(ruang)
+    await this.$ruangApi.update(ruang.id_ruang, ruang)
     commit('EDT_RUANG', ruang)
   },
   async deleteRuang({ commit }, id) {
-    await RuangService.deleteRuang(id)
+    await this.$ruangApi.delete(id)
     commit('DEL_RUANG', id)
   }
 }

@@ -12,6 +12,8 @@ export const actions = {
       const user = JSON.parse(userCookie)
       await commit('user/SET_USER', user)
 
+      console.log(user)
+
       this.$axios.interceptors.response.use(
         (response) => response,
         (error) => {

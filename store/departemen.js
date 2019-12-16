@@ -1,5 +1,3 @@
-import DepartemenService from '@/services/DepartemenService.js'
-
 export const namespaced = true
 
 export const state = () => ({
@@ -30,19 +28,19 @@ export const mutations = {
 
 export const actions = {
   async fetchDepartemens({ commit }) {
-    const res = await DepartemenService.getDepartemens()
+    const res = await this.$departemenApi.index({})
     commit('SET_DEPARTEMENS', res.data.data)
   },
   async createDepartemen({ commit }, departemen) {
-    const res = await DepartemenService.postDepartemen(departemen)
+    const res = await this.$departemenApi.create(departemen)
     commit('ADD_DEPARTEMEN', res.data.data)
   },
   async updateDepartemen({ commit }, departemen) {
-    await DepartemenService.putDepartemen(departemen)
+    await this.$departemenApi.update(departemen.id_departemen, departemen)
     commit('EDT_DEPARTEMEN', departemen)
   },
   async deleteDepartemen({ commit }, id) {
-    await DepartemenService.deleteDepartemen(id)
+    await this.$departemenApi.delete(id)
     commit('DEL_DEPARTEMEN', id)
   }
 }

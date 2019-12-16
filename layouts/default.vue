@@ -71,6 +71,7 @@
         <nuxt />
       </v-container>
     </v-content>
+    <ErrorNotification></ErrorNotification>
     <v-footer color="teal">
       <span class="white--text">&copy; 2019</span>
     </v-footer>
@@ -80,7 +81,12 @@
 <script>
 import { mapState } from 'vuex'
 
+import ErrorNotification from '@/components/ErrorNotification'
+
 export default {
+  components: {
+    ErrorNotification
+  },
   head() {
     return {
       titleTemplate: '%s - Schedule Manager',
