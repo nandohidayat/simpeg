@@ -30,7 +30,12 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/auth', '@/plugins/repository'],
+  plugins: [
+    '@/plugins/auth',
+    '@/plugins/repository',
+    '@/plugins/guard',
+    '@/plugins/token'
+  ],
   /*
    ** Nuxt.js dev-modules
    */

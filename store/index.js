@@ -10,6 +10,7 @@ export const actions = {
       if (!userCookie) return
 
       const user = JSON.parse(userCookie)
+
       commit('user/SET_USER', user)
     }
   }

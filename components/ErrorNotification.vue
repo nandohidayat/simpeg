@@ -7,7 +7,7 @@
       color="error"
     >
       {{ err }}
-      <v-btn @click="del" color="error" dark text>
+      <v-btn @click="del" color="white" text>
         Close
       </v-btn>
     </v-snackbar>
