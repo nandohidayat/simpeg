@@ -7,6 +7,9 @@
       color="error"
     >
       {{ err }}
+      <v-btn @click="del" color="error" dark text>
+        Close
+      </v-btn>
     </v-snackbar>
   </div>
 </template>
@@ -20,6 +23,11 @@ export default {
   }),
   computed: {
     ...mapState(['notification'])
+  },
+  methods: {
+    del() {
+      this.$store.dispatch('notification/delError')
+    }
   }
 }
 </script>

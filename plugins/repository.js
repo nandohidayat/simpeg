@@ -2,7 +2,11 @@ import createRepository from '@/api/repository'
 
 export default (ctx, inject) => {
   const repositoryWithAxios = createRepository(ctx.$axios)
-  inject('karyawanApi', repositoryWithAxios('/karyawan'))
-  inject('departemenApi', repositoryWithAxios('/departemen'))
-  inject('ruangApi', repositoryWithAxios('/ruang'))
+  const repositories = {
+    karyawan: repositoryWithAxios('karyawan'),
+    departemen: repositoryWithAxios('departemen'),
+    ruang: repositoryWithAxios('ruang')
+  }
+
+  inject('api', repositories)
 }

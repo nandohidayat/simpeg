@@ -16,6 +16,8 @@ export const mutations = {
 export const actions = {
   addError({ commit }, error) {
     commit('ADD_ERROR', error)
-    setTimeout(() => commit('DEL_ERROR'), 10000)
+  },
+  delError({ commit }) {
+    commit('DEL_ERROR')
   }
 }

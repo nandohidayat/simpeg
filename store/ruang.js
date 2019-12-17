@@ -1,14 +1,12 @@
 export const namespaced = true
 
 export const state = () => ({
-  ruangs: [],
-  loaded: false
+  ruangs: []
 })
 
 export const mutations = {
   SET_RUANGS(state, ruangs) {
     state.ruangs = ruangs
-    state.loaded = true
   },
   ADD_RUANG(state, ruang) {
     state.ruangs.push(ruang)
@@ -24,8 +22,8 @@ export const mutations = {
 
 export const actions = {
   async fetchRuangs({ commit }) {
-    const res = await this.$ruangApi.index({})
-    commit('SET_RUANGS', res.data.data)
+    const res = await this.$api.ruang.index()
+    commit('SET_RUANGS', res.data)
   },
   async createRuang({ commit }, ruang) {
     const res = await this.$ruangApi.create(ruang)

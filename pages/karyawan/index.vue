@@ -85,7 +85,7 @@ export default {
   },
   data() {
     return {
-      loading: true,
+      loading: false,
       search: { nama: undefined, departemen: undefined, ruang: undefined },
       headers: [
         {
@@ -119,7 +119,7 @@ export default {
   computed: {
     ...mapState(['departemen', 'ruang', 'karyawan'])
   },
-  async asyncData({ store }) {
+  async fetch({ store }) {
     try {
       await Promise.all([
         store.dispatch('departemen/fetchDepartemens'),

@@ -1,14 +1,12 @@
 export const namespaced = true
 
 export const state = () => ({
-  departemens: [],
-  loaded: false
+  departemens: []
 })
 
 export const mutations = {
   SET_DEPARTEMENS(state, departemens) {
     state.departemens = departemens
-    state.loaded = true
   },
   ADD_DEPARTEMEN(state, departemen) {
     state.departemens.push(departemen)
@@ -28,8 +26,8 @@ export const mutations = {
 
 export const actions = {
   async fetchDepartemens({ commit }) {
-    const res = await this.$departemenApi.index({})
-    commit('SET_DEPARTEMENS', res.data.data)
+    const res = await this.$api.departemen.index()
+    commit('SET_DEPARTEMENS', res.data)
   },
   async createDepartemen({ commit }, departemen) {
     const res = await this.$departemenApi.create(departemen)

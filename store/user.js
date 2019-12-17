@@ -12,6 +12,7 @@ export const state = () => ({
 
 export const mutations = {
   SET_USER(state, user) {
+    console.log(user)
     jsCookie.set('user', JSON.stringify(user))
     this.$axios.setToken(user.token, 'Bearer')
     state.token = user.token

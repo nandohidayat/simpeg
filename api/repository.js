@@ -1,15 +1,15 @@
-const queryGenerator = (params) => {
-  const entries = Object.entries(params)
-  const arr = []
-  for (const [key, value] of entries) {
-    arr.push(`${key}=${value}&`)
-  }
-  return arr.join('')
-}
+// const queryGenerator = (params) => {
+//   const entries = Object.entries(params)
+//   const arr = []
+//   for (const [key, value] of entries) {
+//     arr.push(`${key}=${value}&`)
+//   }
+//   return arr.join('')
+// }
 
 export default ($axios) => (resource) => ({
-  index(query) {
-    return $axios.$get(`${resource}?${queryGenerator(query)}`)
+  index() {
+    return $axios.$get(`${resource}`)
   },
 
   show(id) {

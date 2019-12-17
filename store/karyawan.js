@@ -19,8 +19,8 @@ export const mutations = {
 
 export const actions = {
   async fetchKaryawans({ commit }, { select }) {
-    const res = await this.$karyawanApi.index(select)
-    commit('SET_KARYAWANS', res.data.data)
+    const res = await this.$api.karyawan.index()
+    commit('SET_KARYAWANS', res.data)
   },
   async fetchKaryawan({ commit }, nik) {
     const res = await this.$karyawanApi.show(nik)
