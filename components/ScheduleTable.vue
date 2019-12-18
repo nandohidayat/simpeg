@@ -78,8 +78,8 @@
             <v-select
               v-model="ranged.shift"
               :items="filteredShift(item.shift)"
-              :item-text="obj => obj.kode"
-              :item-value="obj => obj.id_shift"
+              :item-text="(obj) => obj.kode"
+              :item-value="(obj) => obj.id_shift"
               label="Shift"
               dense
               clearable
@@ -93,16 +93,16 @@
       <template :slot="`item.day${l}`" slot-scope="{ item }" v-for="l in last">
         <v-edit-dialog v-if="!single">
           {{
-            shift.shifts.find(s => s.id_shift == item[`day${l}`])
-              ? shift.shifts.find(s => s.id_shift == item[`day${l}`]).kode
+            shift.shifts.find((s) => s.id_shift == item[`day${l}`])
+              ? shift.shifts.find((s) => s.id_shift == item[`day${l}`]).kode
               : undefined
           }}
           <template v-slot:input>
             <v-select
               v-model="item[`day${l}`]"
               :items="filteredShift(item.shift)"
-              :item-text="obj => obj.kode"
-              :item-value="obj => obj.id_shift"
+              :item-text="(obj) => obj.kode"
+              :item-value="(obj) => obj.id_shift"
               label="Shift"
               clearable
             ></v-select>
@@ -110,8 +110,8 @@
         </v-edit-dialog>
         <span v-else>
           {{
-            shift.shifts.find(s => s.id_shift == item[`day${l}`])
-              ? shift.shifts.find(s => s.id_shift == item[`day${l}`]).kode
+            shift.shifts.find((s) => s.id_shift == item[`day${l}`])
+              ? shift.shifts.find((s) => s.id_shift == item[`day${l}`]).kode
               : undefined
           }}
         </span>
@@ -121,13 +121,10 @@
 </template>
 
 <script>
-import moment from "moment";
-import "moment/locale/id";
-import NProgress from "nprogress";
+import moment from 'moment'
+import 'moment/locale/id'
 
-import { mapState } from "vuex";
-
-import store from "../store";
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -139,7 +136,7 @@ export default {
         shift: undefined,
         nik: undefined
       }
-    };
+    }
   },
   props: {
     value: String,
@@ -149,139 +146,133 @@ export default {
     }
   },
   async created() {
-    const arr = [];
+    const arr = []
 
     if (this.single) {
       arr.push(
-        store.dispatch("schedule/fetchSchedule", {
+        this.store.dispatch('schedule/fetchSchedule', {
           year: this.year,
           month: this.month,
           id: this.karyawan.karyawan.nik
         })
-      );
+      )
     } else {
       arr.push(
-        store.dispatch("schedule/fetchSchedules", {
+        this.store.dispatch('schedule/fetchSchedules', {
           year: this.year,
           month: this.month
         })
-      );
+      )
     }
-    await Promise.all([...arr, store.dispatch("shift/fetchShifts")]);
-    this.loaded = false;
+    await Promise.all([...arr, this.store.dispatch('shift/fetchShifts')])
+    this.loaded = false
   },
   computed: {
-    ...mapState(["schedule", "shift", "karyawan"]),
+    ...mapState(['schedule', 'shift', 'karyawan']),
     year() {
-      return parseInt(this.value.substr(0, 4));
+      return parseInt(this.value.substr(0, 4))
     },
     month() {
-      return parseInt(this.value.slice(-2));
+      return parseInt(this.value.slice(-2))
     },
     last() {
-      return new Date(this.year, this.month, 0).getDate();
+      return new Date(this.year, this.month, 0).getDate()
     },
     dateMoment() {
       return this.value
         ? moment(this.value)
-            .locale("id")
-            .format("MMMM YYYY")
-        : "";
+            .locale('id')
+            .format('MMMM YYYY')
+        : ''
     },
     header() {
-      const h = [
-        { text: "Nama", value: "nama", width: "250px", ["fixed-header"]: true }
-      ];
+      const h = [{ text: 'Nama', value: 'nama', width: '250px' }]
 
       for (let i = 0; i < this.last; i++) {
-        h.push({ text: `${i + 1}`, value: `day${i + 1}`, sortable: false });
+        h.push({ text: `${i + 1}`, value: `day${i + 1}`, sortable: false })
       }
 
-      return h;
+      return h
     }
   },
   watch: {
     value(val) {
-      this.changedMonth();
+      this.changedMonth()
     }
   },
   methods: {
     filteredShift(arr) {
-      return this.shift.shifts.filter(s => arr.includes(s.id_shift));
+      return this.shift.shifts.filter((s) => arr.includes(s.id_shift))
     },
     updateVerify() {
-      if (this.ranged.dates.length == 0) return true;
+      if (this.ranged.dates.length === 0) return true
 
-      if (parseInt(this.ranged.dates[0].substring(5, 7)) != this.month)
-        return true;
+      if (parseInt(this.ranged.dates[0].substring(5, 7)) !== this.month)
+        return true
       if (
         parseInt(this.ranged.dates[1]) &&
-        parseInt(this.ranged.dates[1].substring(5, 7)) != this.month
+        parseInt(this.ranged.dates[1].substring(5, 7)) !== this.month
       )
-        return true;
-      return false;
+        return true
+      return false
     },
     updateShift() {
-      if (this.updateVerify()) return;
+      if (this.updateVerify()) return
 
-      let first = this.ranged.dates[0];
-      let last = this.ranged.dates[1] || this.ranged.dates[0];
-      first = parseInt(first.slice(-2));
-      last = parseInt(last.slice(-2));
+      let first = this.ranged.dates[0]
+      let last = this.ranged.dates[1] || this.ranged.dates[0]
+      first = parseInt(first.slice(-2))
+      last = parseInt(last.slice(-2))
 
       if (first > last) {
-        [first, last] = [last, first];
+        ;[first, last] = [last, first]
       }
 
       const idx = this.schedule.schedules.findIndex(
-        s => s.nik == this.ranged.nik
-      );
+        (s) => s.nik === this.ranged.nik
+      )
 
       for (let i = first; i <= last; i++) {
-        this.schedule.schedules[idx][`day${i}`] = this.ranged.shift;
+        this.schedule.schedules[idx][`day${i}`] = this.ranged.shift
       }
     },
     resetShift() {
-      this.ranged.dates = [];
-      this.ranged.shift = undefined;
-      this.ranged.nik = undefined;
+      this.ranged.dates = []
+      this.ranged.shift = undefined
+      this.ranged.nik = undefined
     },
     updateData(event) {
-      this.$emit("input", event);
+      this.$emit('input', event)
     },
     async changedMonth() {
-      this.loaded = true;
-      this.menu = false;
+      this.loaded = true
+      this.menu = false
 
       try {
-        await store.dispatch("schedule/fetchSchedules", {
+        await this.store.dispatch('schedule/fetchSchedules', {
           year: this.year,
           month: this.month
-        });
+        })
       } catch (e) {
-        NProgress.done();
-        console.log(e);
+        console.log(e)
       }
-      this.loaded = false;
+      this.loaded = false
     },
     async saveSchedules() {
-      NProgress.start();
-      this.loaded = true;
+      this.loaded = true
       try {
-        await store.dispatch("schedule/createSchedules", {
+        await this.store.dispatch('schedule/createSchedules', {
           schedules: this.schedule.schedules,
           year: this.year,
           month: this.month
-        });
+        })
       } catch (e) {
-        NProgress.done();
-        console.log(e);
+        console.log(e)
       }
-      this.loaded = false;
+      this.loaded = false
     }
   }
-};
+}
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

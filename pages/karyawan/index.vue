@@ -51,13 +51,11 @@
       class="elevation-2 mt-3"
     >
       <template v-slot:item.action="{ item }">
-        <router-link
-          :to="{ name: 'karyawan-detail', params: { id: item.nik } }"
-        >
+        <nuxt-link :to="`/karyawan/${item.nik}`">
           <v-icon>
             mdi-arrow-right
           </v-icon>
-        </router-link>
+        </nuxt-link>
       </template>
     </v-data-table>
   </v-container>
