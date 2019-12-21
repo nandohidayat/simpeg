@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ on }">
-      <v-btn v-if="edited" v-on="on" text icon color="teal"
+      <v-btn v-if="editing" v-on="on" text icon color="teal"
         ><v-icon>mdi-pencil</v-icon></v-btn
       >
       <v-btn v-else v-on="on" color="teal" dark small
@@ -9,12 +9,9 @@
       >
     </template>
     <v-card>
-      <v-card-title v-if="edited">
-        Data Karyawan
-      </v-card-title>
-      <v-card-title v-else>
-        Pendaftaran Karyawan
-      </v-card-title>
+      <v-card-title
+        >{{ editing ? 'Data' : 'Pendaftaran' }} Karyawan</v-card-title
+      >
       <v-card-text>
         <v-row>
           <v-col cols="3">
@@ -57,8 +54,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="createKaryawan" color="teal" dark small>
-          <span v-if="edited">Update</span>
-          <span v-else>Create</span>
+          <span>{{ editing ? 'Update' : 'Create' }}</span>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -70,7 +66,7 @@ import { mapState } from 'vuex'
 
 export default {
   props: {
-    edited: {
+    editing: {
       type: Boolean,
       default: false
     },
@@ -107,18 +103,12 @@ export default {
       this.newKaryawan = this.defaultKaryawan()
     },
     async createKaryawan() {
+      const editing = this.editing
+        ? 'karyawan/updateKaryawan'
+        : 'karyawan/createKaryawan'
+
       try {
-        if (this.edited) {
-          await this.$store.dispatch(
-            'karyawan/updateKaryawan',
-            this.newKaryawan
-          )
-        } else {
-          await this.$store.dispatch(
-            'karyawan/createKaryawan',
-            this.newKaryawan
-          )
-        }
+        await this.$store.dispatch(editing, this.newKaryawan)
         this.close()
       } catch (err) {
         this.$store.dispatch('notification/addError', err)

@@ -4,30 +4,24 @@ export const namespaced = true
 
 export const state = () => ({
   schedules: [],
-  schedule: [],
-  ruang: undefined
+  ruang: undefined,
+  header: []
 })
 
 export const mutations = {
   SET_SCHEDULES(state, schedules) {
     state.schedules = schedules.schedule
     state.ruang = schedules.ruang
-  },
-  SET_SCHEDULE(state, schedule) {
-    state.schedule = schedule
+    state.header = schedules.header
   }
 }
 
 export const actions = {
-  async fetchSchedules({ commit }, { year, month }) {
-    const res = await ScheduleService.getSchedules(year, month)
-    commit('SET_SCHEDULES', res.data.data)
+  async fetchSchedules({ commit }, date) {
+    const res = await this.$api.schedule.index(date)
+    commit('SET_SCHEDULES', res.data)
   },
-  async fetchSchedule({ commit }, { year, month, id }) {
-    const res = await ScheduleService.getSchedule(year, month, id)
-    commit('SET_SCHEDULE', res.data.data)
-  },
-  async createSchedules({ commit }, { schedules, year, month }) {
-    await ScheduleService.postSchedules(schedules, year, month)
+  async createSchedules({ commit }, { schedules, date }) {
+    await ScheduleService.postSchedules(schedules, date)
   }
 }

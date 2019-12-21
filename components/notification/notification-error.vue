@@ -3,7 +3,7 @@
     <v-snackbar
       v-for="(err, i) in notification.errors"
       :key="i"
-      v-model="snackbar"
+      v-model="notification.error_snackbar"
       color="error"
     >
       {{ err }}
@@ -18,9 +18,6 @@
 import { mapState } from 'vuex'
 
 export default {
-  data: () => ({
-    snackbar: true
-  }),
   computed: {
     ...mapState(['notification'])
   },

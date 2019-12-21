@@ -18,16 +18,16 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchKaryawans({ commit }, { select }) {
-    const res = await this.$api.karyawan.index()
+  async fetchKaryawans({ commit }, params = {}) {
+    const res = await this.$api.karyawan.index(params)
     commit('SET_KARYAWANS', res.data)
   },
-  async fetchKaryawan({ commit }, nik) {
-    const res = await this.$karyawanApi.show(nik)
-    commit('SET_KARYAWAN', res.data.data)
+  async fetchKaryawan({ commit }, id) {
+    const res = await this.$api.karyawan.show(id)
+    commit('SET_KARYAWAN', res.data)
   },
   async createKaryawan({ commit, rootState }, karyawan) {
-    await this.$karyawanApi.create(karyawan)
+    await this.$api.karyawan.create(karyawan)
 
     const k = {
       ...karyawan,
@@ -42,7 +42,7 @@ export const actions = {
     commit('ADD_KARYAWAN', k)
   },
   async updateKaryawan({ commit, rootState }, karyawan) {
-    await this.$karyawanApi.updaete(karyawan.nik, karyawan)
+    await this.$api.karyawan.update(karyawan.nik, karyawan)
 
     const k = {
       ...karyawan,
@@ -57,6 +57,6 @@ export const actions = {
     commit('SET_KARYAWAN', k)
   },
   async deleteKaryawan({ commit }, nik) {
-    await this.$karyawanApi.delete(nik)
+    await this.$api.karyawan.delete(nik)
   }
 }

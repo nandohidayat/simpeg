@@ -1,19 +1,19 @@
 <template>
-  <div :class="single ? 'mt-5' : ''">
-    <v-card class="px-4">
+  <div :class="read ? 'mt-5' : ''">
+    <v-card class="px-4" outlined>
       <v-row style="height: 65px;">
-        <v-col :cols="single ? 8 : 9" class="pt-4">
-          <span
-            v-if="!single"
-            class="headline text--primary"
-            v-text="`Jadwal ${schedule.ruang || ''}`"
-          ></span>
-          <span v-else>
+        <v-col :cols="read ? 8 : 9" class="pt-4">
+          <span v-if="read">
             <v-icon large left>mdi-calendar</v-icon
             ><span class="title font-weight-light">Data Jadwal</span>
           </span>
+          <span
+            v-else
+            v-text="`Jadwal ${schedule.ruang || ''}`"
+            class="headline text--primary"
+          ></span>
         </v-col>
-        <v-col :cols="single ? 3 : 2">
+        <v-col :cols="read ? 3 : 2">
           <v-menu
             ref="menu"
             v-model="menu"
@@ -24,45 +24,44 @@
             <template v-slot:activator="{ on }">
               <v-text-field
                 :value="dateMoment"
+                v-on="on"
                 readonly
                 outlined
                 dense
-                v-on="on"
               ></v-text-field>
             </template>
             <v-date-picker
-              color="teal"
               :value="value"
+              @change="updateData"
+              color="teal"
               type="month"
               no-title
               locale="id-id"
-              @change="updateData"
             >
             </v-date-picker>
           </v-menu>
         </v-col>
         <v-col cols="1" style="margin-top: 2px;">
-          <v-btn v-if="!single" color="teal" dark @click="saveSchedules"
+          <v-btn v-if="!read" @click="saveSchedules" color="teal" dark
             ><v-icon>mdi-content-save</v-icon></v-btn
           >
         </v-col>
       </v-row>
     </v-card>
     <v-data-table
-      :headers="header"
-      :items="single ? schedule.schedule : schedule.schedules"
+      :headers="schedule.header"
+      :items="schedule.schedules"
       class="elevation-2 mt-3"
-      :loading="loaded"
     >
       <template v-slot:item.nama="{ item }">
         <v-edit-dialog
-          v-if="!single"
+          v-if="!read"
+          @save="updateShift"
+          @open="ranged.nik = item.nik"
+          @close="resetRanged"
           large
           persistent
           offset-y
-          @save="updateShift"
-          @open="ranged.nik = item.nik"
-          @close="resetShift"
         >
           {{ item.nama }}
           <template v-slot:input>
@@ -91,7 +90,7 @@
         <span v-else>{{ item.nama }}</span>
       </template>
       <template :slot="`item.day${l}`" slot-scope="{ item }" v-for="l in last">
-        <v-edit-dialog v-if="!single">
+        <v-edit-dialog v-if="!read">
           {{
             shift.shifts.find((s) => s.id_shift == item[`day${l}`])
               ? shift.shifts.find((s) => s.id_shift == item[`day${l}`]).kode
@@ -127,9 +126,26 @@ import 'moment/locale/id'
 import { mapState } from 'vuex'
 
 export default {
+  props: {
+    value: {
+      type: String,
+      default: undefined
+    },
+    read: {
+      type: Boolean,
+      default: false
+    },
+    year: {
+      type: Number,
+      default: undefined
+    },
+    month: {
+      type: Number,
+      default: undefined
+    }
+  },
   data() {
     return {
-      loaded: true,
       menu: false,
       ranged: {
         dates: [],
@@ -138,43 +154,8 @@ export default {
       }
     }
   },
-  props: {
-    value: String,
-    single: {
-      type: Boolean,
-      default: false
-    }
-  },
-  async created() {
-    const arr = []
-
-    if (this.single) {
-      arr.push(
-        this.store.dispatch('schedule/fetchSchedule', {
-          year: this.year,
-          month: this.month,
-          id: this.karyawan.karyawan.nik
-        })
-      )
-    } else {
-      arr.push(
-        this.store.dispatch('schedule/fetchSchedules', {
-          year: this.year,
-          month: this.month
-        })
-      )
-    }
-    await Promise.all([...arr, this.store.dispatch('shift/fetchShifts')])
-    this.loaded = false
-  },
   computed: {
-    ...mapState(['schedule', 'shift', 'karyawan']),
-    year() {
-      return parseInt(this.value.substr(0, 4))
-    },
-    month() {
-      return parseInt(this.value.slice(-2))
-    },
+    ...mapState(['schedule', 'shift']),
     last() {
       return new Date(this.year, this.month, 0).getDate()
     },
@@ -184,15 +165,6 @@ export default {
             .locale('id')
             .format('MMMM YYYY')
         : ''
-    },
-    header() {
-      const h = [{ text: 'Nama', value: 'nama', width: '250px' }]
-
-      for (let i = 0; i < this.last; i++) {
-        h.push({ text: `${i + 1}`, value: `day${i + 1}`, sortable: false })
-      }
-
-      return h
     }
   },
   watch: {
@@ -236,7 +208,7 @@ export default {
         this.schedule.schedules[idx][`day${i}`] = this.ranged.shift
       }
     },
-    resetShift() {
+    resetRanged() {
       this.ranged.dates = []
       this.ranged.shift = undefined
       this.ranged.nik = undefined
@@ -245,31 +217,31 @@ export default {
       this.$emit('input', event)
     },
     async changedMonth() {
-      this.loaded = true
       this.menu = false
 
-      try {
-        await this.store.dispatch('schedule/fetchSchedules', {
-          year: this.year,
-          month: this.month
-        })
-      } catch (e) {
-        console.log(e)
+      const query = {
+        year: this.year,
+        month: this.month
       }
-      this.loaded = false
+
+      if (this.read) query.nik = this.$route.params.id
+
+      try {
+        await this.$store.dispatch('schedule/fetchSchedules', query)
+      } catch (err) {
+        this.$store.dispatch('notification/addError', err)
+      }
     },
     async saveSchedules() {
-      this.loaded = true
       try {
-        await this.store.dispatch('schedule/createSchedules', {
+        await this.$store.dispatch('schedule/createSchedules', {
           schedules: this.schedule.schedules,
           year: this.year,
           month: this.month
         })
-      } catch (e) {
-        console.log(e)
+      } catch (err) {
+        this.$store.dispatch('notification/addError', err)
       }
-      this.loaded = false
     }
   }
 }

@@ -5,7 +5,9 @@ export default (ctx, inject) => {
   const repositories = {
     karyawan: repositoryWithAxios('karyawan'),
     departemen: repositoryWithAxios('departemen'),
-    ruang: repositoryWithAxios('ruang')
+    ruang: repositoryWithAxios('ruang'),
+    schedule: repositoryWithAxios('schedule'),
+    shift: repositoryWithAxios('shift')
   }
 
   inject('api', repositories)

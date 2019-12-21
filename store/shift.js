@@ -30,19 +30,19 @@ export const mutations = {
 
 export const actions = {
   async fetchShifts({ commit }) {
-    const res = await ShiftService.getShifts()
-    commit('SET_SHIFTS', res.data.data)
+    const res = await this.$api.shift.index()
+    commit('SET_SHIFTS', res.data)
   },
   async createShift({ commit }, shift) {
-    const res = await ShiftService.postShift(shift)
+    const res = await this.$api.shift.create(shift)
     commit('ADD_SHIFT', res.data.data)
   },
   async updateShift({ commit }, shift) {
-    await ShiftService.putShift(shift)
+    await this.$api.shift.update(shift)
     commit('EDT_SHIFT', shift)
   },
   async deleteShift({ commit }, id) {
-    await ShiftService.deleteShift(id)
+    await this.$api.shift.delete(id)
     commit('DEL_SHIFT', id)
   },
   async fetchDepartemen({ commit }, id) {

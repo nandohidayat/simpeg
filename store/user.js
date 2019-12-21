@@ -1,13 +1,11 @@
 import jsCookie from 'js-cookie'
 
-import UserService from '@/services/UserService'
-
 export const state = () => ({
   user: undefined,
   token: undefined,
   menu: [],
   akses: [],
-  karyawan: {}
+  karyawan: undefined
 })
 
 export const mutations = {
@@ -30,7 +28,7 @@ export const mutations = {
 
 export const actions = {
   async register({ commit }, user) {
-    await UserService.register(user)
+    await this.$auth.register(user)
   },
   async login({ commit }, user) {
     const res = await this.$auth.login(user)
@@ -40,9 +38,9 @@ export const actions = {
     this.$auth.logout()
     commit('REMOVE_USER')
   },
-  async fetchUser({ commit }, nik) {
-    const res = await UserService.user(nik)
-    commit('SET_KARYAWAN', res.data.data)
+  async fetchUser({ commit }, id) {
+    const res = await this.$auth.user(id)
+    commit('SET_KARYAWAN', res.data)
   }
 }
 

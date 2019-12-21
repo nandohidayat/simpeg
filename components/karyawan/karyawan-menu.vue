@@ -27,7 +27,7 @@
 <script>
 export default {
   props: {
-    account: {
+    access: {
       type: Boolean,
       default: false
     },
@@ -51,7 +51,7 @@ export default {
         }
       ]
 
-      if (this.account) {
+      if (this.access) {
         arr.push({
           icon: 'mdi-shield-account',
           text: 'Data Akses',

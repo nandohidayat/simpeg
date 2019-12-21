@@ -38,7 +38,7 @@
         <v-col cols="1" class="d-flex align-center">
           <v-divider vertical></v-divider>
           <v-spacer></v-spacer>
-          <FormKaryawan> </FormKaryawan>
+          <karyawan-form> </karyawan-form>
         </v-col>
       </v-row>
     </v-card>
@@ -63,7 +63,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import FormKaryawan from '@/components/FormKaryawan'
+import karyawanForm from '@/components/karyawan/karyawan-form'
 
 export default {
   head() {
@@ -79,7 +79,7 @@ export default {
     }
   },
   components: {
-    FormKaryawan
+    'karyawan-form': karyawanForm
   },
   data() {
     return {
@@ -122,7 +122,7 @@ export default {
       await Promise.all([
         store.dispatch('departemen/fetchDepartemens'),
         store.dispatch('ruang/fetchRuangs'),
-        store.dispatch('karyawan/fetchKaryawans', { select: 0 })
+        store.dispatch('karyawan/fetchKaryawans')
       ])
     } catch (err) {
       store.dispatch('notification/addError', err)
