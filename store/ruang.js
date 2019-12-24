@@ -26,15 +26,15 @@ export const actions = {
     commit('SET_RUANGS', res.data)
   },
   async createRuang({ commit }, ruang) {
-    const res = await this.$ruangApi.create(ruang)
+    const res = await this.$api.ruang.create(ruang)
     commit('ADD_RUANG', res.data.data)
   },
   async updateRuang({ commit }, ruang) {
-    await this.$ruangApi.update(ruang.id_ruang, ruang)
+    await this.$api.ruang.update(ruang.id_ruang, ruang)
     commit('EDT_RUANG', ruang)
   },
   async deleteRuang({ commit }, id) {
-    await this.$ruangApi.delete(id)
+    await this.$api.ruang.delete(id)
     commit('DEL_RUANG', id)
   }
 }

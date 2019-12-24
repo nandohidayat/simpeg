@@ -3,7 +3,7 @@
     <v-snackbar
       v-for="(err, i) in notification.errors"
       :key="i"
-      v-model="notification.error_snackbar"
+      :value="notification.error_snackbar"
       color="error"
     >
       {{ err }}
