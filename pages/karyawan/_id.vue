@@ -17,6 +17,7 @@
           v-model="date"
         ></schedule-table>
         <karyawan-access v-if="grantedAccess()"></karyawan-access>
+        <karyawan-delete v-if="grantedDelete()"></karyawan-delete>
       </v-col>
     </v-row>
   </v-container>
@@ -27,8 +28,9 @@ import { mapState } from 'vuex'
 
 import karyawanMenu from '@/components/karyawan/karyawan-menu'
 import karyawanData from '@/components/karyawan/karyawan-data'
-import scheduleTable from '@/components/schedule/schedule-table'
 import karyawanAccess from '@/components/karyawan/karyawan-access'
+import karyawanDelete from '@/components/karyawan/karyawan-delete'
+import scheduleTable from '@/components/schedule/schedule-table'
 
 export default {
   head() {
@@ -46,8 +48,9 @@ export default {
   components: {
     'karyawan-menu': karyawanMenu,
     'karyawan-data': karyawanData,
-    'schedule-table': scheduleTable,
-    'karyawan-access': karyawanAccess
+    'karyawan-access': karyawanAccess,
+    'karyawan-delete': karyawanDelete,
+    'schedule-table': scheduleTable
   },
   data() {
     return {

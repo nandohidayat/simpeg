@@ -1,12 +1,12 @@
 const karyawanId = (store, route) => {
   if (
     route.name === 'karyawan-id' &&
-    route.params.id !== store.state.user.user.nik &&
-    !store.state.user.akses.includes('/karyawan')
+    (route.params.id === store.state.user.user.nik ||
+      store.state.user.akses.includes('/karyawan'))
   ) {
-    return false
+    return true
   }
-  return true
+  return false
 }
 
 export default ({ store, route, redirect }) => {

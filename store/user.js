@@ -5,7 +5,7 @@ export const state = () => ({
   token: undefined,
   menu: [],
   akses: [],
-  karyawan: undefined
+  karyawan: null
 })
 
 export const mutations = {

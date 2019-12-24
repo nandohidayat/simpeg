@@ -6,11 +6,7 @@
       </v-avatar>
       <v-list dense>
         <v-list-item-group color="teal">
-          <v-list-item
-            @click="$vuetify.goTo(`#${k.id}`)"
-            v-for="(k, i) in menu"
-            :key="i"
-          >
+          <v-list-item :to="`#${k.id}`" v-for="(k, i) in menu" :key="i">
             <v-list-item-icon>
               <v-icon>{{ k.icon }}</v-icon>
             </v-list-item-icon>

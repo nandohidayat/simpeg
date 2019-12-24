@@ -1,6 +1,6 @@
 <template>
-  <v-card outlined class="mt-5">
-    <v-card-title id="data-akses">
+  <v-card id="data-akses" outlined class="mt-5">
+    <v-card-title>
       <v-icon large left>mdi-shield-account</v-icon
       ><span class="title font-weight-light">Data Akses</span>
       <v-spacer></v-spacer>
@@ -40,7 +40,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row v-else-if="user.karyawan !== undefined">
+      <v-row v-else-if="user.karyawan !== null">
         <v-col cols="6">
           <span>Username :</span>
           <span class="subtitle-1 text--primary d-block ml-3">{{

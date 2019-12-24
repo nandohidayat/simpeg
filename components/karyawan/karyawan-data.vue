@@ -1,6 +1,6 @@
 <template>
-  <v-card outlined>
-    <v-card-title id="data-karyawan">
+  <v-card id="data-karyawan" outlined>
+    <v-card-title>
       <v-icon large left>mdi-clipboard-account-outline</v-icon
       ><span class="title font-weight-light">Data Karyawan</span>
       <v-spacer></v-spacer>
