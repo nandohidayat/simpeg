@@ -27,7 +27,7 @@ export const actions = {
   },
   async createRuang({ commit }, ruang) {
     const res = await this.$api.ruang.create(ruang)
-    commit('ADD_RUANG', res.data.data)
+    commit('ADD_RUANG', res.data)
   },
   async updateRuang({ commit }, ruang) {
     await this.$api.ruang.update(ruang.id_ruang, ruang)
