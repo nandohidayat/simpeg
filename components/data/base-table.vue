@@ -3,7 +3,7 @@
     <v-toolbar flat color="teal" dark>
       <v-toolbar-title v-text="`Data ${capitalize()}`"></v-toolbar-title>
       <v-spacer></v-spacer>
-      <base-form data="ruang">
+      <base-form :data="data">
         <template v-slot:btn="{ on }">
           <v-btn v-on="on" icon>
             <v-icon>mdi-plus-circle</v-icon>
@@ -17,7 +17,7 @@
     <v-card-text>
       <v-data-table :headers="headers()" :items="items">
         <template v-slot:item.action="{ item }">
-          <base-form :value="item" data="ruang">
+          <base-form :value="item" :data="data">
             <template v-slot:btn="{ on }">
               <v-icon v-on="on" small class="mr-2">
                 mdi-pencil
@@ -71,7 +71,6 @@ export default {
     },
     headers() {
       return [
-        { text: this.capitalize(), value: this.data },
         ...this.header,
         {
           text: 'Action',

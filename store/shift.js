@@ -35,10 +35,10 @@ export const actions = {
   },
   async createShift({ commit }, shift) {
     const res = await this.$api.shift.create(shift)
-    commit('ADD_SHIFT', res.data.data)
+    commit('ADD_SHIFT', res.data)
   },
   async updateShift({ commit }, shift) {
-    await this.$api.shift.update(shift)
+    await this.$api.shift.update(shift.id_shift, shift)
     commit('EDT_SHIFT', shift)
   },
   async deleteShift({ commit }, id) {
