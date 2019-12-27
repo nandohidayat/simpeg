@@ -7,7 +7,8 @@ export default (ctx, inject) => {
     departemen: repositoryWithAxios('departemen'),
     ruang: repositoryWithAxios('ruang'),
     schedule: repositoryWithAxios('schedule'),
-    shift: repositoryWithAxios('shift')
+    shift: repositoryWithAxios('shift'),
+    akses: repositoryWithAxios('akses')
   }
 
   inject('api', repositories)

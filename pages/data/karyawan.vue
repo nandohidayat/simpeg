@@ -8,6 +8,13 @@
           </template>
         </base-table>
       </v-col>
+      <v-col cols="6">
+        <base-table :header="headerRuang" :items="ruang.ruangs" data="ruang">
+          <template v-slot:baseform="{ newdata }">
+            <ruang-form :newdata="newdata"></ruang-form>
+          </template>
+        </base-table>
+      </v-col>
     </v-row>
     <v-row>
       <v-col cols="6">
@@ -48,6 +55,8 @@ export default {
   },
   data() {
     return {
+      headerBagian: [{ text: 'Bagian', value: 'bagian' }],
+      headerDepartemen: [{ text: 'Departemen', value: 'departemen' }],
       headerRuang: [{ text: 'Ruang', value: 'ruang' }],
       headerShift: [
         { text: 'Mulai', value: 'mulai' },
