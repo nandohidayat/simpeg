@@ -8,7 +8,16 @@
         <span>{{ editing ? 'Edit' : 'Buat' }} {{ capitalize() }}</span>
       </v-card-title>
       <v-card-text>
-        <slot v-bind:newdata="newData" name="form"> </slot>
+        <slot v-bind:newdata="newData" name="form">
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="newData[`${data}`]"
+                :label="capitalize()"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </slot>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -63,6 +72,7 @@ export default {
     },
     dataMaker() {
       if (this.value !== undefined) return { ...this.value }
+      if (this.data === 'departemen') return { departemen: undefined }
       if (this.data === 'ruang') return { ruang: undefined }
       if (this.data === 'shift')
         return { mulai: undefined, selesai: undefined, kode: undefined }

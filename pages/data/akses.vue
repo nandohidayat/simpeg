@@ -37,6 +37,18 @@
 import { mapState } from 'vuex'
 
 export default {
+  head() {
+    return {
+      title: 'Database Akses',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Data Akses'
+        }
+      ]
+    }
+  },
   data() {
     return {
       dept: undefined,

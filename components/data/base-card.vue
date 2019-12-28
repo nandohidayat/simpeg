@@ -1,11 +1,19 @@
 <template>
   <v-card class="mt-5">
     <v-toolbar flat color="teal" dark>
-      <v-toolbar-title v-text="`Data ${capitalize()}`"></v-toolbar-title>
+      <v-toolbar-title
+        v-text="`${odd ? '' : 'Data '}${data}`"
+        class="text-capitalize"
+      ></v-toolbar-title>
       <v-spacer></v-spacer>
+      <slot name="action"></slot>
     </v-toolbar>
     <v-card-text>
-      <v-slot name="cardtext"></v-slot>
+      <v-row>
+        <v-col>
+          <slot></slot>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>
@@ -16,6 +24,10 @@ export default {
     data: {
       type: String,
       default: undefined
+    },
+    odd: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {

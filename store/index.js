@@ -1,5 +1,7 @@
 import { parse } from 'cookieparser'
 
+export const strict = false
+
 export const actions = {
   nuxtServerInit({ commit }, { req }) {
     if (process.server && process.static) return

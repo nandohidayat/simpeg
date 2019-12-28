@@ -7,13 +7,13 @@
         :close-on-content-click="false"
         max-width="290px"
         min-width="290px"
+        offset-x="true"
       >
         <template v-slot:activator="{ on }">
           <v-text-field
             v-model="newdata['mulai']"
             v-on="on"
             label="Mulai"
-            readonly
           ></v-text-field>
         </template>
         <v-time-picker
@@ -31,13 +31,13 @@
         :close-on-content-click="false"
         max-width="290px"
         min-width="290px"
+        offset-x="true"
       >
         <template v-slot:activator="{ on }">
           <v-text-field
             v-model="newdata['selesai']"
             v-on="on"
             label="Selesai"
-            readonly
           ></v-text-field>
         </template>
         <v-time-picker

@@ -2,18 +2,11 @@
   <div>
     <v-row>
       <v-col cols="6">
-        <base-table :header="headerRuang" :items="ruang.ruangs" data="ruang">
-          <template v-slot:baseform="{ newdata }">
-            <ruang-form :newdata="newdata"></ruang-form>
-          </template>
+        <base-table :items="departemen.departemens" data="departemen">
         </base-table>
       </v-col>
       <v-col cols="6">
-        <base-table :header="headerRuang" :items="ruang.ruangs" data="ruang">
-          <template v-slot:baseform="{ newdata }">
-            <ruang-form :newdata="newdata"></ruang-form>
-          </template>
-        </base-table>
+        <base-table :items="ruang.ruangs" data="ruang"> </base-table>
       </v-col>
     </v-row>
     <v-row>
@@ -24,6 +17,9 @@
           </template>
         </base-table>
       </v-col>
+      <v-col cols="6">
+        <shift-departemen></shift-departemen>
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -32,8 +28,8 @@
 import { mapState } from 'vuex'
 
 import baseTable from '@/components/data/base-table'
-import ruangForm from '@/components/ruang/ruang-form'
 import shiftForm from '@/components/shift/shift-form'
+import shiftDepartemen from '@/components/shift/shift-departemen'
 
 export default {
   head() {
@@ -50,14 +46,11 @@ export default {
   },
   components: {
     'base-table': baseTable,
-    'ruang-form': ruangForm,
-    'shift-form': shiftForm
+    'shift-form': shiftForm,
+    'shift-departemen': shiftDepartemen
   },
   data() {
     return {
-      headerBagian: [{ text: 'Bagian', value: 'bagian' }],
-      headerDepartemen: [{ text: 'Departemen', value: 'departemen' }],
-      headerRuang: [{ text: 'Ruang', value: 'ruang' }],
       headerShift: [
         { text: 'Mulai', value: 'mulai' },
         { text: 'Selesai', value: 'selesai' },
@@ -66,10 +59,11 @@ export default {
     }
   },
   computed: {
-    ...mapState(['ruang', 'shift'])
+    ...mapState(['departemen', 'ruang', 'shift'])
   },
   async fetch({ store }) {
     await Promise.all([
+      store.dispatch('departemen/fetchDepartemens'),
       store.dispatch('ruang/fetchRuangs'),
       store.dispatch('shift/fetchShifts')
     ])

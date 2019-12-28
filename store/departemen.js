@@ -30,15 +30,15 @@ export const actions = {
     commit('SET_DEPARTEMENS', res.data)
   },
   async createDepartemen({ commit }, departemen) {
-    const res = await this.$departemenApi.create(departemen)
-    commit('ADD_DEPARTEMEN', res.data.data)
+    const res = await this.$api.departemen.create(departemen)
+    commit('ADD_DEPARTEMEN', res.data)
   },
   async updateDepartemen({ commit }, departemen) {
-    await this.$departemenApi.update(departemen.id_departemen, departemen)
+    await this.$api.departemen.update(departemen.id_departemen, departemen)
     commit('EDT_DEPARTEMEN', departemen)
   },
   async deleteDepartemen({ commit }, id) {
-    await this.$departemenApi.delete(id)
+    await this.$api.departemen.delete(id)
     commit('DEL_DEPARTEMEN', id)
   }
 }

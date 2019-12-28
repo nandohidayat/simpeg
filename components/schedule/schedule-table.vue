@@ -219,15 +219,11 @@ export default {
     async changedMonth() {
       this.menu = false
 
-      const query = {
-        year: this.year,
-        month: this.month
-      }
-
-      if (this.read) query.nik = this.$route.params.id
-
       try {
-        await this.$store.dispatch('schedule/fetchSchedules', query)
+        await this.$store.dispatch('schedule/fetchSchedules', {
+          year: this.year,
+          month: this.month
+        })
       } catch (err) {
         this.$store.dispatch('notification/addError', err)
       }
@@ -236,8 +232,7 @@ export default {
       try {
         await this.$store.dispatch('schedule/createSchedules', {
           schedules: this.schedule.schedules,
-          year: this.year,
-          month: this.month
+          date: { year: this.year, month: this.month }
         })
       } catch (err) {
         this.$store.dispatch('notification/addError', err)

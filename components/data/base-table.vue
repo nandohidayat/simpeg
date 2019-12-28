@@ -1,46 +1,44 @@
 <template>
-  <v-card class="mt-5">
-    <v-toolbar flat color="teal" dark>
-      <v-toolbar-title v-text="`Data ${capitalize()}`"></v-toolbar-title>
-      <v-spacer></v-spacer>
+  <base-card :data="data">
+    <template #action>
       <base-form :data="data">
-        <template v-slot:btn="{ on }">
+        <template #btn="{ on }">
           <v-btn v-on="on" icon>
             <v-icon>mdi-plus-circle</v-icon>
           </v-btn>
         </template>
-        <template v-slot:form="{ newdata }">
+        <template #form="{ newdata }">
           <slot v-bind:newdata="newdata" name="baseform"></slot>
         </template>
       </base-form>
-    </v-toolbar>
-    <v-card-text>
-      <v-data-table :headers="headers()" :items="items">
-        <template v-slot:item.action="{ item }">
-          <base-form :value="item" :data="data">
-            <template v-slot:btn="{ on }">
-              <v-icon v-on="on" small class="mr-2">
-                mdi-pencil
-              </v-icon>
-            </template>
-            <template v-slot:form="{ newdata }">
-              <slot v-bind:newdata="newdata" name="baseform"></slot>
-            </template>
-          </base-form>
-          <v-icon @click="deleteData(item[`id_${data}`])" small>
-            mdi-delete
-          </v-icon>
-        </template>
-      </v-data-table>
-    </v-card-text>
-  </v-card>
+    </template>
+    <v-data-table :headers="headers()" :items="items">
+      <template #item.action="{ item }">
+        <base-form :value="item" :data="data">
+          <template #btn="{ on }">
+            <v-icon v-on="on" small class="mr-2">
+              mdi-pencil
+            </v-icon>
+          </template>
+          <template #form="{ newdata }">
+            <slot v-bind:newdata="newdata" name="baseform"></slot>
+          </template>
+        </base-form>
+        <v-icon @click="deleteData(item[`id_${data}`])" small>
+          mdi-delete
+        </v-icon>
+      </template>
+    </v-data-table>
+  </base-card>
 </template>
 
 <script>
+import baseCard from '@/components/data/base-card'
 import baseForm from '@/components/data/base-form'
 
 export default {
   components: {
+    'base-card': baseCard,
     'base-form': baseForm
   },
   props: {
@@ -54,7 +52,9 @@ export default {
     },
     header: {
       type: Array,
-      default: undefined
+      default() {
+        return []
+      }
     }
   },
   methods: {
@@ -70,6 +70,8 @@ export default {
       }
     },
     headers() {
+      if (this.header.length === 0)
+        this.header = [{ text: this.capitalize(), value: this.data }]
       return [
         ...this.header,
         {

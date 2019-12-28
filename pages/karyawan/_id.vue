@@ -78,8 +78,7 @@ export default {
     await Promise.all([
       this.$store.dispatch('schedule/fetchSchedules', {
         year: this.year(),
-        month: this.month(),
-        nik: this.$route.params.id
+        month: this.month()
       }),
       this.$store.dispatch('shift/fetchShifts'),
       ...granted

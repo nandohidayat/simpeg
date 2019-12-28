@@ -1,5 +1,3 @@
-import ShiftService from '@/services/ShiftService.js'
-
 export const namespaced = true
 
 export const state = () => ({
@@ -46,10 +44,10 @@ export const actions = {
     commit('DEL_SHIFT', id)
   },
   async fetchDepartemen({ commit }, id) {
-    const res = await ShiftService.getDepartemen(id)
-    commit('SET_DEPARTEMEN', res.data.data)
+    const res = await this.$api.shiftDepartemen.show(id)
+    commit('SET_DEPARTEMEN', res.data)
   },
-  async updateDepartemen({ commit }, shift) {
-    await ShiftService.postDepartemen(shift)
+  async createDepartemen({ commit }, shift) {
+    await this.$api.shiftDepartemen.create(shift)
   }
 }

@@ -1,5 +1,3 @@
-import ScheduleService from '@/services/ScheduleService.js'
-
 export const namespaced = true
 
 export const state = () => ({
@@ -13,15 +11,19 @@ export const mutations = {
     state.schedules = schedules.schedule
     state.ruang = schedules.ruang
     state.header = schedules.header
+  },
+  RESET(state) {
+    state.schedules = []
   }
 }
 
 export const actions = {
   async fetchSchedules({ commit }, date) {
+    commit('RESET')
     const res = await this.$api.schedule.index(date)
     commit('SET_SCHEDULES', res.data)
   },
   async createSchedules({ commit }, { schedules, date }) {
-    await ScheduleService.postSchedules(schedules, date)
+    await this.$api.schedule.create(schedules, date)
   }
 }
