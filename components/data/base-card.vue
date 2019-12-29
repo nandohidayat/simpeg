@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mt-5">
+  <v-card class="mt-5" outlined>
     <v-toolbar flat color="teal" dark>
       <v-toolbar-title
         v-text="`${odd ? '' : 'Data '}${data}`"
