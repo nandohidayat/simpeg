@@ -6,8 +6,8 @@
       :month="month()"
     ></schedule-table>
     <v-row>
-      <v-col cols="6">
-        <absen-card></absen-card>
+      <v-col cols="7">
+        <absen-card :year="year()" :month="month()"></absen-card>
       </v-col>
     </v-row>
   </div>
@@ -44,8 +44,8 @@ export default {
   computed: {
     ...mapState(['user'])
   },
-  async created() {
-    await Promise.all([
+  created() {
+    Promise.all([
       this.$store.dispatch('schedule/fetchSchedules', {
         year: this.year(),
         month: this.month()

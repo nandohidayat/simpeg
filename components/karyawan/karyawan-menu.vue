@@ -44,6 +44,11 @@ export default {
           icon: 'mdi-calendar',
           text: 'Data Jadwal',
           id: 'data-jadwal'
+        },
+        {
+          icon: 'mdi-fingerprint',
+          text: 'Data Absen',
+          id: 'data-absen'
         }
       ]
 

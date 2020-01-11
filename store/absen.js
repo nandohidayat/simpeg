@@ -1,12 +1,17 @@
 export const namespaced = true
 
 export const state = () => ({
-  absen: []
+  absen: [],
+  pendapatan: 0
 })
 
 export const mutations = {
   SET_ABSEN(state, absen) {
-    state.absen = absen
+    state.absen = absen.absen
+    state.pendapatan = absen.pendapatan
+  },
+  RESET(state) {
+    state.absen = []
   }
 }
 

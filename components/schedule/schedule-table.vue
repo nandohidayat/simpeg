@@ -115,6 +115,7 @@
           }}
         </span>
       </template>
+      <template #item.jam="{item}"> {{ item.jam }}</template>
     </v-data-table>
   </div>
 </template>
@@ -151,7 +152,8 @@ export default {
         dates: [],
         shift: undefined,
         nik: undefined
-      }
+      },
+      select: false
     }
   },
   computed: {

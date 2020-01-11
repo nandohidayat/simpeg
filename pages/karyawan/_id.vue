@@ -8,7 +8,7 @@
         ></karyawan-menu>
       </v-col>
       <v-col cols="9">
-        <karyawan-data></karyawan-data>
+        <karyawan-data id="data-karyawan"></karyawan-data>
         <schedule-table
           id="data-jadwal"
           :read="true"
@@ -16,8 +16,20 @@
           :month="month()"
           v-model="date"
         ></schedule-table>
-        <karyawan-access v-if="grantedAccess()"></karyawan-access>
-        <karyawan-delete v-if="grantedDelete()"></karyawan-delete>
+        <absen-card
+          id="data-absen"
+          :year="year()"
+          :month="month()"
+          single
+        ></absen-card>
+        <karyawan-access
+          id="data-akses"
+          v-if="grantedAccess()"
+        ></karyawan-access>
+        <karyawan-delete
+          id="hapus-karyawan"
+          v-if="grantedDelete()"
+        ></karyawan-delete>
       </v-col>
     </v-row>
   </v-container>
@@ -26,6 +38,7 @@
 <script>
 import { mapState } from 'vuex'
 
+import absenCard from '@/components/absen/absen-card'
 import karyawanMenu from '@/components/karyawan/karyawan-menu'
 import karyawanData from '@/components/karyawan/karyawan-data'
 import karyawanAccess from '@/components/karyawan/karyawan-access'
@@ -46,6 +59,7 @@ export default {
     }
   },
   components: {
+    'absen-card': absenCard,
     'karyawan-menu': karyawanMenu,
     'karyawan-data': karyawanData,
     'karyawan-access': karyawanAccess,
@@ -79,6 +93,10 @@ export default {
       this.$store.dispatch('schedule/fetchSchedules', {
         year: this.year(),
         month: this.month()
+      }),
+      this.$store.dispatch('absen/fetchAbsen', {
+        id: this.$route.params.id,
+        date: { year: this.year(), month: this.month() }
       }),
       this.$store.dispatch('shift/fetchShifts'),
       ...granted

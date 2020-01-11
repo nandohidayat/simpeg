@@ -1,6 +1,6 @@
 <template>
   <v-card class="mt-5" outlined>
-    <v-toolbar flat color="teal" dark>
+    <v-toolbar v-if="toolbar" flat color="teal" dark>
       <v-toolbar-title
         v-text="`${odd ? '' : 'Data '}${data}`"
         class="text-capitalize"
@@ -8,6 +8,10 @@
       <v-spacer></v-spacer>
       <slot name="action"></slot>
     </v-toolbar>
+    <v-card-title v-else>
+      <slot name="title"></slot>
+      <v-spacer></v-spacer>
+    </v-card-title>
     <v-card-text>
       <v-row>
         <v-col>
@@ -28,6 +32,10 @@ export default {
     odd: {
       type: Boolean,
       default: false
+    },
+    toolbar: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {

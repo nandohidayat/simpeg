@@ -18,7 +18,9 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchSchedules({ commit }, date) {
+  async fetchSchedules({ commit, rootState }, date) {
+    rootState.absen.absen = []
+    rootState.absen.pendapatan = 0
     commit('RESET')
     const res = await this.$api.schedule.index(date)
     commit('SET_SCHEDULES', res.data)

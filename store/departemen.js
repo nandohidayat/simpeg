@@ -25,8 +25,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchDepartemens({ commit }) {
-    const res = await this.$api.departemen.index()
+  async fetchDepartemens({ commit }, query) {
+    const res = await this.$api.departemen.index(query)
     commit('SET_DEPARTEMENS', res.data)
   },
   async createDepartemen({ commit }, departemen) {

@@ -1,5 +1,5 @@
 <template>
-  <v-card id="hapus-karyawan" outlined class="mt-5">
+  <v-card outlined class="mt-5">
     <v-card-title>
       <v-icon large left color="error">mdi-alert</v-icon
       ><span class="title font-weight-light error--text">Hapus Karyawan</span>

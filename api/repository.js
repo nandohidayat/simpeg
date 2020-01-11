@@ -15,8 +15,8 @@ export default ($axios) => (resource) => ({
     return $axios.$get(`${resource}${queryGenerator(query)}`)
   },
 
-  show(id) {
-    return $axios.$get(`${resource}/${id}`)
+  show(id, query = {}) {
+    return $axios.$get(`${resource}/${id}${queryGenerator(query)}`)
   },
 
   create(payload, query = {}) {

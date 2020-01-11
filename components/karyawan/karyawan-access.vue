@@ -1,5 +1,5 @@
 <template>
-  <v-card id="data-akses" outlined class="mt-5">
+  <v-card outlined class="mt-5">
     <v-card-title>
       <v-icon large left>mdi-shield-account</v-icon
       ><span class="title font-weight-light">Data Akses</span>

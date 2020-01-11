@@ -13,11 +13,9 @@
         </v-col>
         <v-col cols="3">
           <v-select
-            v-model="search.departemen"
-            :items="departemen.departemens"
-            :item-text="(obj) => obj.departemen"
-            :item-value="(obj) => obj.departemen"
-            label="Departemen"
+            v-model="search.kelamin"
+            :items="kelamin"
+            label="Jenis Kelamin"
             dense
             clearable
             class="mt-4"
@@ -25,11 +23,9 @@
         </v-col>
         <v-col cols="3">
           <v-select
-            v-model="search.ruang"
-            :items="ruang.ruangs"
-            :item-text="(obj) => obj.ruang"
-            :item-value="(obj) => obj.ruang"
-            label="Ruang"
+            v-model="search.departemen"
+            :items="departemen.departemens"
+            label="Departemen"
             dense
             clearable
             class="mt-4"
@@ -47,9 +43,13 @@
       :items="karyawan.karyawans"
       :items-per-page="20"
       :search="search.nama"
-      :loading="loading"
       class="elevation-2 mt-3"
     >
+      <template v-slot:item.dept="{ item }">
+        Utama:
+        <div v-for="d in item.dept">- {{ d }}</div>
+        Sub:
+      </template>
       <template v-slot:item.action="{ item }">
         <nuxt-link :to="`/karyawan/${item.nik}`">
           <v-icon>
@@ -83,31 +83,37 @@ export default {
   },
   data() {
     return {
-      loading: false,
-      search: { nama: undefined, departemen: undefined, ruang: undefined },
+      // search: { nama: undefined, departemen: undefined, ruang: undefined },
+      search: { nama: undefined, kelamin: undefined, departemen: undefined },
+      kelamin: ['P', 'L'],
       headers: [
         {
           text: 'NIK',
           value: 'nik',
           width: '100px'
         },
-        { text: 'Nama', value: 'nama', align: 'start' },
         {
-          text: 'Departemen',
-          value: 'departemen',
+          text: 'Nama',
+          value: 'nama'
+        },
+        {
+          text: 'Jenis Kelamin',
+          value: 'sex',
+          width: '150px',
           filter: (value) => {
-            if (!this.search.departemen) return true
+            if (!this.search.kelamin) return true
 
-            return value === this.search.departemen
+            return value === this.search.kelamin
           }
         },
         {
-          text: 'Ruang',
-          value: 'ruang',
+          text: 'Department',
+          value: 'dept',
+          width: '450px',
           filter: (value) => {
-            if (!this.search.ruang) return true
+            if (!this.search.departemen) return true
 
-            return value === this.search.ruang
+            return value.includes(this.search.departemen)
           }
         },
         { text: 'Detail', value: 'action', sortable: false, width: '80px' }
@@ -120,8 +126,8 @@ export default {
   async fetch({ store }) {
     try {
       await Promise.all([
-        store.dispatch('departemen/fetchDepartemens'),
-        store.dispatch('ruang/fetchRuangs'),
+        store.dispatch('departemen/fetchDepartemens', { select: 1 }),
+        // store.dispatch('ruang/fetchRuangs'),
         store.dispatch('karyawan/fetchKaryawans')
       ])
     } catch (err) {
