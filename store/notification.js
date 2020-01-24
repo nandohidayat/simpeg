@@ -1,26 +1,26 @@
 export const namespaced = true
 
 export const state = () => ({
-  errors: [],
-  error_snackbar: false
+  notifications: [],
+  snackbar: false
 })
 
 export const mutations = {
-  ADD_ERROR(state, error) {
-    state.errors.push(error)
-    state.error_snackbar = true
+  ADD_NOTIF(state, notif) {
+    state.notifications.push(notif)
+    state.snackbar = true
   },
-  DEL_ERROR(state) {
-    state.errors.shift()
-    state.error_snackbar = state.errors.lenght !== 0
+  DEL(state) {
+    state.notifications.pop()
+    state.snackbar = state.notifications.lenght !== 0
   }
 }
 
 export const actions = {
-  addError({ commit }, error) {
-    commit('ADD_ERROR', error)
+  addNotif({ commit }, notif) {
+    commit('ADD_NOTIF', notif)
   },
-  delError({ commit }) {
-    commit('DEL_ERROR')
+  delNotif({ commit }) {
+    commit('DEL')
   }
 }

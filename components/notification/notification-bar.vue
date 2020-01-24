@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-snackbar
-      v-for="(err, i) in notification.errors"
+      v-for="(notif, i) in notification.notifications"
       :key="i"
-      :value="notification.error_snackbar"
-      color="error"
+      :value="notification.snackbar"
+      :color="notif.type"
     >
-      {{ err }}
+      {{ notif.text }}
       <v-btn @click="del" color="white" text>
         Close
       </v-btn>
@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     del() {
-      this.$store.dispatch('notification/delError')
+      this.$store.dispatch('notification/delNotif')
     }
   }
 }

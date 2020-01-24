@@ -71,7 +71,7 @@
         <nuxt />
       </v-container>
     </v-content>
-    <notification-error></notification-error>
+    <notification-bar></notification-bar>
     <v-footer color="teal">
       <span class="white--text">&copy; 2019</span>
     </v-footer>
@@ -81,11 +81,11 @@
 <script>
 import { mapState } from 'vuex'
 
-import notificationError from '@/components/notification/notification-error'
+import notificationBar from '@/components/notification/notification-bar'
 
 export default {
   components: {
-    'notification-error': notificationError
+    'notification-bar': notificationBar
   },
   head() {
     return {

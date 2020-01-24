@@ -3,15 +3,15 @@
     <v-card-text>
       <v-row>
         <v-col cols="11">
-          <v-select
+          <v-autocomplete
             v-model="dept"
             :items="departemen.departemens"
-            :item-value="(obj) => obj.id_departemen"
-            :item-text="(obj) => obj.departemen"
+            :item-value="(obj) => obj.id_dept"
+            :item-text="(obj) => obj.nm_dept"
             @change="getAkses"
             label="Departemen"
             clearable
-          ></v-select>
+          ></v-autocomplete>
         </v-col>
         <v-col cols="1" class="d-flex align-center">
           <v-divider vertical></v-divider>
@@ -22,13 +22,30 @@
         </v-col>
       </v-row>
       <v-divider class="mt-2 mb-5"></v-divider>
-      <v-treeview
-        v-model="selected"
-        :items="akses.aksess"
-        :open.sync="open"
-        selectable
-        selected-color="teal"
-      ></v-treeview>
+      <v-row>
+        <v-col cols="6">
+          <h1 class="display-1 font-weight-light mb-3 black--text">Semua</h1>
+          <v-treeview
+            v-model="selectedSemua"
+            :items="akses.aksess"
+            :open.sync="open"
+            selectable
+            selected-color="teal"
+          ></v-treeview>
+        </v-col>
+        <v-col cols="6">
+          <h1 class="display-1 font-weight-light mb-3 black--text">
+            Hanya Ketua
+          </h1>
+          <v-treeview
+            v-model="selectedKepala"
+            :items="akses.aksess"
+            :open.sync="open"
+            selectable
+            selected-color="teal"
+          ></v-treeview>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>
@@ -52,8 +69,10 @@ export default {
   data() {
     return {
       dept: undefined,
-      selected: undefined,
-      open: undefined
+      selectedSemua: undefined,
+      selectedKepala: undefined,
+      open: undefined,
+      tab: undefined
     }
   },
   computed: {
@@ -74,23 +93,39 @@ export default {
     },
     async getAkses() {
       if (this.dept === undefined) {
-        this.selected = []
+        this.selectedSemua = []
+        this.selectedKepala = []
       } else {
         try {
           await this.$store.dispatch('akses/fetchAkses', this.dept)
-          this.selected = this.akses.akses
+          this.selectedSemua = this.akses.akses.semua
+          this.selectedKepala = this.akses.akses.kepala
         } catch (err) {
-          this.$store.dispatch('notification/addError', err)
+          this.$store.dispatch('notification/addNotif', {
+            text: err,
+            type: 'error'
+          })
         }
       }
     },
     async saveAkses() {
       if (this.dept === undefined) return
-
-      await this.$store.dispatch('akses/createAkses', {
-        departemen: this.dept,
-        akses: this.selected
-      })
+      try {
+        await this.$store.dispatch('akses/createAkses', {
+          dept: this.dept,
+          semua: this.selectedSemua,
+          kepala: this.selectedKepala
+        })
+        this.$store.dispatch('notification/addNotif', {
+          text: 'Saved',
+          type: 'success'
+        })
+      } catch (err) {
+        this.$store.dispatch('notification/addNotif', {
+          text: err,
+          type: 'error'
+        })
+      }
     }
   }
 }

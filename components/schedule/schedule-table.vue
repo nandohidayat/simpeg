@@ -227,7 +227,7 @@ export default {
           month: this.month
         })
       } catch (err) {
-        this.$store.dispatch('notification/addError', err)
+        this.$store.dispatch('notification/add', { text: err, type: 'error' })
       }
     },
     async saveSchedules() {
@@ -236,8 +236,15 @@ export default {
           schedules: this.schedule.schedules,
           date: { year: this.year, month: this.month }
         })
+        this.$store.dispatch('notification/addNotif', {
+          text: 'Saved Successfully',
+          type: 'success'
+        })
       } catch (err) {
-        this.$store.dispatch('notification/addError', err)
+        this.$store.dispatch('notification/addNotif', {
+          text: err,
+          type: 'error'
+        })
       }
     }
   }
