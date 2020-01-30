@@ -2,15 +2,18 @@ export const namespaced = true
 
 export const state = () => ({
   schedules: [],
-  ruang: undefined,
+  dept: [],
+  shift: [],
   header: []
 })
 
 export const mutations = {
   SET_SCHEDULES(state, schedules) {
     state.schedules = schedules.schedule
-    state.ruang = schedules.ruang
+    state.shift = schedules.shift
     state.header = schedules.header
+
+    if (state.dept.length === 0) state.dept = schedules.dept
   },
   RESET(state) {
     state.schedules = []

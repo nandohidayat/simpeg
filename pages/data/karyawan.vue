@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row>
+    <!-- <v-row>
       <v-col cols="6">
         <base-table :items="departemen.departemens" data="departemen">
         </base-table>
@@ -8,7 +8,7 @@
       <v-col cols="6">
         <base-table :items="ruang.ruangs" data="ruang"> </base-table>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-row>
       <v-col cols="6">
         <base-table :header="headerShift" :items="shift.shifts" data="shift">
@@ -64,7 +64,7 @@ export default {
   async fetch({ store }) {
     await Promise.all([
       store.dispatch('departemen/fetchDepartemens'),
-      store.dispatch('ruang/fetchRuangs'),
+      // store.dispatch('ruang/fetchRuangs'),
       store.dispatch('shift/fetchShifts')
     ])
   }

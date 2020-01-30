@@ -69,7 +69,6 @@ export default {
       }
     }
   },
-  layout: 'blank',
-  auth: false
+  layout: 'blank'
 }
 </script>

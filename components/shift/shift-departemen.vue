@@ -2,15 +2,15 @@
   <base-card :odd="true" data="shift departemen">
     <v-row>
       <v-col cols="10">
-        <v-select
+        <v-autocomplete
           v-model="dept"
           :items="departemen.departemens"
-          :item-value="(obj) => obj.id_departemen"
-          :item-text="(obj) => obj.departemen"
+          :item-value="(obj) => obj.id_dept"
+          :item-text="(obj) => obj.nm_dept"
           @change="getShift"
           label="Departemen"
           clearable
-        ></v-select>
+        ></v-autocomplete>
       </v-col>
       <v-col cols="2" class="d-flex align-center">
         <v-divider vertical></v-divider>
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       dept: undefined,
-      selected: undefined
+      selected: []
     }
   },
   computed: {
@@ -71,6 +71,11 @@ export default {
         await this.$store.dispatch('shift/createDepartemen', {
           departemen: this.dept,
           shift: this.selected
+        })
+
+        this.$store.dispatch('notification/addNotif', {
+          text: 'Saved',
+          type: 'success'
         })
       } catch (err) {
         this.$store.dispatch('notification/addError', err)

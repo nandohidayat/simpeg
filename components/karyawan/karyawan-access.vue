@@ -78,19 +78,25 @@ export default {
     }
   },
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user', 'karyawan'])
   },
   methods: {
     async createUser() {
       if (this.newUser.current === undefined) return
       try {
-        await this.$store.dispatch('user/register', this.newUser)
+        await this.$store.dispatch('user/register', {
+          ...this.newUser,
+          nik: this.karyawan.karyawan.id
+        })
         await this.$store.dispatch('user/fetchUser', this.$route.params.id)
 
         this.newUser.current = undefined
         this.editing = false
       } catch (err) {
-        this.$store.dispatch('notification/addError', err)
+        this.$store.dispatch('notification/addNotif', {
+          text: err,
+          type: 'error'
+        })
       }
     }
   }

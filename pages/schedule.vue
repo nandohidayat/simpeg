@@ -4,15 +4,15 @@
       v-model="date"
       :year="year()"
       :month="month()"
+      :dept="dept"
     ></schedule-table>
     <v-row>
       <v-col cols="7">
-        <absen-card :year="year()" :month="month()"></absen-card>
+        <absen-card :year="year()" :month="month()" :dept="dept"></absen-card>
       </v-col>
     </v-row>
   </div>
 </template>
-
 <script>
 import { mapState } from 'vuex'
 
@@ -42,17 +42,25 @@ export default {
     }
   },
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user', 'schedule']),
+    dept() {
+      if (this.schedule.dept.length === 0) return undefined
+      return this.schedule.dept[0].id_dept
+    }
   },
-  created() {
-    Promise.all([
+  async created() {
+    await Promise.all([
       this.$store.dispatch('schedule/fetchSchedules', {
         year: this.year(),
         month: this.month()
       }),
-      this.$store.dispatch('shift/fetchShifts'),
-      this.$store.dispatch('karyawan/fetchKaryawans', { select: 1 })
+      this.$store.dispatch('shift/fetchShifts')
     ])
+
+    this.$store.dispatch('karyawan/fetchKaryawans', {
+      select: 1,
+      dept: this.dept
+    })
   },
   methods: {
     year() {

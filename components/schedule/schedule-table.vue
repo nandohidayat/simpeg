@@ -2,17 +2,21 @@
   <div :class="read ? 'mt-5' : ''">
     <v-card class="px-4" outlined>
       <v-row style="height: 65px;">
-        <v-col :cols="read ? 8 : 9" class="pt-4">
-          <span v-if="read">
-            <v-icon large left>mdi-calendar</v-icon
-            ><span class="title font-weight-light">Data Jadwal</span>
-          </span>
-          <span
-            v-else
-            v-text="`Jadwal ${schedule.ruang || ''}`"
-            class="headline text--primary"
-          ></span>
+        <v-col v-if="read" cols="1">
+          <v-icon v-if="read" large left>mdi-calendar</v-icon>
         </v-col>
+        <v-col :cols="read ? 4 : 5" class="pt-4">
+          <v-select
+            v-model="dept"
+            :items="schedule.dept"
+            :item-text="(obj) => obj.nm_dept"
+            :item-value="(obj) => obj.id_dept"
+            label="Departemen"
+            dense
+          >
+          </v-select>
+        </v-col>
+        <v-col cols="4"></v-col>
         <v-col :cols="read ? 3 : 2">
           <v-menu
             ref="menu"
@@ -41,8 +45,8 @@
             </v-date-picker>
           </v-menu>
         </v-col>
-        <v-col cols="1" style="margin-top: 2px;">
-          <v-btn v-if="!read" @click="saveSchedules" color="teal" dark
+        <v-col v-if="!read" cols="1" style="margin-top: 2px;">
+          <v-btn @click="saveSchedules" color="teal" dark
             ><v-icon>mdi-content-save</v-icon></v-btn
           >
         </v-col>
@@ -57,7 +61,7 @@
         <v-edit-dialog
           v-if="!read"
           @save="updateShift"
-          @open="ranged.nik = item.nik"
+          @open="ranged.nik = item.id_pegawai"
           @close="resetRanged"
           large
           persistent
@@ -76,7 +80,7 @@
             </v-date-picker>
             <v-select
               v-model="ranged.shift"
-              :items="filteredShift(item.shift)"
+              :items="filteredShift()"
               :item-text="(obj) => obj.kode"
               :item-value="(obj) => obj.id_shift"
               label="Shift"
@@ -99,7 +103,7 @@
           <template v-slot:input>
             <v-select
               v-model="item[`day${l}`]"
-              :items="filteredShift(item.shift)"
+              :items="filteredShift()"
               :item-text="(obj) => obj.kode"
               :item-value="(obj) => obj.id_shift"
               label="Shift"
@@ -143,6 +147,10 @@ export default {
     month: {
       type: Number,
       default: undefined
+    },
+    dept: {
+      type: String,
+      default: undefined
     }
   },
   data() {
@@ -152,8 +160,7 @@ export default {
         dates: [],
         shift: undefined,
         nik: undefined
-      },
-      select: false
+      }
     }
   },
   computed: {
@@ -175,8 +182,10 @@ export default {
     }
   },
   methods: {
-    filteredShift(arr) {
-      return this.shift.shifts.filter((s) => arr.includes(s.id_shift))
+    filteredShift() {
+      return this.shift.shifts.filter((s) =>
+        this.schedule.shift.includes(s.id_shift)
+      )
     },
     updateVerify() {
       if (this.ranged.dates.length === 0) return true
@@ -203,7 +212,7 @@ export default {
       }
 
       const idx = this.schedule.schedules.findIndex(
-        (s) => s.nik === this.ranged.nik
+        (s) => s.id_pegawai === this.ranged.nik
       )
 
       for (let i = first; i <= last; i++) {
@@ -224,10 +233,14 @@ export default {
       try {
         await this.$store.dispatch('schedule/fetchSchedules', {
           year: this.year,
-          month: this.month
+          month: this.month,
+          dept: this.dept
         })
       } catch (err) {
-        this.$store.dispatch('notification/add', { text: err, type: 'error' })
+        this.$store.dispatch('notification/addNotif', {
+          text: err,
+          type: 'error'
+        })
       }
     },
     async saveSchedules() {

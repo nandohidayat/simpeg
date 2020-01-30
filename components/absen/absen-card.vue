@@ -8,8 +8,8 @@
       v-if="!single"
       v-model="selected"
       :items="karyawan.karyawans"
-      :item-text="(obj) => obj.nama"
-      :item-value="(obj) => obj.nik"
+      :item-text="(obj) => obj.nm_pegawai"
+      :item-value="(obj) => obj.id_pegawai"
       @change="getAbsen()"
       dense
       clearable
@@ -84,7 +84,6 @@ export default {
   },
   methods: {
     async getAbsen() {
-      if (this.single) this.selected = this.$route.params.id
       if (this.selected === undefined) return (this.absen.absen = [])
       try {
         await this.$store.dispatch('absen/fetchAbsen', {
@@ -92,7 +91,10 @@ export default {
           date: { year: this.year, month: this.month }
         })
       } catch (err) {
-        this.$store.dispatch('notification/addError', err)
+        this.$store.dispatch('notification/addNotif', {
+          text: err,
+          type: 'error'
+        })
       }
     },
     moment

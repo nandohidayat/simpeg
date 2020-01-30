@@ -24,12 +24,14 @@
       <v-divider class="mt-2 mb-5"></v-divider>
       <v-row>
         <v-col cols="6">
-          <h1 class="display-1 font-weight-light mb-3 black--text">Semua</h1>
+          <h1 class="display-1 font-weight-light mb-3 black--text">
+            List Akses
+          </h1>
           <v-treeview
             v-model="selectedSemua"
             :items="akses.aksess"
-            :open.sync="open"
             selectable
+            open-all
             selected-color="teal"
           ></v-treeview>
         </v-col>
@@ -40,8 +42,8 @@
           <v-treeview
             v-model="selectedKepala"
             :items="akses.aksess"
-            :open.sync="open"
             selectable
+            open-all
             selected-color="teal"
           ></v-treeview>
         </v-col>
@@ -71,7 +73,6 @@ export default {
       dept: undefined,
       selectedSemua: undefined,
       selectedKepala: undefined,
-      open: undefined,
       tab: undefined
     }
   },
@@ -84,13 +85,7 @@ export default {
       store.dispatch('akses/fetchAksess')
     ])
   },
-  created() {
-    this.open = this.opened()
-  },
   methods: {
-    opened() {
-      return this.akses.aksess.map((a) => a.id)
-    },
     async getAkses() {
       if (this.dept === undefined) {
         this.selectedSemua = []

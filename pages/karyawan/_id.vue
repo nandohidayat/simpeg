@@ -14,6 +14,7 @@
           :read="true"
           :year="year()"
           :month="month()"
+          :dept="dept"
           v-model="date"
         ></schedule-table>
         <absen-card
@@ -72,7 +73,11 @@ export default {
     }
   },
   computed: {
-    ...mapState(['user', 'karyawan'])
+    ...mapState(['user', 'karyawan', 'schedule']),
+    dept() {
+      if (this.schedule.dept.length === 0) return undefined
+      return this.schedule.dept[0].id_dept
+    }
   },
   async fetch({ store, params }) {
     await Promise.all([
@@ -95,7 +100,7 @@ export default {
         month: this.month()
       }),
       this.$store.dispatch('absen/fetchAbsen', {
-        id: this.$route.params.id,
+        id: this.user.user.id,
         date: { year: this.year(), month: this.month() }
       }),
       this.$store.dispatch('shift/fetchShifts'),
