@@ -10,17 +10,20 @@ const karyawanId = (store, route) => {
 }
 
 export default ({ store, route, redirect }) => {
-  const all = ['/', '/login', '/404']
+  const all = ['/', '/404']
 
-  if (!store.getters['user/isLogged']) {
-    return redirect('/login')
-  }
+  if (route.path !== '/login') {
+    if (!all.includes(route.path)) {
+      if (!store.getters['user/isLogged']) {
+        return redirect({ name: 'login' })
+      }
 
-  if (
-    !all.includes(route.path) &&
-    !store.state.user.akses.includes(route.path) &&
-    !karyawanId(store, route)
-  ) {
-    return redirect('/404')
+      if (
+        !store.state.user.akses.includes(route.path) &&
+        !karyawanId(store, route)
+      ) {
+        return redirect('/404')
+      }
+    }
   }
 }

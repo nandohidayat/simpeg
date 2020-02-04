@@ -95,6 +95,7 @@ export default {
     extend(config, ctx) {}
   },
   router: {
+    base: '/sp360/',
     middleware: ['auth']
   },
   server: {
