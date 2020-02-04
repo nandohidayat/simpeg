@@ -13,11 +13,10 @@ export default ({ store, route, redirect }) => {
   const all = ['/', '/404']
 
   if (route.path !== '/login') {
+    if (!store.getters['user/isLogged']) {
+      return redirect({ name: 'login' })
+    }
     if (!all.includes(route.path)) {
-      if (!store.getters['user/isLogged']) {
-        return redirect({ name: 'login' })
-      }
-
       if (
         !store.state.user.akses.includes(route.path) &&
         !karyawanId(store, route)
