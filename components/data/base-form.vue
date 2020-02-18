@@ -5,14 +5,16 @@
     </template>
     <v-card>
       <v-card-title>
-        <span>{{ editing ? 'Edit' : 'Buat' }} {{ capitalize() }}</span>
+        <span class="text-capitalize"
+          >{{ editing ? 'Edit' : 'Buat' }} {{ data }}</span
+        >
       </v-card-title>
       <v-card-text>
         <slot v-bind:newdata="newData" name="form">
           <v-row>
             <v-col>
               <v-text-field
-                v-model="newData[`${data}`]"
+                v-model="newData[`${base()}`]"
                 :label="capitalize()"
               ></v-text-field>
             </v-col>
@@ -57,10 +59,13 @@ export default {
     capitalize() {
       return this.data.charAt(0).toUpperCase() + this.data.slice(1)
     },
+    base() {
+      return this.data.replace(/ /g, '')
+    },
     async createData() {
-      const url = `${this.data}/${
-        this.editing ? 'update' : 'create'
-      }${this.capitalize()}`
+      const url = `${this.base()}/${this.editing ? 'update' : 'create'}${
+        !this.data.includes('pendapatan') ? this.capitalize() : 'Pendapatan'
+      }`
 
       try {
         await this.$store.dispatch(url, this.newData)
@@ -76,6 +81,8 @@ export default {
       if (this.data === 'ruang') return { ruang: undefined }
       if (this.data === 'shift')
         return { mulai: undefined, selesai: undefined, kode: undefined }
+      if (this.data === 'pendapatan harian')
+        return { tgl: undefined, pendapatanharian: undefined }
     }
   }
 }

@@ -16,7 +16,7 @@
           >
           </v-select>
         </v-col>
-        <v-col cols="4"></v-col>
+        <v-col cols="3"></v-col>
         <v-col :cols="read ? 3 : 2">
           <v-menu
             ref="menu"
@@ -45,7 +45,19 @@
             </v-date-picker>
           </v-menu>
         </v-col>
-        <v-col v-if="!read" cols="1" style="margin-top: 2px;">
+        <v-col
+          v-if="!read"
+          cols="2"
+          class="d-flex justify-space-around"
+          style="margin-top: 2px;"
+        >
+          <a
+            :href="
+              `http://localhost:8000/api/schedule/export/${dept}?year=${year}&month=${month}`
+            "
+          >
+            <v-btn color="teal" dark><v-icon>mdi-download</v-icon></v-btn>
+          </a>
           <v-btn @click="saveSchedules" color="teal" dark
             ><v-icon>mdi-content-save</v-icon></v-btn
           >
@@ -57,6 +69,13 @@
       :items="schedule.schedules"
       class="elevation-2 mt-3"
     >
+      <template
+        :slot="`header.day${w}`"
+        slot-scope="{ header }"
+        v-for="w in schedule.weekend"
+      >
+        <span class="red--text font-weight-black">{{ header.text }}</span>
+      </template>
       <template v-slot:item.nama="{ item }">
         <v-edit-dialog
           v-if="!read"
@@ -107,6 +126,7 @@
               :item-text="(obj) => obj.kode"
               :item-value="(obj) => obj.id_shift"
               label="Shift"
+              style="width: 100px;"
               clearable
             ></v-select>
           </template>
@@ -264,4 +284,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+a {
+  text-decoration: none;
+}
+</style>

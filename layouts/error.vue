@@ -3,11 +3,15 @@
     <v-col cols="12" class="text-center">
       <h1 class="display-4 mb-4">{{ statusCode }}</h1>
       <h1 class="text-uppercase font-weight-regular mb-5">{{ message }}</h1>
-      <NuxtLink to="/">
+
+      <NuxtLink v-if="statusCode === 404" to="/">
         <v-btn rounded dark color="grey">
           home page
         </v-btn>
       </NuxtLink>
+      <v-btn v-else @click="() => this.$router.go()" rounded dark color="grey">
+        refresh
+      </v-btn>
     </v-col>
   </v-row>
 </template>

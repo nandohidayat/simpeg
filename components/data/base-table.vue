@@ -24,7 +24,10 @@
             <slot v-bind:newdata="newdata" name="baseform"></slot>
           </template>
         </base-form>
-        <v-icon @click="deleteData(item[`id_${data}`])" small>
+        <v-icon
+          @click="deleteData(item[`id_${data.replace(/ /g, '_')}`])"
+          small
+        >
           mdi-delete
         </v-icon>
       </template>
@@ -62,7 +65,9 @@ export default {
       if (!confirm('Apakah anda yakin akan menghapus data tersebut?')) return
       try {
         await this.$store.dispatch(
-          `${this.data}/delete${this.capitalize()}`,
+          `${this.base()}/delete${
+            !this.data.includes('pendapatan') ? this.capitalize() : 'Pendapatan'
+          }`,
           id
         )
       } catch (err) {
@@ -84,6 +89,9 @@ export default {
     },
     capitalize() {
       return this.data.charAt(0).toUpperCase() + this.data.slice(1)
+    },
+    base() {
+      return this.data.replace(/ /g, '')
     }
   }
 }

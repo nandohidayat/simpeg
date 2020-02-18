@@ -4,7 +4,8 @@ export const state = () => ({
   schedules: [],
   dept: [],
   shift: [],
-  header: []
+  header: [],
+  weekend: []
 })
 
 export const mutations = {
@@ -12,8 +13,9 @@ export const mutations = {
     state.schedules = schedules.schedule
     state.shift = schedules.shift
     state.header = schedules.header
+    state.weekend = schedules.weekend
 
-    if (state.dept.length === 0) state.dept = schedules.dept
+    if (schedules.dept !== undefined) state.dept = schedules.dept
   },
   RESET(state) {
     state.schedules = []
@@ -30,5 +32,8 @@ export const actions = {
   },
   async createSchedules({ commit }, { schedules, date }) {
     await this.$api.schedule.create(schedules, date)
+  },
+  async exportSchedules({ commit }, id) {
+    await this.$api.schedule.export(id)
   }
 }

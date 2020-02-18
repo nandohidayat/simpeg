@@ -21,6 +21,19 @@
         <shift-departemen></shift-departemen>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="6">
+        <base-table
+          :header="headerPendapatanHarian"
+          :items="pendapatanharian.pendapatans"
+          data="pendapatan harian"
+        >
+          <template v-slot:baseform="{ newdata }">
+            <pendapatan-harian-form :newdata="newdata"></pendapatan-harian-form>
+          </template>
+        </base-table>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -29,6 +42,7 @@ import { mapState } from 'vuex'
 
 import baseTable from '@/components/data/base-table'
 import shiftForm from '@/components/shift/shift-form'
+import pendapatanHarianForm from '@/components/pendapatan/pendapatan-harian-form'
 import shiftDepartemen from '@/components/shift/shift-departemen'
 
 export default {
@@ -47,7 +61,8 @@ export default {
   components: {
     'base-table': baseTable,
     'shift-form': shiftForm,
-    'shift-departemen': shiftDepartemen
+    'shift-departemen': shiftDepartemen,
+    'pendapatan-harian-form': pendapatanHarianForm
   },
   data() {
     return {
@@ -55,17 +70,21 @@ export default {
         { text: 'Mulai', value: 'mulai' },
         { text: 'Selesai', value: 'selesai' },
         { text: 'Kode', value: 'kode' }
+      ],
+      headerPendapatanHarian: [
+        { text: 'Tanggal', value: 'tgl' },
+        { text: 'Pendapatan', value: 'pendapatan' }
       ]
     }
   },
   computed: {
-    ...mapState(['departemen', 'ruang', 'shift'])
+    ...mapState(['departemen', 'ruang', 'shift', 'pendapatanharian'])
   },
   async fetch({ store }) {
     await Promise.all([
       store.dispatch('departemen/fetchDepartemens'),
-      // store.dispatch('ruang/fetchRuangs'),
-      store.dispatch('shift/fetchShifts')
+      store.dispatch('shift/fetchShifts'),
+      store.dispatch('pendapatanharian/fetchPendapatans')
     ])
   }
 }
