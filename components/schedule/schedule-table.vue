@@ -16,7 +16,7 @@
           >
           </v-select>
         </v-col>
-        <v-col cols="3"></v-col>
+        <v-col :cols="read ? 4 : 3"></v-col>
         <v-col :cols="read ? 3 : 2">
           <v-menu
             ref="menu"

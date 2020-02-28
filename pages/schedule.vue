@@ -10,6 +10,13 @@
       <v-col cols="7">
         <absen-card :year="year()" :month="month()" :dept="dept"></absen-card>
       </v-col>
+      <v-col cols="5">
+        <schedule-change-card
+          :year="year()"
+          :month="month()"
+          :dept="dept"
+        ></schedule-change-card>
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -17,6 +24,7 @@
 import { mapState } from 'vuex'
 
 import scheduleTable from '@/components/schedule/schedule-table'
+import scheduleChangeCard from '@/components/schedule/schedule-change-card'
 import absenCard from '@/components/absen/absen-card'
 
 export default {
@@ -34,6 +42,7 @@ export default {
   },
   components: {
     'schedule-table': scheduleTable,
+    'schedule-change-card': scheduleChangeCard,
     'absen-card': absenCard
   },
   data() {
@@ -49,18 +58,19 @@ export default {
     }
   },
   async created() {
+    await this.$store.dispatch('schedule/fetchSchedules', {
+      year: this.year(),
+      month: this.month()
+    })
+
     await Promise.all([
-      this.$store.dispatch('schedule/fetchSchedules', {
+      this.$store.dispatch('schedulechange/fetchSchedules', {
         year: this.year(),
-        month: this.month()
+        month: this.month(),
+        dept: this.dept
       }),
       this.$store.dispatch('shift/fetchShifts')
     ])
-
-    this.$store.dispatch('karyawan/fetchKaryawans', {
-      select: 1,
-      dept: this.dept
-    })
   },
   methods: {
     year() {

@@ -17,6 +17,12 @@
           :dept="dept"
           v-model="date"
         ></schedule-table>
+        <schedule-change-card
+          :year="year()"
+          :month="month()"
+          :dept="dept"
+          single
+        ></schedule-change-card>
         <absen-card
           id="data-absen"
           :year="year()"
@@ -45,6 +51,7 @@ import karyawanData from '@/components/karyawan/karyawan-data'
 import karyawanAccess from '@/components/karyawan/karyawan-access'
 import karyawanDelete from '@/components/karyawan/karyawan-delete'
 import scheduleTable from '@/components/schedule/schedule-table'
+import scheduleChangeCard from '@/components/schedule/schedule-change-card'
 
 export default {
   head() {
@@ -65,7 +72,8 @@ export default {
     'karyawan-data': karyawanData,
     'karyawan-access': karyawanAccess,
     'karyawan-delete': karyawanDelete,
-    'schedule-table': scheduleTable
+    'schedule-table': scheduleTable,
+    'schedule-change-card': scheduleChangeCard
   },
   data() {
     return {
@@ -80,11 +88,7 @@ export default {
     }
   },
   async fetch({ store, params }) {
-    await Promise.all([
-      store.dispatch('departemen/fetchDepartemens'),
-      store.dispatch('ruang/fetchRuangs'),
-      store.dispatch('karyawan/fetchKaryawan', params.id)
-    ])
+    await store.dispatch('karyawan/fetchKaryawan', params.id)
   },
   async created() {
     const granted = []
@@ -94,10 +98,16 @@ export default {
       )
     }
 
+    await this.$store.dispatch('schedule/fetchSchedules', {
+      year: this.year(),
+      month: this.month()
+    })
+
     await Promise.all([
-      this.$store.dispatch('schedule/fetchSchedules', {
+      this.$store.dispatch('schedulechange/fetchSchedules', {
         year: this.year(),
-        month: this.month()
+        month: this.month(),
+        dept: this.dept
       }),
       this.$store.dispatch('absen/fetchAbsen', {
         id: this.user.user.id,

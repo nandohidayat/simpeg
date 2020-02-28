@@ -1,7 +1,11 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ on }">
-      <slot v-bind:on="on" name="btn"></slot>
+      <slot v-bind:on="on" name="btn">
+        <v-btn v-on="on" icon>
+          <v-icon>mdi-plus-circle</v-icon>
+        </v-btn>
+      </slot>
     </template>
     <v-card>
       <v-card-title>
@@ -60,19 +64,31 @@ export default {
       return this.data.charAt(0).toUpperCase() + this.data.slice(1)
     },
     base() {
+      if (this.data === 'perubahan jadwal') return 'schedulechange'
       return this.data.replace(/ /g, '')
     },
     async createData() {
-      const url = `${this.base()}/${this.editing ? 'update' : 'create'}${
-        !this.data.includes('pendapatan') ? this.capitalize() : 'Pendapatan'
-      }`
+      let store = ''
+
+      if (this.data.includes('pendapatan')) store = 'Pendapatan'
+      else if (this.data === 'perubahan jadwal') store = 'Schedule'
+      else store = this.capitalize()
+
+      const url = `${this.base()}/${this.editing ? 'update' : 'create'}${store}`
 
       try {
         await this.$store.dispatch(url, this.newData)
         this.newData = this.dataMaker()
         this.dialog = false
+        this.$store.dispatch('notification/addNotif', {
+          type: 'success',
+          text: 'Successfully Saved'
+        })
       } catch (err) {
-        this.$store.dispatch('notification/addError', err)
+        this.$store.dispatch('notification/addNotif', {
+          type: 'error',
+          text: err
+        })
       }
     },
     dataMaker() {
@@ -83,6 +99,14 @@ export default {
         return { mulai: undefined, selesai: undefined, kode: undefined }
       if (this.data === 'pendapatan harian')
         return { tgl: undefined, pendapatanharian: undefined }
+      if (this.data === 'perubahan jadwal')
+        return {
+          type: undefined,
+          mulai: undefined,
+          selesai: undefined,
+          dengan: undefined,
+          dept: undefined
+        }
     }
   }
 }

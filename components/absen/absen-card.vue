@@ -21,11 +21,14 @@
       <template #item.keluar="{item}">
         {{ item.keluar | time }}
       </template>
+      <template #item.pendapatan="{item}">
+        {{ item.pendapatan | rupiah }}
+      </template>
       <template #body.append>
         <tr>
           <td colspan="4"></td>
           <td>Total :</td>
-          <td>{{ absen.pendapatan }}</td>
+          <td>{{ absen.pendapatan | rupiah }}</td>
         </tr>
       </template>
     </v-data-table>
@@ -45,6 +48,11 @@ export default {
   filters: {
     time(val) {
       return val !== null ? moment(val, 'HH:mm:ss').format('HH:mm') : ''
+    },
+    rupiah(val) {
+      return `Rp ${parseFloat(val)
+        .toFixed(2)
+        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
     }
   },
   props: {
@@ -84,7 +92,8 @@ export default {
   },
   methods: {
     async getAbsen() {
-      if (this.selected === undefined) return (this.absen.absen = [])
+      if (this.selected === undefined && !this.single)
+        return (this.absen.absen = [])
       try {
         await this.$store.dispatch('absen/fetchAbsen', {
           id: this.selected,

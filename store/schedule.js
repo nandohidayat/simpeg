@@ -24,11 +24,13 @@ export const mutations = {
 
 export const actions = {
   async fetchSchedules({ commit, rootState }, date) {
+    commit('RESET')
     rootState.absen.absen = []
     rootState.absen.pendapatan = 0
-    commit('RESET')
+    rootState.schedulechange.schedules = []
     const res = await this.$api.schedule.index(date)
     commit('SET_SCHEDULES', res.data)
+    rootState.karyawan.karyawans = res.data.karyawan
   },
   async createSchedules({ commit }, { schedules, date }) {
     await this.$api.schedule.create(schedules, date)

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mt-5" outlined>
+  <v-card class="mt-3" outlined>
     <v-toolbar v-if="toolbar" flat color="teal" dark>
       <v-toolbar-title
         v-text="`${odd ? '' : 'Data '}${data}`"
@@ -10,9 +10,9 @@
     </v-toolbar>
     <v-card-title v-else>
       <slot name="title"></slot>
-      <v-spacer></v-spacer>
     </v-card-title>
-    <v-card-text>
+    <slot v-if="full"></slot>
+    <v-card-text v-if="!full">
       <v-row>
         <v-col>
           <slot></slot>
@@ -36,6 +36,10 @@ export default {
     toolbar: {
       type: Boolean,
       default: true
+    },
+    full: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {

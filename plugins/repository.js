@@ -14,6 +14,7 @@ export default (ctx, inject) => {
         return ctx.$axios.$get(`schedule/export/${id}`)
       }
     },
+    scheduleChange: repositoryWithAxios('schedule/change'),
     shift: repositoryWithAxios('shift'),
     shiftDepartemen: repositoryWithAxios('shift/departemen'),
     pendapatanharian: repositoryWithAxios('pendapatanharian')
