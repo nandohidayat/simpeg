@@ -47,15 +47,22 @@ export const actions = {
 
     if (parseInt(schedule.status) === 3) return
 
-    await dispatch(
-      'schedule/fetchSchedules',
-      {
+    await Promise.all([
+      dispatch(
+        'schedule/fetchSchedules',
+        {
+          month: new Date().getMonth() + 1,
+          year: new Date().getFullYear(),
+          dept: schedule.dept
+        },
+        { root: true }
+      ),
+      dispatch('fetchSchedules', {
         month: new Date().getMonth() + 1,
         year: new Date().getFullYear(),
         dept: schedule.dept
-      },
-      { root: true }
-    )
+      })
+    ])
   },
   async deleteSchedule({ commit }, id) {
     await this.$api.scheduleChange.delete(id)

@@ -58,7 +58,9 @@
                   </span>
                 </div>
                 <div v-if="i.dengan !== null && i.dengan !== undefined">
-                  <span style="width: 80px" class="d-inline-block">Dengan</span>
+                  <span style="width: 80px" class="d-inline-block">{{
+                    parseInt(detail.type) === 2 ? `Pengganti` : `Dengan`
+                  }}</span>
                   :
                   <span class="ml-1">
                     {{ nama(i.dengan) }}
@@ -116,10 +118,26 @@
                 v-if="detail.dengan !== null && detail.dengan !== undefined"
                 cols="6"
               >
-                <div class="caption">Dengan</div>
+                <div class="caption">
+                  {{ parseInt(detail.type) === 2 ? `Pengganti` : `Dengan` }}
+                </div>
                 <div class="body-1 font-weight-medium">
                   {{ nama(detail.dengan) }}
                 </div>
+              </v-col>
+              <v-col
+                v-else-if="
+                  parseInt(detail.type) === 2 && parseInt(detail.status) === 1
+                "
+                cols="6"
+              >
+                <v-autocomplete
+                  v-model="dengan"
+                  :items="karyawan.karyawans"
+                  :item-text="(obj) => obj.nm_pegawai"
+                  :item-value="(obj) => obj.id_pegawai"
+                  label="Pengganti"
+                ></v-autocomplete>
               </v-col>
             </v-row>
             <v-row>
@@ -160,9 +178,9 @@
               <v-btn
                 @click="
                   updateSchedule({
-                    id_schedule_change: detail.id_schedule_change,
+                    ...detail,
                     status: 2,
-                    dept: detail.dept
+                    dengan
                   })
                 "
                 small
@@ -173,9 +191,9 @@
               <v-btn
                 @click="
                   updateSchedule({
-                    id_schedule_change: detail.id_schedule_change,
+                    ...detail,
                     status: 3,
-                    dept: detail.dept
+                    dengan
                   })
                 "
                 small
@@ -250,7 +268,8 @@ export default {
   data() {
     return {
       dialog: false,
-      detail: {}
+      detail: {},
+      dengan: undefined
     }
   },
   computed: {
