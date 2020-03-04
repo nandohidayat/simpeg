@@ -137,6 +137,7 @@
                   :item-text="(obj) => obj.nm_pegawai"
                   :item-value="(obj) => obj.id_pegawai"
                   label="Pengganti"
+                  clearable
                 ></v-autocomplete>
               </v-col>
             </v-row>
