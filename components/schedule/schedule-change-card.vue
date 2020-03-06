@@ -23,7 +23,7 @@
         </template>
       </base-form>
     </template>
-    <div style="max-height: 600px" class="overflow-y-auto">
+    <div style="max-height: 743px" class="overflow-y-auto">
       <v-list>
         <template v-for="(i, index) in schedulechange.schedules">
           <v-list-item @click.stop="openDialog(i)" class="body-2">

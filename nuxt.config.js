@@ -58,7 +58,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://192.168.0.216:8000/api/',
+    baseURL: 'http://localhost:8000/api/',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json'
