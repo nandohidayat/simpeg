@@ -57,6 +57,9 @@ export default {
       return this.schedule.dept[0].id_dept
     }
   },
+  async fetch({ store }) {
+    await store.dispatch('shift/fetchShifts')
+  },
   async created() {
     await this.$store.dispatch('schedule/fetchSchedules', {
       year: this.year(),
@@ -68,8 +71,7 @@ export default {
         year: this.year(),
         month: this.month(),
         dept: this.dept
-      }),
-      this.$store.dispatch('shift/fetchShifts')
+      })
     ])
   },
   methods: {

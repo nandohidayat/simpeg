@@ -11,6 +11,7 @@
             :items="schedule.dept"
             :item-text="(obj) => obj.nm_dept"
             :item-value="(obj) => obj.id_dept"
+            @change="changedMonth"
             label="Departemen"
             dense
           >
@@ -25,7 +26,7 @@
             transition="scale-transition"
             offset-y
           >
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-text-field
                 :value="dateMoment"
                 v-on="on"
@@ -115,7 +116,7 @@
       <template :slot="`item.day${l}`" slot-scope="{ item }" v-for="l in last">
         <v-edit-dialog v-if="!read">
           {{
-            shift.shifts.find((s) => s.id_shift == item[`day${l}`])
+            item[`day${l}`] !== null && item[`day${l}`] !== undefined
               ? shift.shifts.find((s) => s.id_shift == item[`day${l}`]).kode
               : undefined
           }}
@@ -133,7 +134,7 @@
         </v-edit-dialog>
         <span v-else>
           {{
-            shift.shifts.find((s) => s.id_shift == item[`day${l}`])
+            item[`day${l}`] !== null && item[`day${l}`] !== undefined
               ? shift.shifts.find((s) => s.id_shift == item[`day${l}`]).kode
               : undefined
           }}
@@ -267,7 +268,7 @@ export default {
       try {
         await this.$store.dispatch('schedule/createSchedules', {
           schedules: this.schedule.schedules,
-          date: { year: this.year, month: this.month }
+          date: { year: this.year, month: this.month, dept: this.dept }
         })
         this.$store.dispatch('notification/addNotif', {
           text: 'Saved Successfully',
