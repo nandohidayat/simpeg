@@ -7,11 +7,11 @@
         </v-col>
         <v-col :cols="read ? 4 : 5" class="pt-4">
           <v-select
-            v-model="dept"
+            :value="dept"
             :items="schedule.dept"
             :item-text="(obj) => obj.nm_dept"
             :item-value="(obj) => obj.id_dept"
-            @change="changedMonth"
+            @change="updateDept"
             label="Departemen"
             dense
           >
@@ -57,11 +57,32 @@
               `http://localhost:8000/api/schedule/export/${dept}?year=${year}&month=${month}`
             "
           >
-            <v-btn color="teal" dark><v-icon>mdi-download</v-icon></v-btn>
+            <v-btn color="teal" icon><v-icon>mdi-download</v-icon></v-btn>
           </a>
-          <v-btn @click="saveSchedules" color="teal" dark
-            ><v-icon>mdi-content-save</v-icon></v-btn
-          >
+          <v-tooltip bottom>
+            <template #activator="{ on }">
+              <v-btn v-on="on" @click="saveSchedules" color="teal" icon
+                ><v-icon>mdi-content-save</v-icon></v-btn
+              >
+            </template>
+            <span>Save</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template #activator="{ on }">
+              <v-btn v-on="on" color="teal" icon
+                ><v-icon>mdi-email-send</v-icon></v-btn
+              >
+            </template>
+            <span>Send</span>
+          </v-tooltip>
+          <!-- <v-tooltip bottom>
+            <template #activator="{ on }">
+              <v-btn color="grey" icon>
+                <v-icon v-on="on">mdi-check-bold</v-icon>
+              </v-btn>
+            </template>
+            <span>Approved</span>
+          </v-tooltip> -->
         </v-col>
       </v-row>
     </v-card>
@@ -247,6 +268,9 @@ export default {
     },
     updateData(event) {
       this.$emit('input', event)
+    },
+    updateDept(event) {
+      this.$emit('update-dept', event)
     },
     async changedMonth() {
       this.menu = false

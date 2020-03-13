@@ -15,6 +15,8 @@ export default (ctx, inject) => {
       }
     },
     scheduleChange: repositoryWithAxios('schedule/change'),
+    scheduleRequest: repositoryWithAxios('schedule/request'),
+    scheduleAssessor: repositoryWithAxios('schedule/assessor'),
     shift: repositoryWithAxios('shift'),
     shiftDepartemen: repositoryWithAxios('shift/departemen'),
     pendapatanharian: repositoryWithAxios('pendapatanharian')

@@ -33,6 +33,9 @@
           </template>
         </base-table>
       </v-col>
+      <v-col cols="6">
+        <schedule-assessor></schedule-assessor>
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -44,6 +47,7 @@ import baseTable from '@/components/data/base-table'
 import shiftForm from '@/components/shift/shift-form'
 import pendapatanHarianForm from '@/components/pendapatan/pendapatan-harian-form'
 import shiftDepartemen from '@/components/shift/shift-departemen'
+import scheduleAssessor from '@/components/schedule/schedule-assessor-card'
 
 export default {
   head() {
@@ -62,7 +66,8 @@ export default {
     'base-table': baseTable,
     'shift-form': shiftForm,
     'shift-departemen': shiftDepartemen,
-    'pendapatan-harian-form': pendapatanHarianForm
+    'pendapatan-harian-form': pendapatanHarianForm,
+    'schedule-assessor': scheduleAssessor
   },
   data() {
     return {

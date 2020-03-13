@@ -5,6 +5,7 @@
       :year="year()"
       :month="month()"
       :dept="dept"
+      @update-dept="updateDept"
     ></schedule-table>
     <v-row>
       <v-col cols="7">
@@ -66,13 +67,11 @@ export default {
       month: this.month()
     })
 
-    await Promise.all([
-      this.$store.dispatch('schedulechange/fetchSchedules', {
-        year: this.year(),
-        month: this.month(),
-        dept: this.dept
-      })
-    ])
+    await this.$store.dispatch('schedulechange/fetchSchedules', {
+      year: this.year(),
+      month: this.month(),
+      dept: this.dept
+    })
   },
   methods: {
     year() {
@@ -80,6 +79,9 @@ export default {
     },
     month() {
       return parseInt(this.date.slice(-2))
+    },
+    updateDept(val) {
+      this.dept = val
     }
   }
 }
