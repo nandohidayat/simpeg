@@ -1,31 +1,37 @@
 <template>
   <base-table
     :header="header"
-    title="Asessor Penjadwalan"
+    :title="title"
+    #default="{newdata}"
     namespace="scheduleassessor"
-    items="schedule"
-  ></base-table>
+    list="schedule"
+  >
+    <schedule-form :newdata="newdata"></schedule-form>
+  </base-table>
 </template>
 
 <script>
 import baseTable from '@/components/base/base-table'
+import scheduleForm from '@/components/schedule/schedule-assessor-form'
 
 export default {
   components: {
-    'base-table': baseTable
+    'base-table': baseTable,
+    'schedule-form': scheduleForm
   },
   data() {
     return {
       header: [
         {
           text: 'Department',
-          value: 'department'
+          value: 'nm_dept'
         },
         {
           text: 'Assessor',
-          value: 'assessor'
+          value: 'nm_ass'
         }
-      ]
+      ],
+      title: 'Asessor Penjadwalan'
     }
   }
 }

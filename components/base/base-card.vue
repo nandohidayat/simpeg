@@ -2,7 +2,7 @@
   <v-card class="mt-3" outlined>
     <v-toolbar v-if="toolbar" flat color="teal" dark>
       <v-toolbar-title
-        v-text="`Data ${title}`"
+        v-text="`${data ? 'Data' : ''} ${title}`"
         class="text-capitalize"
       ></v-toolbar-title>
       <v-spacer></v-spacer>
@@ -32,6 +32,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    data: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {}

@@ -89,7 +89,8 @@ export default {
     await Promise.all([
       store.dispatch('departemen/fetchDepartemens'),
       store.dispatch('shift/fetchShifts'),
-      store.dispatch('pendapatanharian/fetchPendapatans')
+      store.dispatch('pendapatanharian/fetchPendapatans'),
+      store.dispatch('scheduleassessor/fetchSchedules')
     ])
   }
 }

@@ -1,41 +1,38 @@
 export const namespaced = true
 
 export const state = () => ({
-  schedule: []
+  schedules: []
 })
 
 export const mutations = {
   SET_SCHEDULES(state, schedules) {
     state.schedules = schedules
   },
-  ADD_SCHEDULE(state, schedule) {
-    state.schedules.push(schedule)
-  },
-  EDT_SCHEDULE(state, schedule) {
-    const idx = state.schedules.findIndex(
-      (b) => b.id_schedule === schedule.id_schedule
-    )
-    state.schedules[idx] = schedule
-  },
   DEL_SCHEDULE(state, id) {
-    state.schedules = state.schedules.filter((b) => b.id_schedule !== id)
+    state.schedules = state.schedules.filter(
+      (b) => b.id_schedule_assessor !== id
+    )
   }
 }
 
 export const actions = {
+  async fetchSchedules({ commit }) {
+    const res = await this.$api.scheduleAssessor.index()
+    commit('SET_SCHEDULES', res.data)
+  },
   async createSchedule({ commit }, schedule) {
-    await this.$api.scheduleRequest.create(schedule)
-    commit('EDT_SCHEDULE', 1)
+    const res = await this.$api.scheduleAssessor.create(schedule)
+    commit('SET_SCHEDULES', res.data)
   },
   async updateSchedule({ commit }, schedule) {
-    await this.$api.scheduleRequest.update(
-      schedule.id_schedule_request,
-      schedule.status
+    const res = await this.$api.scheduleAssessor.update(
+      schedule.id_schedule_assessor,
+      schedule
     )
-    commit('EDT_SCHEDULE', schedule.status)
+    commit('SET_SCHEDULES', res.data)
   },
-  async deleteSchedule({ commit }, id) {
-    await this.$api.scheduleRequest.delete(id)
-    commit('EDT_SCHEDULE', 0)
+  async deleteSchedule({ commit }, schedule) {
+    await this.$api.scheduleAssessor.delete(schedule.id_schedule_assessor)
+    commit('DEL_SCHEDULE', schedule.id_schedule_assessor)
   }
 }
