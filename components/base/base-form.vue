@@ -83,6 +83,8 @@ export default {
       if (this.data !== undefined) return this.data
       if (this.namespace === 'scheduleassessor')
         return { dept: undefined, assessor: undefined }
+      if (this.namespace === 'pendapatanharian')
+        return { tgl: undefined, pendapatan: undefined }
     }
   }
 }

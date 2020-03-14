@@ -11,13 +11,13 @@
       >
         <template v-slot:activator="{ on }">
           <v-text-field
-            v-model="newdata['tgl']"
+            v-model="newdata.tgl"
             v-on="on"
             label="Tanggal"
           ></v-text-field>
         </template>
         <v-date-picker
-          v-model="newdata['tgl']"
+          v-model="newdata.tgl"
           @input="menu1 = false"
           no-title
         ></v-date-picker>
@@ -25,7 +25,7 @@
     </v-col>
     <v-col cols="6">
       <v-text-field
-        v-model="newdata['pendapatan']"
+        v-model="newdata.pendapatan"
         label="Pendapatan"
       ></v-text-field>
     </v-col>

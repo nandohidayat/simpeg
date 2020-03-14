@@ -12,11 +12,11 @@ export const mutations = {
     state.pendapatans.push(pendapatan)
   },
   EDT_PENDAPATAN(state, pendapatan) {
-    const idx = state.pendapatans.findIndex(
-      (b) => b.id_pendapatan_harian === pendapatan.id_pendapatan_harian
+    state.pendapatans = state.pendapatans.map((p) =>
+      p.id_pendapatan_harian !== pendapatan.id_pendapatan_harian
+        ? p
+        : pendapatan
     )
-    state.pendapatans[idx].tgl = pendapatan.tgl
-    state.pendapatans[idx].pendapatan = pendapatan.pendapatan
   },
   DEL_PENDAPATAN(state, id) {
     state.pendapatans = state.pendapatans.filter(
@@ -41,8 +41,8 @@ export const actions = {
     )
     commit('EDT_PENDAPATAN', pendapatan)
   },
-  async deletePendapatan({ commit }, id) {
-    await this.$api.pendapatanharian.delete(id)
-    commit('DEL_PENDAPATAN', id)
+  async deletePendapatan({ commit }, pendapatan) {
+    await this.$api.pendapatanharian.delete(pendapatan.id_pendapatan_harian)
+    commit('DEL_PENDAPATAN', pendapatan.id_pendapatan_harian)
   }
 }
