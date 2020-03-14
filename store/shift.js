@@ -13,10 +13,9 @@ export const mutations = {
     state.shifts.push(shift)
   },
   EDT_SHIFT(state, shift) {
-    const idx = state.shifts.findIndex((b) => b.id_shift === shift.id_shift)
-    state.shifts[idx].mulai = shift.mulai
-    state.shifts[idx].selesai = shift.selesai
-    state.shifts[idx].kode = shift.kode
+    state.shifts = state.shifts.map((s) =>
+      s.id_shift !== shift.id_shift ? s : shift
+    )
   },
   DEL_SHIFT(state, id) {
     state.shifts = state.shifts.filter((b) => b.id_shift !== id)
@@ -39,9 +38,9 @@ export const actions = {
     await this.$api.shift.update(shift.id_shift, shift)
     commit('EDT_SHIFT', shift)
   },
-  async deleteShift({ commit }, id) {
-    await this.$api.shift.delete(id)
-    commit('DEL_SHIFT', id)
+  async deleteShift({ commit }, shift) {
+    await this.$api.shift.delete(shift.id_shift)
+    commit('DEL_SHIFT', shift.id_shift)
   },
   async fetchDepartemen({ commit }, id) {
     const res = await this.$api.shiftDepartemen.show(id)

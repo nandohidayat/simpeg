@@ -91,7 +91,7 @@ export default {
       if (!confirm('Apakah anda yakin akan menghapus data tersebut?')) return
       try {
         await this.$store.dispatch(
-          `${this.namespace}/delete${this.stateitem.charAt(0).toUpperCase() +
+          `${this.statename}/delete${this.stateitem.charAt(0).toUpperCase() +
             this.stateitem.slice(1)}`,
           item
         )
