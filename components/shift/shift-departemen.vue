@@ -1,5 +1,5 @@
 <template>
-  <base-card :odd="true" data="shift departemen">
+  <base-card :data="false" :title="title">
     <v-row>
       <v-col cols="10">
         <v-autocomplete
@@ -37,7 +37,7 @@
 <script>
 import { mapState } from 'vuex'
 
-import baseCard from '@/components/data/base-card'
+import baseCard from '@/components/base/base-card'
 
 export default {
   components: {
@@ -46,7 +46,8 @@ export default {
   data() {
     return {
       dept: undefined,
-      selected: []
+      selected: [],
+      title: 'Shift Departemen'
     }
   },
   computed: {
@@ -61,7 +62,10 @@ export default {
           await this.$store.dispatch('shift/fetchDepartemen', this.dept)
           this.selected = this.shift.departemen
         } catch (err) {
-          this.$store.dispatch('notification/addError', err)
+          this.$store.dispatch('notification/addNotif', {
+            type: 'error',
+            text: err
+          })
         }
       }
     },
@@ -74,11 +78,14 @@ export default {
         })
 
         this.$store.dispatch('notification/addNotif', {
-          text: 'Saved',
-          type: 'success'
+          type: 'success',
+          text: 'Successfully Saved'
         })
       } catch (err) {
-        this.$store.dispatch('notification/addError', err)
+        this.$store.dispatch('notification/addNotif', {
+          type: 'error',
+          text: err
+        })
       }
     }
   }
