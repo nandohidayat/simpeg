@@ -2,8 +2,6 @@ export const namespaced = true
 
 export const state = () => ({
   schedules: [],
-  dept: [],
-  shift: [],
   header: [],
   weekend: []
 })
@@ -11,11 +9,8 @@ export const state = () => ({
 export const mutations = {
   SET_SCHEDULES(state, schedules) {
     state.schedules = schedules.schedule
-    state.shift = schedules.shift
     state.header = schedules.header
     state.weekend = schedules.weekend
-
-    if (schedules.dept !== undefined) state.dept = schedules.dept
   },
   RESET(state) {
     state.schedules = []
@@ -28,9 +23,17 @@ export const actions = {
     rootState.absen.absen = []
     rootState.absen.pendapatan = 0
     rootState.schedulechange.schedules = []
+
     const res = await this.$api.schedule.index(date)
+
+    if (res.data.dept !== undefined)
+      rootState.departemen.departemens = res.data.dept
+    rootState.shift.shifts = res.data.shift
+
     commit('SET_SCHEDULES', res.data)
+
     rootState.karyawan.karyawans = res.data.karyawan
+    rootState.schedulerequest.schedule = res.data.assessor
   },
   async createSchedules({ commit }, { schedules, date }) {
     await this.$api.schedule.create(schedules, date)

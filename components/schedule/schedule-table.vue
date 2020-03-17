@@ -8,7 +8,7 @@
         <v-col :cols="read ? 4 : 5" class="pt-4">
           <v-select
             :value="dept"
-            :items="schedule.dept"
+            :items="departemen.departemens"
             :item-text="(obj) => obj.nm_dept"
             :item-value="(obj) => obj.id_dept"
             @change="updateDept"
@@ -36,8 +36,8 @@
               ></v-text-field>
             </template>
             <v-date-picker
-              :value="value"
-              @change="updateData"
+              :value="date"
+              @change="updateDate"
               color="teal"
               type="month"
               no-title
@@ -67,22 +67,12 @@
             </template>
             <span>Save</span>
           </v-tooltip>
-          <v-tooltip bottom>
-            <template #activator="{ on }">
-              <v-btn v-on="on" color="teal" icon
-                ><v-icon>mdi-email-send</v-icon></v-btn
-              >
-            </template>
-            <span>Send</span>
-          </v-tooltip>
-          <!-- <v-tooltip bottom>
-            <template #activator="{ on }">
-              <v-btn color="grey" icon>
-                <v-icon v-on="on">mdi-check-bold</v-icon>
-              </v-btn>
-            </template>
-            <span>Approved</span>
-          </v-tooltip> -->
+          <request-btn
+            v-if="
+              schedulerequest.schedule !== null &&
+                schedulerequest.schedule !== undefined
+            "
+          ></request-btn>
         </v-col>
       </v-row>
     </v-card>
@@ -121,7 +111,7 @@
             </v-date-picker>
             <v-select
               v-model="ranged.shift"
-              :items="filteredShift()"
+              :items="shift.shifts"
               :item-text="(obj) => obj.kode"
               :item-value="(obj) => obj.id_shift"
               label="Shift"
@@ -144,7 +134,7 @@
           <template v-slot:input>
             <v-select
               v-model="item[`day${l}`]"
-              :items="filteredShift()"
+              :items="shift.shifts"
               :item-text="(obj) => obj.kode"
               :item-value="(obj) => obj.id_shift"
               label="Shift"
@@ -161,7 +151,6 @@
           }}
         </span>
       </template>
-      <template #item.jam="{item}"> {{ item.jam }}</template>
     </v-data-table>
   </div>
 </template>
@@ -169,12 +158,16 @@
 <script>
 import moment from 'moment'
 import 'moment/locale/id'
-
 import { mapState } from 'vuex'
 
+import requestButton from '@/components/schedule/schedule-request-button'
+
 export default {
+  components: {
+    'request-btn': requestButton
+  },
   props: {
-    value: {
+    date: {
       type: String,
       default: undefined
     },
@@ -193,6 +186,10 @@ export default {
     dept: {
       type: String,
       default: undefined
+    },
+    updater: {
+      type: String,
+      default: undefined
     }
   },
   data() {
@@ -206,29 +203,35 @@ export default {
     }
   },
   computed: {
-    ...mapState(['schedule', 'shift']),
+    ...mapState(['schedule', 'shift', 'schedulerequest', 'departemen']),
     last() {
       return new Date(this.year, this.month, 0).getDate()
     },
     dateMoment() {
-      return this.value
-        ? moment(this.value)
+      return this.date
+        ? moment(this.date)
             .locale('id')
             .format('MMMM YYYY')
         : ''
     }
   },
   watch: {
-    value(val) {
-      this.changedMonth()
+    updater() {
+      try {
+        this.$store.dispatch('schedule/fetchSchedules', {
+          year: this.year,
+          month: this.month,
+          dept: this.dept
+        })
+      } catch (err) {
+        this.$store.dispatch('notification/addNotif', {
+          text: err,
+          type: 'error'
+        })
+      }
     }
   },
   methods: {
-    filteredShift() {
-      return this.shift.shifts.filter((s) =>
-        this.schedule.shift.includes(s.id_shift)
-      )
-    },
     updateVerify() {
       if (this.ranged.dates.length === 0) return true
 
@@ -266,27 +269,12 @@ export default {
       this.ranged.shift = undefined
       this.ranged.nik = undefined
     },
-    updateData(event) {
-      this.$emit('input', event)
+    updateDate(event) {
+      this.$emit('update-date', event)
+      this.menu = false
     },
     updateDept(event) {
       this.$emit('update-dept', event)
-    },
-    async changedMonth() {
-      this.menu = false
-
-      try {
-        await this.$store.dispatch('schedule/fetchSchedules', {
-          year: this.year,
-          month: this.month,
-          dept: this.dept
-        })
-      } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          text: err,
-          type: 'error'
-        })
-      }
     },
     async saveSchedules() {
       try {
