@@ -69,6 +69,6 @@ export default {
       }
     }
   },
-  layout: 'blank'
+  layout: 'blank-center'
 }
 </script>

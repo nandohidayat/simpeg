@@ -10,7 +10,7 @@ const karyawanId = (store, route) => {
 }
 
 export default ({ store, route, redirect }) => {
-  const all = ['/', '/404']
+  const all = ['/', '/404', '/schedule/print']
 
   if (route.path !== '/login') {
     if (!store.getters['user/isLogged']) {

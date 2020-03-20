@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  layout: 'blank',
+  layout: 'blank-center',
   props: {
     error: {
       type: Object,

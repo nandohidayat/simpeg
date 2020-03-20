@@ -33,7 +33,7 @@
         schedulerequest.schedule.ass &&
           parseInt(schedulerequest.schedule.req) === 1
       "
-      offset-y
+      bottom
     >
       <template v-slot:activator="{ on: menu }">
         <v-tooltip bottom>
@@ -47,7 +47,17 @@
       </template>
       <v-card>
         <v-card-text>
-          <v-btn @click="saveRequest(2)" color="success" small>Accept</v-btn>
+          <v-btn
+            @click="saveRequest(2)"
+            color="success"
+            class="mb-3"
+            small
+            block
+            >Accept</v-btn
+          >
+          <v-btn @click="saveRequest(0)" color="error" small block
+            >Decline</v-btn
+          >
         </v-card-text>
       </v-card>
     </v-menu>
@@ -56,7 +66,7 @@
         schedulerequest.schedule.ass &&
           parseInt(schedulerequest.schedule.req) === 2
       "
-      offset-y
+      bottom
     >
       <template v-slot:activator="{ on: menu }">
         <v-tooltip bottom>
