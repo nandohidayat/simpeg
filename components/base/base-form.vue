@@ -86,7 +86,12 @@ export default {
       if (this.namespace === 'pendapatanharian')
         return { tgl: undefined, pendapatan: undefined }
       if (this.namespace === 'shift')
-        return { mulai: undefined, selesai: undefined, kode: undefined }
+        return {
+          mulai: undefined,
+          selesai: undefined,
+          kode: undefined,
+          keterangan: undefined
+        }
     }
   }
 }

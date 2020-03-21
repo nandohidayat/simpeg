@@ -1,7 +1,8 @@
 export const namespaced = true
 
 export const state = () => ({
-  departemens: []
+  departemens: [],
+  departemen: undefined
 })
 
 export const mutations = {

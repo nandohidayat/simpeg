@@ -27,6 +27,10 @@ export default {
         {
           text: 'Kode',
           value: 'kode'
+        },
+        {
+          text: 'Ket',
+          value: 'keterangan'
         }
       ],
       title: 'Shift'

@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="4">
+    <v-col cols="6">
       <v-menu
         ref="menu1"
         v-model="menu1"
@@ -24,7 +24,7 @@
         ></v-time-picker>
       </v-menu>
     </v-col>
-    <v-col cols="4">
+    <v-col cols="6">
       <v-menu
         ref="menu2"
         v-model="menu2"
@@ -48,9 +48,17 @@
         ></v-time-picker>
       </v-menu>
     </v-col>
-    <v-col cols="4">
-      <v-text-field v-model="newdata['kode']" label="Kode"></v-text-field>
-    </v-col>
+    <v-row>
+      <v-col cols="6">
+        <v-text-field v-model="newdata['kode']" label="Kode"></v-text-field>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          v-model="newdata['keterangan']"
+          label="Keterangan"
+        ></v-text-field>
+      </v-col>
+    </v-row>
   </v-row>
 </template>
 

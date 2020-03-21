@@ -14,7 +14,7 @@
             {{ i }}
           </td>
         </tr>
-        <tr v-for="(s, i) in schedule">
+        <tr v-for="(s, i) in schedule.schedules">
           <td class="text-center sch">{{ i + 1 }}</td>
           <td class="text-truncate sch" style="max-width: 130px">
             {{ s.nama }}
@@ -54,6 +54,7 @@
 <script>
 import moment from 'moment'
 import 'moment/locale/id'
+import { mapState } from 'vuex'
 
 export default {
   head() {
@@ -68,31 +69,11 @@ export default {
       ]
     }
   },
-  layout: 'blank',
   data() {
     return {
-      date: new Date().toISOString().substr(0, 7),
-      dept: 'Instalasi SIM',
       last: 31,
       weekend: [1, 8, 15, 22, 29],
       holiday: [25],
-      schedule: [
-        {
-          nama: 'Rifa Yulfiah'
-        },
-        {
-          nama: 'Julain Pradita Alam'
-        },
-        {
-          nama: 'Salman Syariefudin'
-        },
-        {
-          nama: 'M. Ibrahim Ulil Albab M. Ibrahim Ulil Albab '
-        },
-        {
-          nama: 'M. Nando Hidayat'
-        }
-      ],
       shift: [
         {
           kode: 'P',
@@ -127,14 +108,29 @@ export default {
       ]
     }
   },
+
+  layout: 'blank',
   computed: {
+    ...mapState(['departemen', 'schedule']),
     dateMoment() {
       return this.date
         ? moment(this.date)
             .locale('id')
             .format('MMMM YYYY')
         : ''
+    },
+    date() {
+      return this.$route.query.date
+    },
+    dept() {
+      return this.departemen.departemen
     }
+  },
+  async fetch({ store, route }) {
+    await store.dispatch('schedule/printSchedules', {
+      dept: route.query.dept,
+      date: route.query.date
+    })
   }
 }
 </script>

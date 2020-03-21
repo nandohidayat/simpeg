@@ -52,13 +52,10 @@
           class="d-flex justify-space-around"
           style="margin-top: 2px;"
         >
-          <a
-            :href="
-              `http://localhost:8000/api/schedule/export/${dept}?year=${year}&month=${month}`
-            "
+          <v-btn @click="openPrint()" color="teal" icon
+            ><v-icon>mdi-download</v-icon></v-btn
           >
-            <v-btn color="teal" icon><v-icon>mdi-download</v-icon></v-btn>
-          </a>
+
           <v-tooltip bottom>
             <template #activator="{ on }">
               <v-btn v-on="on" @click="saveSchedules" color="teal" icon
@@ -81,6 +78,13 @@
       :items="schedule.schedules"
       class="elevation-2 mt-3"
     >
+      <template
+        :slot="`header.day${h}`"
+        slot-scope="{ header }"
+        v-for="h in schedule.holiday"
+      >
+        <span class="white--text red font-weight-black">{{ header.text }}</span>
+      </template>
       <template
         :slot="`header.day${w}`"
         slot-scope="{ header }"
@@ -292,6 +296,13 @@ export default {
           type: 'error'
         })
       }
+    },
+    openPrint() {
+      const routeData = this.$router.resolve({
+        name: 'schedule-print',
+        query: { dept: this.dept, date: this.date }
+      })
+      window.open(routeData.href, '_blank')
     }
   }
 }

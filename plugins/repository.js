@@ -1,5 +1,17 @@
 import createRepository from '@/api/repository'
 
+const queryGenerator = (query) => {
+  if (Object.entries(query).length === 0 && query.constructor === Object)
+    return ''
+
+  const entries = Object.entries(query)
+  const arr = []
+  for (const [key, value] of entries) {
+    arr.push(`${key}=${value}&`)
+  }
+  return '?' + arr.join('')
+}
+
 export default (ctx, inject) => {
   const repositoryWithAxios = createRepository(ctx.$axios)
   const repositories = {
@@ -12,6 +24,9 @@ export default (ctx, inject) => {
       ...repositoryWithAxios('schedule'),
       export(id) {
         return ctx.$axios.$get(`schedule/export/${id}`)
+      },
+      print(query) {
+        return ctx.$axios.$get(`schedule/print${queryGenerator(query)}`)
       }
     },
     scheduleChange: repositoryWithAxios('schedule/change'),

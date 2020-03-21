@@ -66,9 +66,6 @@ export default {
       return '' + this.dept + this.year + this.month + ''
     }
   },
-  async fetch({ store }) {
-    await store.dispatch('shift/fetchShifts')
-  },
   async created() {
     await this.$store.dispatch('schedule/fetchSchedules', {
       year: this.year,

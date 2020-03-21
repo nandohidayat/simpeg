@@ -3,7 +3,8 @@ export const namespaced = true
 export const state = () => ({
   schedules: [],
   header: [],
-  weekend: []
+  weekend: [],
+  holiday: []
 })
 
 export const mutations = {
@@ -11,6 +12,7 @@ export const mutations = {
     state.schedules = schedules.schedule
     state.header = schedules.header
     state.weekend = schedules.weekend
+    state.holiday = schedules.holiday
   },
   RESET(state) {
     state.schedules = []
@@ -40,5 +42,11 @@ export const actions = {
   },
   async exportSchedules({ commit }, id) {
     await this.$api.schedule.export(id)
+  },
+  async printSchedules({ commit, rootState }, query) {
+    const res = await this.$api.schedule.print(query)
+    commit('SET_SCHEDULES', res.data)
+    rootState.shift.shifts = res.data.shift
+    rootState.departemen.departemen = res.data.dept
   }
 }
