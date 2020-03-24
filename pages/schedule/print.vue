@@ -10,40 +10,52 @@
           <td colspan="31" class="sch text-center">Tanggal</td>
         </tr>
         <tr class="font-weight-bold text-center">
-          <td v-for="i in last" :key="i" style="width: 28px" class="sch">
+          <td v-for="i in last" :key="i" style="width: 27px" class="sch">
             {{ i }}
           </td>
         </tr>
         <tr v-for="(s, i) in schedule.schedules">
           <td class="text-center sch">{{ i + 1 }}</td>
-          <td class="text-truncate sch" style="max-width: 130px">
-            {{ s.nama }}
+          <td
+            class="text-truncate text-capitalize sch"
+            style="max-width: 130px"
+          >
+            {{ lowerName(s.nama) }}
           </td>
           <td
             v-for="is in last"
             :key="is"
             :class="{
-              weekend: weekend.includes(is),
-              holiday: holiday.includes(is)
+              holiday: schedule.holiday.includes(is),
+              weekend: schedule.weekend.includes(is)
             }"
             class="sch"
           >
-            P
+            {{ s[`day${is}`] }}
           </td>
         </tr>
       </table>
     </div>
     <div class="ml-12 mt-8 body-2">
       <h4>Keterangan :</h4>
-      <div v-for="s in shift" :key="s">
-        <span class="d-inline-block" style="width: 25px">{{ s.kode }}</span> =
+      <div v-for="s in shift.shifts" :key="s">
+        <span class="d-inline-block" style="width: 25px">{{ s.kode }}</span>
+        <span class="mr-2">=</span>
         {{ s.keterangan }}
       </div>
       <div>
         <table>
-          <tr v-for="c in color" :key="c">
-            <td style="width: 140px">{{ c.keterangan }}</td>
-            <td :style="`background-color: ${c.color}; width: 30px`"></td>
+          <tr>
+            <td style="width: 140px">{{ color[0].keterangan }}</td>
+            <td
+              :style="`background-color: ${color[0].color}; width: 30px`"
+            ></td>
+          </tr>
+          <tr v-if="schedule.holiday.length > 0">
+            <td style="width: 140px">{{ color[1].keterangan }}</td>
+            <td
+              :style="`background-color: ${color[1].color}; width: 30px`"
+            ></td>
           </tr>
         </table>
       </div>
@@ -71,31 +83,6 @@ export default {
   },
   data() {
     return {
-      last: 31,
-      weekend: [1, 8, 15, 22, 29],
-      holiday: [25],
-      shift: [
-        {
-          kode: 'P',
-          keterangan: 'Pagi'
-        },
-        {
-          kode: 'S',
-          keterangan: 'Siang'
-        },
-        {
-          kode: 'PS',
-          keterangan: 'Pagi Siang'
-        },
-        {
-          kode: 'TL',
-          keterangan: 'Tugas Luar'
-        },
-        {
-          kode: 'CT',
-          keterangan: 'Cuti'
-        }
-      ],
       color: [
         {
           color: 'lightgrey',
@@ -111,7 +98,7 @@ export default {
 
   layout: 'blank',
   computed: {
-    ...mapState(['departemen', 'schedule']),
+    ...mapState(['departemen', 'schedule', 'shift']),
     dateMoment() {
       return this.date
         ? moment(this.date)
@@ -124,6 +111,11 @@ export default {
     },
     dept() {
       return this.departemen.departemen
+    },
+    last() {
+      return moment(this.date)
+        .endOf('month')
+        .get('date')
     }
   },
   async fetch({ store, route }) {
@@ -131,6 +123,11 @@ export default {
       dept: route.query.dept,
       date: route.query.date
     })
+  },
+  methods: {
+    lowerName(name) {
+      return name.toLowerCase()
+    }
   }
 }
 </script>
@@ -152,11 +149,11 @@ export default {
   font-family: 'Times New Roman', Times, serif;
 }
 
-.weekend {
-  background-color: lightgrey;
-}
-
 .holiday {
   background-color: lightcoral;
+}
+
+.weekend {
+  background-color: lightgrey;
 }
 </style>
