@@ -1,6 +1,13 @@
 export default function({ $axios, redirect }) {
   $axios.onRequest((config) => {
-    console.log('Making request to ' + config.url)
+    if (!process.server) {
+      if (window.location.hostname.split('.')[2] === '0') {
+        $axios.baseUrl = 'http://192.168.0.106:8000/api/'
+      }
+      if (window.location.hostname.split('.')[2] === '1') {
+        $axios.baseUrl = 'http://192.168.1.7:8000/api/'
+      }
+    }
   })
 
   $axios.onError((error) => {
