@@ -8,7 +8,6 @@ export default function({ $axios, redirect }) {
         $axios.baseUrl = 'http://192.168.1.7:8000/api/'
       }
     }
-    console.log('Making request to ' + config.url)
   })
 
   $axios.onError((error) => {
