@@ -67,6 +67,10 @@ export default {
     month: {
       type: Number,
       default: undefined
+    },
+    dept: {
+      type: String,
+      default: undefined
     }
   },
   data() {
@@ -88,6 +92,15 @@ export default {
   watch: {
     month(val) {
       this.getAbsen()
+    },
+    year(val) {
+      this.getAbsen()
+    },
+    dept() {
+      if (!this.single) {
+        this.selected = undefined
+      }
+      this.getAbsen()
     }
   },
   methods: {
@@ -97,7 +110,7 @@ export default {
       try {
         await this.$store.dispatch('absen/fetchAbsen', {
           id: this.selected,
-          date: { year: this.year, month: this.month }
+          date: { year: this.year, month: this.month, dept: this.dept }
         })
       } catch (err) {
         this.$store.dispatch('notification/addNotif', {
