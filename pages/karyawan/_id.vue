@@ -24,12 +24,14 @@
           :year="year"
           :month="month"
           :dept="dept"
+          :updater="updater"
           single
         ></schedule-change-card>
         <absen-card
           id="data-absen"
           :year="year"
           :month="month"
+          :dept="dept"
           single
         ></absen-card>
         <karyawan-access id="data-akses" v-if="grantedAccess"></karyawan-access>

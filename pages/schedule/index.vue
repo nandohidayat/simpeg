@@ -18,6 +18,7 @@
           :year="year"
           :month="month"
           :dept="dept"
+          :updater="updater"
         ></schedule-change-card>
       </v-col>
     </v-row>

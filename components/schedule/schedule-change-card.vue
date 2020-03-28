@@ -264,6 +264,10 @@ export default {
     dept: {
       type: String,
       default: undefined
+    },
+    updater: {
+      type: String,
+      default: undefined
     }
   },
   data() {
@@ -277,7 +281,7 @@ export default {
     ...mapState(['schedulechange', 'karyawan'])
   },
   watch: {
-    month(val) {
+    updater(val) {
       this.getSchedules()
     }
   },
