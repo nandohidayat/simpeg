@@ -30,7 +30,7 @@ export const actions = {
 
     if (res.data.dept !== undefined)
       rootState.departemen.departemens = res.data.dept
-    rootState.shift.shifts = res.data.shift
+    rootState.shift.departemen = res.data.shift.map((i) => parseInt(i))
 
     commit('SET_SCHEDULES', res.data)
 
