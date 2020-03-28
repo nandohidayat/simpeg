@@ -3,8 +3,8 @@
     <v-row>
       <v-col cols="3">
         <karyawan-menu
-          :access="grantedAccess()"
-          :delete="grantedDelete()"
+          :access="grantedAccess"
+          :delete="grantedDelete"
         ></karyawan-menu>
       </v-col>
       <v-col cols="9">
@@ -12,30 +12,30 @@
         <schedule-table
           id="data-jadwal"
           :read="true"
-          :year="year()"
-          :month="month()"
+          :date="date"
+          :year="year"
+          :month="month"
           :dept="dept"
-          v-model="date"
+          :updater="updater"
+          @update-date="updateDate"
+          @update-dept="updateDept"
         ></schedule-table>
         <schedule-change-card
-          :year="year()"
-          :month="month()"
+          :year="year"
+          :month="month"
           :dept="dept"
           single
         ></schedule-change-card>
         <absen-card
           id="data-absen"
-          :year="year()"
-          :month="month()"
+          :year="year"
+          :month="month"
           single
         ></absen-card>
-        <karyawan-access
-          id="data-akses"
-          v-if="grantedAccess()"
-        ></karyawan-access>
+        <karyawan-access id="data-akses" v-if="grantedAccess"></karyawan-access>
         <karyawan-delete
           id="hapus-karyawan"
-          v-if="grantedDelete()"
+          v-if="grantedDelete"
         ></karyawan-delete>
       </v-col>
     </v-row>
@@ -77,47 +77,21 @@ export default {
   },
   data() {
     return {
-      date: new Date().toISOString().substr(0, 7)
+      date: new Date().toISOString().substr(0, 7),
+      dept: undefined
     }
   },
   computed: {
-    ...mapState(['user', 'karyawan', 'schedule']),
-    dept() {
-      if (this.schedule.dept.length === 0) return undefined
-      return this.schedule.dept[0].id_dept
-    }
-  },
-  async fetch({ store, params }) {
-    await store.dispatch('karyawan/fetchKaryawan', params.id)
-  },
-  async created() {
-    const granted = []
-    if (this.grantedAccess()) {
-      granted.push(
-        this.$store.dispatch('user/fetchUser', this.$route.params.id)
-      )
-    }
-
-    await this.$store.dispatch('schedule/fetchSchedules', {
-      year: this.year(),
-      month: this.month()
-    })
-
-    await Promise.all([
-      this.$store.dispatch('schedulechange/fetchSchedules', {
-        year: this.year(),
-        month: this.month(),
-        dept: this.dept
-      }),
-      this.$store.dispatch('absen/fetchAbsen', {
-        id: this.user.user.id,
-        date: { year: this.year(), month: this.month() }
-      }),
-      this.$store.dispatch('shift/fetchShifts'),
-      ...granted
-    ])
-  },
-  methods: {
+    ...mapState(['user', 'karyawan', 'schedule', 'departemen']),
+    year() {
+      return parseInt(this.date.substr(0, 4))
+    },
+    month() {
+      return parseInt(this.date.slice(-2))
+    },
+    updater() {
+      return '' + this.dept + this.year + this.month + ''
+    },
     grantedAccess() {
       return (
         this.user.user.nik === this.$route.params.id ||
@@ -126,12 +100,48 @@ export default {
     },
     grantedDelete() {
       return this.user.akses.includes('/karyawan')
+    }
+  },
+  async fetch({ store, params }) {
+    await Promise.all([
+      store.dispatch('karyawan/fetchKaryawan', params.id),
+      store.dispatch('shift/fetchShifts')
+    ])
+  },
+  async created() {
+    const granted = []
+    if (this.grantedAccess) {
+      granted.push(
+        this.$store.dispatch('user/fetchUser', this.$route.params.id)
+      )
+    }
+
+    await this.$store.dispatch('schedule/fetchSchedules', {
+      year: this.year,
+      month: this.month
+    })
+
+    this.dept = this.departemen.departemens[0].id_dept
+
+    await Promise.all([
+      this.$store.dispatch('schedulechange/fetchSchedules', {
+        year: this.year,
+        month: this.month,
+        dept: this.dept
+      }),
+      this.$store.dispatch('absen/fetchAbsen', {
+        id: this.user.user.id,
+        date: { year: this.year, month: this.month }
+      }),
+      ...granted
+    ])
+  },
+  methods: {
+    updateDate(val) {
+      this.date = val
     },
-    year() {
-      return parseInt(this.date.substr(0, 4))
-    },
-    month() {
-      return parseInt(this.date.slice(-2))
+    updateDept(val) {
+      this.dept = val
     }
   }
 }
