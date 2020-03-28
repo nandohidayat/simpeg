@@ -11,8 +11,8 @@ export const mutations = {
   SET_SCHEDULES(state, schedules) {
     state.schedules = schedules.schedule
     state.header = schedules.header
-    state.weekend = schedules.weekend
-    state.holiday = schedules.holiday
+    state.weekend = schedules.weekend.map((i) => parseInt(i))
+    state.holiday = schedules.holiday.map((i) => parseInt(i))
   },
   RESET(state) {
     state.schedules = []

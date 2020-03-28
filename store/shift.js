@@ -21,7 +21,7 @@ export const mutations = {
     state.shifts = state.shifts.filter((b) => b.id_shift !== id)
   },
   SET_DEPARTEMEN(state, shift) {
-    state.departemen = shift
+    state.departemen = shift.map((i) => parseInt(i))
   }
 }
 

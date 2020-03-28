@@ -60,7 +60,7 @@ export default {
       } else {
         try {
           await this.$store.dispatch('shift/fetchDepartemen', this.dept)
-          this.selected = this.shift.departemen.map((i) => parseInt(i))
+          this.selected = this.shift.departemen
         } catch (err) {
           this.$store.dispatch('notification/addNotif', {
             type: 'error',
