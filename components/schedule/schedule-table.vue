@@ -106,11 +106,13 @@
           <template v-slot:input>
             <v-date-picker
               v-model="ranged.dates"
+              :events="redDate"
               no-title
               range
               locale="id-id"
               color="teal"
               class="mt-3"
+              event-color="red lighten-2"
             >
             </v-date-picker>
             <v-select
@@ -222,6 +224,15 @@ export default {
       return this.shift.shifts.filter((s) =>
         this.shift.departemen.includes(s.id_shift)
       )
+    },
+    redDate() {
+      return [
+        ...new Set(this.schedule.weekend.concat(this.schedule.holiday))
+      ].map((i) => {
+        return new Date(this.year, this.month - 1, i + 1)
+          .toISOString()
+          .substr(0, 10)
+      })
     }
   },
   watch: {
