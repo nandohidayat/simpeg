@@ -10,7 +10,9 @@ export const mutations = {
     state.aksess = aksess
   },
   SET_AKSES(state, akses) {
-    state.akses = akses.map((i) => parseInt(i))
+    akses.kepala = akses.kepala.map((i) => parseInt(i))
+    akses.semua = akses.semua.map((i) => parseInt(i))
+    state.akses = akses
   },
   ADD_AKSES(state, akses) {
     state.aksess.push(akses)
