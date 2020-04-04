@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-8 a4">
+  <div class="pa-8 a4 blank">
     <h2 class="text-center text-uppercase mb-10">JADWAL KERJA {{ dept }}</h2>
     <div class="body-2">
       <h4>Bulan : {{ dateMoment }}</h4>
@@ -133,6 +133,10 @@ export default {
 </script>
 
 <style scoped>
+.blank {
+  background-color: #ffffff;
+}
+
 .sch {
   border: 1px solid black;
   border-collapse: collapse;
