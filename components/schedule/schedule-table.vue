@@ -76,7 +76,11 @@
     <v-data-table
       :headers="schedule.header"
       :items="schedule.schedules"
+      :height="schedule.schedules.length < 9 ? undefined : '450px'"
+      :items-per-page="50"
       class="elevation-2 mt-3"
+      fixed-header
+      hide-default-footer
     >
       <template
         :slot="`header.day${h}`"
