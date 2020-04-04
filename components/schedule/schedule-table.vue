@@ -92,7 +92,7 @@
       >
         <span class="red--text font-weight-black">{{ header.text }}</span>
       </template>
-      <template v-slot:item.nama="{ item }">
+      <template #item.nama="{ item, value }">
         <v-edit-dialog
           v-if="!read"
           @save="updateShift"
@@ -102,7 +102,7 @@
           persistent
           offset-y
         >
-          {{ item.nama }}
+          {{ value }}
           <template v-slot:input>
             <v-date-picker
               v-model="ranged.dates"
@@ -128,15 +128,18 @@
             ></v-select>
           </template>
         </v-edit-dialog>
-        <span v-else>{{ item.nama }}</span>
+        <span v-else>{{ value }}</span>
       </template>
-      <template :slot="`item.day${l}`" slot-scope="{ item }" v-for="l in last">
-        <v-edit-dialog v-if="!read">
-          {{
-            item[`day${l}`] !== null && item[`day${l}`] !== undefined
-              ? shift.shifts.find((s) => s.id_shift == item[`day${l}`]).kode
-              : undefined
-          }}
+      <template
+        :slot="`item.day${l}`"
+        slot-scope="{ value, item }"
+        v-for="l in last"
+      >
+        <span v-if="read">
+          {{ displayShift(value) }}
+        </span>
+        <v-edit-dialog v-else>
+          {{ displayShift(value) }}
           <template v-slot:input>
             <v-select
               v-model="item[`day${l}`]"
@@ -149,13 +152,6 @@
             ></v-select>
           </template>
         </v-edit-dialog>
-        <span v-else>
-          {{
-            item[`day${l}`] !== null && item[`day${l}`] !== undefined
-              ? shift.shifts.find((s) => s.id_shift == item[`day${l}`]).kode
-              : undefined
-          }}
-        </span>
       </template>
     </v-data-table>
   </div>
@@ -319,6 +315,11 @@ export default {
         query: { dept: this.dept, date: this.date }
       })
       window.open(routeData.href, '_blank')
+    },
+    displayShift(val) {
+      return val === null || val === undefined
+        ? undefined
+        : this.shift.shifts.find((s) => s.id_shift === val).kode
     }
   }
 }
