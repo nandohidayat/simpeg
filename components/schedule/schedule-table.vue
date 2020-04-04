@@ -102,7 +102,7 @@
           persistent
           offset-y
         >
-          {{ value }}
+          <div class="text-truncate">{{ value }}</div>
           <template v-slot:input>
             <v-date-picker
               v-model="ranged.dates"
@@ -128,7 +128,7 @@
             ></v-select>
           </template>
         </v-edit-dialog>
-        <span v-else>{{ value }}</span>
+        <div v-else class="text-truncate">{{ value }}</div>
       </template>
       <template
         :slot="`item.day${l}`"
