@@ -323,7 +323,8 @@ export default {
     displayShift(val) {
       return val === null || val === undefined
         ? undefined
-        : this.shift.shifts.find((s) => s.id_shift === val).kode
+        : this.shift.shifts.find((s) => parseInt(s.id_shift) === parseInt(val))
+            .kode
     }
   }
 }
