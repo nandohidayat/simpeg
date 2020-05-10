@@ -74,7 +74,7 @@ export default {
       }`
 
       try {
-        await this.$store.dispatch(url, this.newdata)
+        await this.$store.dispatch(url, this.data)
 
         this.dialog = false
 
