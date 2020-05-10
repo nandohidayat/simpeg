@@ -1,5 +1,5 @@
 <template>
-  <base-card :data="false" :title="title">
+  <base-card title="Departemen Shift / Job" toolbar>
     <v-row>
       <v-col cols="10">
         <v-autocomplete
@@ -28,7 +28,7 @@
     <v-tabs-items v-model="tab">
       <v-tab-item>
         <v-row>
-          <v-col v-for="s in shift.shifts" :key="s.id_shift" cols="3">
+          <v-col v-for="s in shift.shifts" :key="s.id_shift" cols="2">
             <v-checkbox
               v-model="selected"
               :label="s.kode"
@@ -55,7 +55,6 @@ export default {
     return {
       dept: undefined,
       selected: [],
-      title: 'Shift Departemen',
       tab: undefined
     }
   },

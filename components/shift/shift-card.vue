@@ -1,6 +1,15 @@
 <template>
-  <base-table :header="header" :title="title" #default="{newdata}">
-    <shift-form :newdata="newdata"></shift-form>
+  <base-table
+    :header="header"
+    :title="title"
+    :store="store"
+    :state="state"
+    :action="action"
+    :data="data"
+    @reset="reset()"
+    @edit="edit"
+  >
+    <shift-form :data="data"></shift-form>
   </base-table>
 </template>
 
@@ -15,6 +24,7 @@ export default {
   },
   data() {
     return {
+      title: 'Shift',
       header: [
         {
           text: 'Mulai',
@@ -33,7 +43,26 @@ export default {
           value: 'keterangan'
         }
       ],
-      title: 'Shift'
+      store: 'shift',
+      state: 'shifts',
+      action: 'Shift',
+      data: this.newData()
+    }
+  },
+  methods: {
+    edit(data) {
+      this.data = data
+    },
+    reset() {
+      this.data = this.newData()
+    },
+    newData() {
+      return {
+        mulai: undefined,
+        selesai: undefined,
+        kode: undefined,
+        keterangan: undefined
+      }
     }
   }
 }

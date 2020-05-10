@@ -2,13 +2,13 @@
   <div>
     <v-row>
       <v-col cols="6">
-        <!-- <shift></shift> -->
+        <shift></shift>
       </v-col>
       <v-col cols="6">
         <job></job>
       </v-col>
-      <v-col cols="6">
-        <!-- <shift-departemen></shift-departemen> -->
+      <v-col cols="12">
+        <shift-departemen></shift-departemen>
       </v-col>
     </v-row>
     <v-row>
@@ -23,10 +23,10 @@
 </template>
 
 <script>
-// import shiftDepartemen from '@/components/shift/shift-departemen'
+import ShiftDepartemen from '@/components/shift/shift-departemen'
 // import scheduleAssessor from '@/components/schedule/schedule-assessor-card'
 // import pendapatanHarian from '@/components/pendapatan/pendapatan-harian-card'
-// import shift from '@/components/shift/shift-card'
+import shift from '@/components/shift/shift-card'
 import job from '@/components/job/job-card'
 
 export default {
@@ -43,10 +43,10 @@ export default {
     }
   },
   components: {
-    // 'shift-departemen': shiftDepartemen,
+    ShiftDepartemen,
     // 'schedule-assessor': scheduleAssessor,
     // 'pendapatan-harian': pendapatanHarian,
-    // shift,
+    shift,
     job
   },
   async fetch({ store }) {
