@@ -20,17 +20,25 @@
         >
       </v-col>
     </v-row>
-    <header>Shift</header>
-    <v-row>
-      <v-col v-for="s in shift.shifts" :key="s.id_shift" cols="3">
-        <v-checkbox
-          v-model="selected"
-          :label="s.kode"
-          :value="s.id_shift"
-          color="teal"
-        ></v-checkbox>
-      </v-col>
-    </v-row>
+    <v-tabs v-model="tab" grow color="teal">
+      <v-tab>Shift</v-tab>
+      <v-tab>Job</v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab">
+      <v-tab-item>
+        <v-row>
+          <v-col v-for="s in shift.shifts" :key="s.id_shift" cols="3">
+            <v-checkbox
+              v-model="selected"
+              :label="s.kode"
+              :value="s.id_shift"
+              color="teal"
+            ></v-checkbox>
+          </v-col>
+        </v-row>
+      </v-tab-item>
+    </v-tabs-items>
   </base-card>
 </template>
 
@@ -47,7 +55,8 @@ export default {
     return {
       dept: undefined,
       selected: [],
-      title: 'Shift Departemen'
+      title: 'Shift Departemen',
+      tab: undefined
     }
   },
   computed: {

@@ -1,10 +1,7 @@
 <template>
   <v-card class="mt-3" outlined>
     <v-toolbar v-if="toolbar" flat color="teal" dark>
-      <v-toolbar-title
-        v-text="`${data ? 'Data' : ''} ${title}`"
-        class="text-capitalize"
-      ></v-toolbar-title>
+      <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
       <slot name="action"></slot>
     </v-toolbar>
@@ -23,7 +20,7 @@ export default {
   props: {
     toolbar: {
       type: Boolean,
-      default: true
+      default: false
     },
     full: {
       type: Boolean,
@@ -32,10 +29,6 @@ export default {
     title: {
       type: String,
       default: ''
-    },
-    data: {
-      type: Boolean,
-      default: true
     }
   },
   methods: {}

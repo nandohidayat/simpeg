@@ -34,6 +34,8 @@ export default (ctx, inject) => {
     scheduleAssessor: repositoryWithAxios('schedule/assessor'),
     shift: repositoryWithAxios('shift'),
     shiftDepartemen: repositoryWithAxios('shift/departemen'),
+    job: repositoryWithAxios('job'),
+    jobDepartemen: repositoryWithAxios('job/departemen'),
     pendapatanharian: repositoryWithAxios('pendapatanharian')
   }
 

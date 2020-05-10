@@ -15,7 +15,7 @@
         >
       </v-card-title>
       <v-card-text>
-        <slot :newdata="newdata"></slot>
+        <slot></slot>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -35,39 +35,49 @@ export default {
       type: String,
       default: ''
     },
-    edit: {
-      type: Boolean,
-      default: false
-    },
-    namespace: {
+    store: {
       type: String,
       default: undefined
     },
-    item: {
+    action: {
       type: String,
       default: undefined
     },
     data: {
       type: Object,
       default: undefined
+    },
+    edit: {
+      type: Object,
+      default: undefined
     }
   },
   data() {
     return {
-      dialog: false,
-      newdata: this.dataMaker()
+      dialog: false
+    }
+  },
+  watch: {
+    dialog(val) {
+      if (val && this.edit !== undefined) {
+        this.$emit('edit', this.edit)
+      }
+      if (!val) {
+        this.$emit('reset')
+      }
     }
   },
   methods: {
     async createData() {
-      const url = `${this.namespace}/${
-        this.edit ? 'update' : 'create'
-      }${this.item.charAt(0).toUpperCase() + this.item.slice(1)}`
+      const url = `${this.store}/${this.edit ? 'update' : 'create'}${
+        this.action
+      }`
 
       try {
         await this.$store.dispatch(url, this.newdata)
-        this.newdata = this.dataMaker()
+
         this.dialog = false
+
         this.$store.dispatch('notification/addNotif', {
           type: 'success',
           text: 'Successfully Saved'
@@ -78,20 +88,6 @@ export default {
           text: err
         })
       }
-    },
-    dataMaker() {
-      if (this.data !== undefined) return this.data
-      if (this.namespace === 'scheduleassessor')
-        return { dept: undefined, assessor: undefined }
-      if (this.namespace === 'pendapatanharian')
-        return { tgl: undefined, pendapatan: undefined }
-      if (this.namespace === 'shift')
-        return {
-          mulai: undefined,
-          selesai: undefined,
-          kode: undefined,
-          keterangan: undefined
-        }
     }
   }
 }

@@ -1,26 +1,28 @@
 <template>
-  <base-card :title="title">
+  <base-card :title="`Data ${title}`" toolbar>
     <template #action>
       <base-form
         :title="title"
-        :namespace="statename"
-        :item="stateitem"
-        #default="{newdata}"
+        :data="data"
+        :store="store"
+        :action="action"
+        @reset="$emit('reset')"
       >
-        <slot :newdata="newdata"></slot>
+        <slot></slot>
       </base-form>
     </template>
-    <v-data-table :headers="headers" :items="items[stateitem + 's']" multi-sort>
+    <v-data-table :headers="headers" :items="items[state]" multi-sort>
       <template #item.action="{ item }">
         <base-form
           :title="title"
-          :edit="true"
-          :namespace="statename"
-          :item="stateitem"
-          :data="item"
-          #default="{newdata}"
+          :store="store"
+          :action="action"
+          :data="data"
+          :edit="item"
+          @reset="$emit('reset')"
+          @edit="edit"
         >
-          <slot :newdata="newdata"></slot>
+          <slot></slot>
         </base-form>
         <v-icon @click="deleteData(item)" small>
           mdi-delete
@@ -43,20 +45,26 @@ export default {
   props: {
     header: {
       type: Array,
-      default() {
-        return []
-      }
+      default: undefined
     },
     title: {
       type: String,
       default: ''
     },
-    namespace: {
+    store: {
       type: String,
       default: undefined
     },
-    list: {
+    state: {
       type: String,
+      default: undefined
+    },
+    action: {
+      type: String,
+      default: undefined
+    },
+    data: {
+      type: Object,
       default: undefined
     }
   },
@@ -72,29 +80,20 @@ export default {
         }
       ]
     },
-    stateitem() {
-      if (this.list === undefined) return this.title.toLowerCase()
-      return this.list
-    },
-    statename() {
-      if (this.namespace === undefined) return this.title.toLowerCase()
-      return this.namespace
-    },
     ...mapState({
       items(state) {
-        return state[this.statename]
+        return state[this.store]
       }
     })
   },
   methods: {
+    edit(value) {
+      this.$emit('edit', value)
+    },
     async deleteData(item) {
       if (!confirm('Apakah anda yakin akan menghapus data tersebut?')) return
       try {
-        await this.$store.dispatch(
-          `${this.statename}/delete${this.stateitem.charAt(0).toUpperCase() +
-            this.stateitem.slice(1)}`,
-          item
-        )
+        await this.$store.dispatch(`${this.store}/delete${this.action}`, item)
         this.$store.dispatch('notification/addNotif', {
           type: 'success',
           text: 'Successfully Deleted'
