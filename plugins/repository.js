@@ -37,7 +37,7 @@ export default (ctx, inject) => {
     shiftDepartemen: repositoryWithAxios('shift/departemen'),
     job: repositoryWithAxios('job'),
     jobDepartemen: repositoryWithAxios('job/departemen'),
-    pendapatanharian: repositoryWithAxios('pendapatanharian')
+    pendapatanharian: repositoryWithAxios('pendapatan/harian')
   }
 
   inject('api', repositories)

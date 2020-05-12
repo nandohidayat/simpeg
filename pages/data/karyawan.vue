@@ -13,7 +13,7 @@
     </v-row>
     <v-row>
       <v-col cols="6">
-        <!-- <pendapatan-harian></pendapatan-harian> -->
+        <pendapatan-harian></pendapatan-harian>
       </v-col>
       <v-col cols="6">
         <schedule-access></schedule-access>
@@ -25,9 +25,9 @@
 <script>
 import DeptSj from '@/components/departemen/dept-sj'
 import ScheduleAccess from '@/components/schedule/schedule-access-card'
-// import pendapatanHarian from '@/components/pendapatan/pendapatan-harian-card'
-import shift from '@/components/shift/shift-card'
-import job from '@/components/job/job-card'
+import PendapatanHarian from '@/components/pendapatan/pendapatan-harian-card'
+import Shift from '@/components/shift/shift-card'
+import Job from '@/components/job/job-card'
 
 export default {
   head() {
@@ -45,9 +45,9 @@ export default {
   components: {
     DeptSj,
     ScheduleAccess,
-    // 'pendapatan-harian': pendapatanHarian,
-    shift,
-    job
+    PendapatanHarian,
+    Shift,
+    Job
   },
   async fetch({ store }) {
     await Promise.all([
