@@ -16,7 +16,7 @@
         <!-- <pendapatan-harian></pendapatan-harian> -->
       </v-col>
       <v-col cols="6">
-        <!-- <schedule-assessor></schedule-assessor> -->
+        <schedule-access></schedule-access>
       </v-col>
     </v-row>
   </div>
@@ -24,7 +24,7 @@
 
 <script>
 import DeptSj from '@/components/departemen/dept-sj'
-// import scheduleAssessor from '@/components/schedule/schedule-assessor-card'
+import ScheduleAccess from '@/components/schedule/schedule-access-card'
 // import pendapatanHarian from '@/components/pendapatan/pendapatan-harian-card'
 import shift from '@/components/shift/shift-card'
 import job from '@/components/job/job-card'
@@ -44,7 +44,7 @@ export default {
   },
   components: {
     DeptSj,
-    // 'schedule-assessor': scheduleAssessor,
+    ScheduleAccess,
     // 'pendapatan-harian': pendapatanHarian,
     shift,
     job
@@ -55,7 +55,7 @@ export default {
       store.dispatch('shift/fetchShifts'),
       store.dispatch('job/fetchJobs'),
       store.dispatch('pendapatanharian/fetchPendapatans'),
-      store.dispatch('scheduleassessor/fetchSchedules')
+      store.dispatch('scheduleaccess/fetchSchedules')
     ])
   }
 }

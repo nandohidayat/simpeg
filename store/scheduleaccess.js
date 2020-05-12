@@ -23,22 +23,22 @@ export const mutations = {
 
 export const actions = {
   async fetchSchedules({ commit }) {
-    const res = await this.$api.scheduleAssessor.index()
+    const res = await this.$api.scheduleAccess.index()
     commit('SET_SCHEDULES', res.data)
   },
   async createSchedule({ commit }, schedule) {
-    const res = await this.$api.scheduleAssessor.create(schedule)
+    const res = await this.$api.scheduleAccess.create(schedule)
     commit('ADD_SCHEDULE', res.data)
   },
   async updateSchedule({ commit }, schedule) {
-    const res = await this.$api.scheduleAssessor.update(
-      schedule.id_schedule_assessor,
+    const res = await this.$api.scheduleAccess.update(
+      schedule.id_schedule_access,
       schedule
     )
     commit('EDT_SCHEDULE', res.data)
   },
   async deleteSchedule({ commit }, schedule) {
-    await this.$api.scheduleAssessor.delete(schedule.id_schedule_assessor)
-    commit('DEL_SCHEDULE', schedule.id_schedule_assessor)
+    await this.$api.scheduleAccess.delete(schedule.id_schedule_access)
+    commit('DEL_SCHEDULE', schedule.id_schedule_access)
   }
 }
