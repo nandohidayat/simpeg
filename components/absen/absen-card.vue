@@ -113,10 +113,7 @@ export default {
           date: { year: this.year, month: this.month, dept: this.dept }
         })
       } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          text: err,
-          type: 'error'
-        })
+        this.$alert('error', err)
       }
     },
     moment

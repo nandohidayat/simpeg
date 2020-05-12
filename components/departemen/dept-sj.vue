@@ -79,10 +79,7 @@ export default {
           this.selectedshift = this.shift.departemen
           this.selectedjob = this.job.departemen
         } catch (err) {
-          this.$store.dispatch('notification/addNotif', {
-            type: 'error',
-            text: err
-          })
+          this.$alert('error', err)
         }
       }
     },
@@ -98,15 +95,9 @@ export default {
           this.$store.dispatch(`job/updateDepartemen`, datajob)
         ])
 
-        this.$store.dispatch('notification/addNotif', {
-          type: 'success',
-          text: 'Successfully Saved'
-        })
+        this.$alert('success', 'Successfully Saved')
       } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          type: 'error',
-          text: err
-        })
+        this.$alert('error', err)
       }
     }
   }

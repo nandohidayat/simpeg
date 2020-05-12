@@ -244,10 +244,7 @@ export default {
           dept: this.dept
         })
       } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          text: err,
-          type: 'error'
-        })
+        this.$alert('error', err)
       }
     }
   },
@@ -302,15 +299,9 @@ export default {
           schedules: this.schedule.schedules,
           date: { year: this.year, month: this.month, dept: this.dept }
         })
-        this.$store.dispatch('notification/addNotif', {
-          text: 'Saved Successfully',
-          type: 'success'
-        })
+        this.$alert('success', 'Successfully Saved')
       } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          text: err,
-          type: 'error'
-        })
+        this.$alert('error', err)
       }
     },
     openPrint() {

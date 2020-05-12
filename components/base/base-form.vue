@@ -78,15 +78,9 @@ export default {
 
         this.dialog = false
 
-        this.$store.dispatch('notification/addNotif', {
-          type: 'success',
-          text: 'Successfully Saved'
-        })
+        this.$alert('success', 'Successfully Saved')
       } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          type: 'error',
-          text: err
-        })
+        this.$alert('error', err)
       }
     }
   }

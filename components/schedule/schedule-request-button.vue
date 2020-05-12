@@ -119,15 +119,9 @@ export default {
 
       try {
         await this.$store.dispatch('schedulerequest/updateSchedule', data)
-        this.$store.dispatch('notification/addNotif', {
-          text: 'Saved Successfully',
-          type: 'success'
-        })
+        this.$alert('success', 'Successfully Saved')
       } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          text: err,
-          type: 'error'
-        })
+        this.$alert('error', err)
       }
     }
   }

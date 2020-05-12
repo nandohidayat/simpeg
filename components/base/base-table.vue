@@ -94,15 +94,9 @@ export default {
       if (!confirm('Apakah anda yakin akan menghapus data tersebut?')) return
       try {
         await this.$store.dispatch(`${this.store}/delete${this.action}`, item)
-        this.$store.dispatch('notification/addNotif', {
-          type: 'success',
-          text: 'Successfully Deleted'
-        })
+        this.$alert('success', 'Successfully Deleted')
       } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          type: 'error',
-          text: err
-        })
+        this.$alert('error', err)
       }
     }
   }

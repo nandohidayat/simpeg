@@ -35,7 +35,8 @@ export default {
     '@/plugins/auth',
     '@/plugins/repository',
     '@/plugins/guard',
-    '@/plugins/token'
+    '@/plugins/token',
+    '@/plugins/alert'
   ],
   /*
    ** Nuxt.js dev-modules
