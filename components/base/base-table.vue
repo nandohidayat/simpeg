@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     edit(value) {
-      this.$emit('edit', value)
+      this.$emit('update:data', value)
     },
     async deleteData(item) {
       if (!confirm('Apakah anda yakin akan menghapus data tersebut?')) return

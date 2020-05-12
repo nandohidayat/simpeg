@@ -5,9 +5,8 @@
     :store="store"
     :state="state"
     :action="action"
-    :data="data"
+    :data.sync="data"
     @reset="reset()"
-    @edit="edit"
   >
     <shift-form :data="data"></shift-form>
   </base-table>
@@ -50,9 +49,6 @@ export default {
     }
   },
   methods: {
-    edit(data) {
-      this.data = data
-    },
     reset() {
       this.data = this.newData()
     },
