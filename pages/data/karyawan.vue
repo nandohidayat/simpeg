@@ -8,7 +8,7 @@
         <job></job>
       </v-col>
       <v-col cols="12">
-        <shift-departemen></shift-departemen>
+        <dept-sj></dept-sj>
       </v-col>
     </v-row>
     <v-row>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import ShiftDepartemen from '@/components/shift/shift-departemen'
+import DeptSj from '@/components/departemen/dept-sj'
 // import scheduleAssessor from '@/components/schedule/schedule-assessor-card'
 // import pendapatanHarian from '@/components/pendapatan/pendapatan-harian-card'
 import shift from '@/components/shift/shift-card'
@@ -43,7 +43,7 @@ export default {
     }
   },
   components: {
-    ShiftDepartemen,
+    DeptSj,
     // 'schedule-assessor': scheduleAssessor,
     // 'pendapatan-harian': pendapatanHarian,
     shift,

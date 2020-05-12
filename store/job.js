@@ -42,7 +42,7 @@ export const actions = {
     const res = await this.$api.jobDepartemen.show(id)
     commit('SET_DEPARTEMEN', res.data)
   },
-  async updateDepartemen({ commit }, job) {
-    await this.$api.jobDepartemen.update(job)
+  async updateDepartemen({ commit }, { departemen, job }) {
+    await this.$api.jobDepartemen.update(departemen, { job })
   }
 }

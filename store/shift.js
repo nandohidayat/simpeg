@@ -46,7 +46,7 @@ export const actions = {
     const res = await this.$api.shiftDepartemen.show(id)
     commit('SET_DEPARTEMEN', res.data)
   },
-  async createDepartemen({ commit }, shift) {
-    await this.$api.shiftDepartemen.create(shift)
+  async updateDepartemen({ commit }, { departemen, shift }) {
+    await this.$api.shiftDepartemen.update(departemen, { shift })
   }
 }
