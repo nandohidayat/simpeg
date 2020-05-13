@@ -15,7 +15,12 @@
       <v-col cols="1" class="d-flex align-center">
         <v-divider vertical></v-divider>
         <v-spacer></v-spacer>
-        <v-btn @click="updateSelected()" small color="teal" dark
+        <v-btn
+          @click="updateSelected()"
+          :disabled="disabled"
+          small
+          color="teal"
+          dark
           ><v-icon>mdi-content-save</v-icon></v-btn
         >
       </v-col>
@@ -59,7 +64,8 @@ export default {
       dept: undefined,
       selectedshift: [],
       selectedjob: [],
-      tab: undefined
+      tab: undefined,
+      disabled: false
     }
   },
   computed: {
@@ -84,6 +90,7 @@ export default {
       }
     },
     async updateSelected() {
+      this.disabled = true
       if (this.dept === undefined) return
 
       const datashift = { departemen: this.dept, shift: this.selectedshift }
@@ -98,6 +105,8 @@ export default {
         this.$alert('success', 'Successfully Saved')
       } catch (err) {
         this.$alert('error', err)
+      } finally {
+        this.disabled = false
       }
     }
   }

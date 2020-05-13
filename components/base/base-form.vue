@@ -20,7 +20,12 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="createData()" color="teal" small dark
+        <v-btn
+          @click="createData()"
+          :disabled="disabled"
+          color="teal"
+          small
+          dark
           ><v-icon>mdi-content-save</v-icon></v-btn
         >
       </v-card-actions>
@@ -54,7 +59,8 @@ export default {
   },
   data() {
     return {
-      dialog: false
+      dialog: false,
+      disabled: false
     }
   },
   watch: {
@@ -69,6 +75,8 @@ export default {
   },
   methods: {
     async createData() {
+      this.disabled = true
+
       const url = `${this.store}/${this.edit ? 'update' : 'create'}${
         this.action
       }`
@@ -81,6 +89,8 @@ export default {
         this.$alert('success', 'Successfully Saved')
       } catch (err) {
         this.$alert('error', err)
+      } finally {
+        this.disabled = false
       }
     }
   }
