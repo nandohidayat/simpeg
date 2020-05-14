@@ -22,9 +22,6 @@ export default (ctx, inject) => {
     ruang: repositoryWithAxios('ruang'),
     schedule: {
       ...repositoryWithAxios('schedule'),
-      export(id) {
-        return ctx.$axios.$get(`schedule/export/${id}`)
-      },
       print(query) {
         return ctx.$axios.$get(`schedule/print${queryGenerator(query)}`)
       }

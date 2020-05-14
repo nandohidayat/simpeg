@@ -1,9 +1,5 @@
 <template>
-  <base-card :toolbar="!single" data="absen">
-    <template #title>
-      <v-icon large left>mdi-fingerprint</v-icon
-      ><span class="title font-weight-light">Data Absen</span>
-    </template>
+  <v-card>
     <v-autocomplete
       v-if="!single"
       v-model="selected"
@@ -32,19 +28,14 @@
         </tr>
       </template>
     </v-data-table>
-  </base-card>
+  </v-card>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
 
-import baseCard from '@/components/data/base-card'
-
 export default {
-  components: {
-    'base-card': baseCard
-  },
   filters: {
     time(val) {
       return val !== null ? moment(val, 'HH:mm:ss').format('HH:mm') : ''

@@ -3,7 +3,7 @@ export const namespaced = true
 export const state = () => ({
   id: [],
   nama: [],
-  day: undefined,
+  day: 30,
   shift: [],
   job: [],
   jam: [],
@@ -31,6 +31,7 @@ export const mutations = {
     state.nama = []
     state.shift = []
     state.job = []
+    state.jam = []
   },
   UPDATE_SCHEDULES(state, { staff, day, value, type }) {
     if (day.length === 1) {
@@ -64,13 +65,11 @@ export const actions = {
     }
     await this.$api.schedule.update(dept, schedule)
   },
-  async exportSchedules({ commit }, id) {
-    await this.$api.schedule.export(id)
-  },
-  async printSchedules({ commit, rootState }, query) {
-    const res = await this.$api.schedule.print(query)
+  async printSchedules({ commit, rootState }, date) {
+    const res = await this.$api.schedule.print(date)
+
     commit('SET_SCHEDULES', res.data)
-    rootState.shift.shifts = res.data.shift
+
     rootState.departemen.departemen = res.data.dept
   }
 }

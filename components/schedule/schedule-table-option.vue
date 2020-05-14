@@ -57,9 +57,14 @@
           class="d-flex justify-space-around"
           style="margin-top: 2px;"
         >
-          <v-btn @click="openPrint()" color="teal" icon
-            ><v-icon>mdi-download</v-icon></v-btn
-          >
+          <v-tooltip bottom z-index="20">
+            <template #activator="{ on }">
+              <v-btn v-on="on" @click="openPrint()" color="teal" icon
+                ><v-icon>mdi-download</v-icon></v-btn
+              >
+            </template>
+            <span>Print</span>
+          </v-tooltip>
 
           <v-tooltip bottom z-index="20">
             <template #activator="{ on }">
@@ -112,100 +117,24 @@ export default {
     dept: {
       type: String,
       default: undefined
-    },
-    updater: {
-      type: String,
-      default: undefined
     }
   },
   data() {
     return {
-      menu: false,
-      ranged: {
-        dates: [],
-        shift: undefined,
-        nik: undefined
-      }
+      menu: false
     }
   },
   computed: {
-    ...mapState(['schedule', 'shift', 'schedulerequest', 'departemen']),
-    last() {
-      return new Date(this.year, this.month, 0).getDate()
-    },
+    ...mapState(['schedulerequest', 'departemen']),
     dateMoment() {
       return this.date
         ? moment(this.date)
             .locale('id')
             .format('MMMM YYYY')
         : ''
-    },
-    shiftDepartemen() {
-      return this.shift.shifts.filter((s) =>
-        this.shift.departemen.includes(s.id_shift)
-      )
-    },
-    redDate() {
-      return [
-        ...new Set(this.schedule.weekend.concat(this.schedule.holiday))
-      ].map((i) => {
-        return new Date(this.year, this.month - 1, i + 1)
-          .toISOString()
-          .substr(0, 10)
-      })
-    }
-  },
-  watch: {
-    updater() {
-      try {
-        this.$store.dispatch('schedule/fetchSchedules', {
-          year: this.year,
-          month: this.month,
-          dept: this.dept
-        })
-      } catch (err) {
-        this.$alert('error', err)
-      }
     }
   },
   methods: {
-    updateVerify() {
-      if (this.ranged.dates.length === 0) return true
-
-      if (parseInt(this.ranged.dates[0].substring(5, 7)) !== this.month)
-        return true
-      if (
-        parseInt(this.ranged.dates[1]) &&
-        parseInt(this.ranged.dates[1].substring(5, 7)) !== this.month
-      )
-        return true
-      return false
-    },
-    updateShift() {
-      if (this.updateVerify()) return
-
-      let first = this.ranged.dates[0]
-      let last = this.ranged.dates[1] || this.ranged.dates[0]
-      first = parseInt(first.slice(-2))
-      last = parseInt(last.slice(-2))
-
-      if (first > last) {
-        ;[first, last] = [last, first]
-      }
-
-      const idx = this.schedule.schedules.findIndex(
-        (s) => s.id_pegawai === this.ranged.nik
-      )
-
-      for (let i = first; i <= last; i++) {
-        this.schedule.schedules[idx][`day${i}`] = this.ranged.shift
-      }
-    },
-    resetRanged() {
-      this.ranged.dates = []
-      this.ranged.shift = undefined
-      this.ranged.nik = undefined
-    },
     async updateSchedule() {
       try {
         await this.$store.dispatch('schedule/updateSchedule', {
@@ -221,15 +150,9 @@ export default {
     openPrint() {
       const routeData = this.$router.resolve({
         name: 'schedule-print',
-        query: { dept: this.dept, date: this.date }
+        query: { dept: this.dept, year: this.year, month: this.month }
       })
       window.open(routeData.href, '_blank')
-    },
-    displayShift(val) {
-      return val === null || val === undefined
-        ? undefined
-        : this.shift.shifts.find((s) => parseInt(s.id_shift) === parseInt(val))
-            .kode
     }
   }
 }

@@ -18,20 +18,10 @@
         ></schedule-option>
         <schedule-table class="mt-3"></schedule-table>
       </v-tab-item>
-    </v-tabs-items>
-    <!-- <v-row>
-      <v-col cols="7">
+      <v-tab-item>
         <absen-card :year="year" :month="month" :dept="dept"></absen-card>
-      </v-col>
-      <v-col cols="5">
-        <schedule-change-card
-          :year="year"
-          :month="month"
-          :dept="dept"
-          :updater="updater"
-        ></schedule-change-card>
-      </v-col>
-    </v-row> -->
+      </v-tab-item>
+    </v-tabs-items>
   </div>
 </template>
 <script>
@@ -39,8 +29,7 @@ import { mapState } from 'vuex'
 
 import ScheduleTable from '@/components/schedule/schedule-table'
 import ScheduleOption from '@/components/schedule/schedule-table-option'
-// import scheduleChangeCard from '@/components/schedule/schedule-change-card'
-// import absenCard from '@/components/absen/absen-card'
+import AbsenCard from '@/components/absen/absen-card'
 
 export default {
   head() {
@@ -57,9 +46,8 @@ export default {
   },
   components: {
     ScheduleTable,
-    ScheduleOption
-    // 'schedule-change-card': scheduleChangeCard,
-    // 'absen-card': absenCard
+    ScheduleOption,
+    AbsenCard
   },
   data() {
     return {
@@ -107,12 +95,6 @@ export default {
       this.$store.dispatch('shift/fetchShift', this.dept),
       this.$store.dispatch('job/fetchJob', this.dept)
     ])
-
-    // await this.$store.dispatch('schedulechange/fetchSchedules', {
-    //   year: this.year,
-    //   month: this.month,
-    //   dept: this.dept
-    // })
   }
 }
 </script>
