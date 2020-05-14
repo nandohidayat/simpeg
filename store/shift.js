@@ -30,6 +30,10 @@ export const actions = {
     const res = await this.$api.shift.index()
     commit('SET_SHIFTS', res.data)
   },
+  async fetchShift({ commit }, id) {
+    const res = await this.$api.shift.show(id)
+    commit('SET_DEPARTEMEN', res.data)
+  },
   async createShift({ commit }, shift) {
     const res = await this.$api.shift.create(shift)
     commit('ADD_SHIFT', res.data)
@@ -48,5 +52,20 @@ export const actions = {
   },
   async updateDepartemen({ commit }, { departemen, shift }) {
     await this.$api.shiftDepartemen.update(departemen, { shift })
+  }
+}
+
+export const getters = {
+  fShift: (state) => {
+    const shift = state.departemen.map((d) =>
+      state.shifts.find((s) => s.id_shift === d)
+    )
+    return [{ id: undefined, job: undefined, color: 'white' }, ...shift]
+  },
+  getKode: (state) => (id) => {
+    const shift = state.shifts.find(
+      (s) => parseInt(s.id_shift) === parseInt(id)
+    )
+    return shift ? shift.kode : undefined
   }
 }

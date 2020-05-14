@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer v-model="drawer" temporary app>
+    <v-navigation-drawer v-model="drawer" temporary app style="z-index:1000">
       <v-list dense>
         <v-list-item to="/">
           <v-list-item-action>
@@ -31,7 +31,7 @@
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app color="teal" dark>
+    <v-app-bar app color="teal" dark style="z-index:999">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Alpha System</v-toolbar-title>
       <v-spacer></v-spacer>

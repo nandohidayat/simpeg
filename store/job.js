@@ -26,6 +26,10 @@ export const actions = {
     const res = await this.$api.job.index()
     commit('SET_JOBS', res.data)
   },
+  async fetchJob({ commit }, id) {
+    const res = await this.$api.job.show(id)
+    commit('SET_DEPARTEMEN', res.data)
+  },
   async createJob({ commit }, job) {
     const res = await this.$api.job.create(job)
     commit('ADD_JOB', res.data)
@@ -44,5 +48,18 @@ export const actions = {
   },
   async updateDepartemen({ commit }, { departemen, job }) {
     await this.$api.jobDepartemen.update(departemen, { job })
+  }
+}
+
+export const getters = {
+  fJob: (state) => {
+    const job = state.jobs.filter((j) =>
+      state.departemen.includes(parseInt(j.id_job))
+    )
+    return [{ id: undefined, job: undefined, color: 'white' }, ...job]
+  },
+  getColor: (state) => (id) => {
+    const job = state.jobs.find((j) => parseInt(j.id_job) === parseInt(id))
+    return job ? job.color : 'white'
   }
 }

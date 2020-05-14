@@ -1,44 +1,68 @@
 export const namespaced = true
 
 export const state = () => ({
-  schedules: [],
-  header: [],
+  id: [],
+  nama: [],
+  day: undefined,
+  shift: [],
+  job: [],
+  jam: [],
   weekend: [],
-  holiday: []
+  holiday: [],
+  assessor: undefined
 })
 
 export const mutations = {
-  SET_SCHEDULES(state, schedules) {
-    state.schedules = schedules.schedule
-    state.header = schedules.header
-    state.weekend = schedules.weekend.map((i) => parseInt(i))
-    state.holiday = schedules.holiday.map((i) => parseInt(i))
+  SET_SCHEDULES(
+    state,
+    { id, nama, day, shift, job, jam, weekend, holiday, ass }
+  ) {
+    state.id = id
+    state.nama = nama
+    state.day = day
+    state.shift = shift
+    state.job = job
+    state.jam = jam
+    state.weekend = weekend.map((i) => parseInt(i))
+    state.holiday = holiday.map((i) => parseInt(i))
+    state.assessor = ass
   },
   RESET(state) {
-    state.schedules = []
+    state.nama = []
+    state.shift = []
+    state.job = []
+  },
+  UPDATE_SCHEDULES(state, { staff, day, value, type }) {
+    if (day.length === 1) {
+      state[type][staff][day[0]] = value
+    } else {
+      for (let i = day[0]; i <= day[1]; i++) {
+        state[type][staff][i] = value
+      }
+    }
   }
 }
 
 export const actions = {
   async fetchSchedules({ commit, rootState }, date) {
     commit('RESET')
-    rootState.absen.absen = []
-    rootState.absen.pendapatan = 0
-    rootState.schedulechange.schedules = []
 
     const res = await this.$api.schedule.index(date)
 
     if (res.data.dept !== undefined)
       rootState.departemen.departemens = res.data.dept
-    rootState.shift.departemen = res.data.shift.map((i) => parseInt(i))
 
     commit('SET_SCHEDULES', res.data)
-
-    rootState.karyawan.karyawans = res.data.karyawan
-    rootState.schedulerequest.schedule = res.data.assessor
   },
-  async createSchedules({ commit }, { schedules, date }) {
-    await this.$api.schedule.create(schedules, date)
+  async updateSchedule({ state }, { dept, year, month }) {
+    const schedule = {
+      year,
+      month,
+      id: state.id,
+      shift: state.shift,
+      job: state.job
+    }
+    await this.$api.schedule.update(dept, schedule)
   },
   async exportSchedules({ commit }, id) {
     await this.$api.schedule.export(id)
@@ -48,5 +72,13 @@ export const actions = {
     commit('SET_SCHEDULES', res.data)
     rootState.shift.shifts = res.data.shift
     rootState.departemen.departemen = res.data.dept
+  }
+}
+
+export const getters = {
+  dayColor: (state) => (id) => {
+    if (state.weekend.includes(id)) return 'red'
+    if (state.holiday.includes(id)) return 'red lighten-3'
+    return 'white'
   }
 }
