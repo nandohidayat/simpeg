@@ -8,43 +8,39 @@
     :data.sync="data"
     @reset="reset()"
   >
-    <shift-form :data="data"></shift-form>
+    <schedule-form :data="data"></schedule-form>
   </base-table>
 </template>
 
 <script>
 import baseTable from '@/components/base/base-table'
-import shiftForm from '@/components/shift/shift-form'
+import scheduleForm from '@/components/schedule/schedule-access-form'
 
 export default {
   components: {
     'base-table': baseTable,
-    'shift-form': shiftForm
+    'schedule-form': scheduleForm
   },
   data() {
     return {
-      title: 'Shift',
+      title: 'Schedule Access',
       header: [
         {
-          text: 'Mulai',
-          value: 'mulai'
+          text: 'Departemen',
+          value: 'nm_dept'
         },
         {
-          text: 'Selesai',
-          value: 'selesai'
+          text: 'Access',
+          value: 'nm_acc'
         },
         {
-          text: 'Kode',
-          value: 'kode'
-        },
-        {
-          text: 'Ket',
-          value: 'keterangan'
+          text: 'Assessor',
+          value: 'assessor'
         }
       ],
-      store: 'shift',
-      state: 'shifts',
-      action: 'Shift',
+      store: 'scheduleaccess',
+      state: 'schedules',
+      action: 'Schedule',
       data: this.newData()
     }
   },
@@ -54,10 +50,9 @@ export default {
     },
     newData() {
       return {
-        mulai: undefined,
-        selesai: undefined,
-        kode: undefined,
-        keterangan: undefined
+        dept: undefined,
+        access: undefined,
+        assessor: false
       }
     }
   }

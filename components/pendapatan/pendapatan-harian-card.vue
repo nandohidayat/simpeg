@@ -2,11 +2,13 @@
   <base-table
     :header="header"
     :title="title"
-    #default="{newdata}"
-    namespace="pendapatanharian"
-    list="pendapatan"
+    :store="store"
+    :state="state"
+    :action="action"
+    :data.sync="data"
+    @reset="reset()"
   >
-    <pendapatan-form :newdata="newdata"></pendapatan-form>
+    <pendapatan-form :data="data"></pendapatan-form>
   </base-table>
 </template>
 
@@ -21,6 +23,7 @@ export default {
   },
   data() {
     return {
+      title: 'Pendapatan Harian',
       header: [
         {
           text: 'Tanggal',
@@ -31,7 +34,21 @@ export default {
           value: 'pendapatan'
         }
       ],
-      title: 'Pendapatan Harian'
+      store: 'pendapatanharian',
+      state: 'pendapatans',
+      action: 'Pendapatan',
+      data: this.newData()
+    }
+  },
+  methods: {
+    reset() {
+      this.data = this.newData()
+    },
+    newData() {
+      return {
+        tgl: undefined,
+        pendapatan: undefined
+      }
     }
   }
 }

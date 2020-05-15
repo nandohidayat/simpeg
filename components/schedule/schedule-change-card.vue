@@ -303,41 +303,26 @@ export default {
           month: this.month,
           year: this.year
         })
-      } catch (e) {
-        this.$store.dispatch('notification/addNotif', {
-          type: 'error',
-          text: e
-        })
+      } catch (err) {
+        this.$alert('error', err)
       }
     },
     async deleteSchedule(i) {
       try {
         await this.$store.dispatch('schedulechange/deleteSchedule', i)
         this.dialog = false
-        this.$store.dispatch('notification/addNotif', {
-          type: 'success',
-          text: 'Successfully Deleted'
-        })
-      } catch (e) {
-        this.$store.dispatch('notification/addNotif', {
-          type: 'error',
-          text: e
-        })
+        this.$alert('success', 'Successfully Deleted')
+      } catch (err) {
+        this.$alert('error', err)
       }
     },
     async updateSchedule(i) {
       try {
         await this.$store.dispatch('schedulechange/updateSchedule', i)
         this.dialog = false
-        this.$store.dispatch('notification/addNotif', {
-          type: 'success',
-          text: 'Successfully Saved'
-        })
-      } catch (e) {
-        this.$store.dispatch('notification/addNotif', {
-          type: 'error',
-          text: e
-        })
+        this.$alert('success', 'Successfully Updated')
+      } catch (err) {
+        this.$alert('error', err)
       }
     }
   }

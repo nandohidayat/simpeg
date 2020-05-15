@@ -96,10 +96,7 @@ export default {
           this.selectedSemua = this.akses.akses.semua
           this.selectedKepala = this.akses.akses.kepala
         } catch (err) {
-          this.$store.dispatch('notification/addNotif', {
-            text: err,
-            type: 'error'
-          })
+          this.$alert('error', err)
         }
       }
     },
@@ -111,15 +108,9 @@ export default {
           semua: this.selectedSemua,
           kepala: this.selectedKepala
         })
-        this.$store.dispatch('notification/addNotif', {
-          text: 'Saved',
-          type: 'success'
-        })
+        this.$alert('success', 'Successfully Saved')
       } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          text: err,
-          type: 'error'
-        })
+        this.$alert('error', err)
       }
     }
   }

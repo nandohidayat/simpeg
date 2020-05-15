@@ -93,10 +93,7 @@ export default {
         this.newUser.current = undefined
         this.editing = false
       } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          text: err,
-          type: 'error'
-        })
+        this.$alert('error', err)
       }
     }
   }

@@ -5,7 +5,10 @@
         <shift></shift>
       </v-col>
       <v-col cols="6">
-        <shift-departemen></shift-departemen>
+        <job></job>
+      </v-col>
+      <v-col cols="12">
+        <dept-sj></dept-sj>
       </v-col>
     </v-row>
     <v-row>
@@ -13,17 +16,18 @@
         <pendapatan-harian></pendapatan-harian>
       </v-col>
       <v-col cols="6">
-        <schedule-assessor></schedule-assessor>
+        <schedule-access></schedule-access>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-import shiftDepartemen from '@/components/shift/shift-departemen'
-import scheduleAssessor from '@/components/schedule/schedule-assessor-card'
-import pendapatanHarian from '@/components/pendapatan/pendapatan-harian-card'
-import shift from '@/components/shift/shift-card'
+import DeptSj from '@/components/departemen/dept-sj'
+import ScheduleAccess from '@/components/schedule/schedule-access-card'
+import PendapatanHarian from '@/components/pendapatan/pendapatan-harian-card'
+import Shift from '@/components/shift/shift-card'
+import Job from '@/components/job/job-card'
 
 export default {
   head() {
@@ -39,17 +43,19 @@ export default {
     }
   },
   components: {
-    'shift-departemen': shiftDepartemen,
-    'schedule-assessor': scheduleAssessor,
-    'pendapatan-harian': pendapatanHarian,
-    shift
+    DeptSj,
+    ScheduleAccess,
+    PendapatanHarian,
+    Shift,
+    Job
   },
   async fetch({ store }) {
     await Promise.all([
       store.dispatch('departemen/fetchDepartemens'),
       store.dispatch('shift/fetchShifts'),
+      store.dispatch('job/fetchJobs'),
       store.dispatch('pendapatanharian/fetchPendapatans'),
-      store.dispatch('scheduleassessor/fetchSchedules')
+      store.dispatch('scheduleaccess/fetchSchedules')
     ])
   }
 }

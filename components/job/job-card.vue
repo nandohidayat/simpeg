@@ -8,43 +8,35 @@
     :data.sync="data"
     @reset="reset()"
   >
-    <shift-form :data="data"></shift-form>
+    <job-form :data="data"></job-form>
   </base-table>
 </template>
 
 <script>
-import baseTable from '@/components/base/base-table'
-import shiftForm from '@/components/shift/shift-form'
+import BaseTable from '@/components/base/base-table'
+import JobForm from '@/components/job/job-form'
 
 export default {
   components: {
-    'base-table': baseTable,
-    'shift-form': shiftForm
+    BaseTable,
+    JobForm
   },
   data() {
     return {
-      title: 'Shift',
+      title: 'Job',
       header: [
         {
-          text: 'Mulai',
-          value: 'mulai'
-        },
-        {
-          text: 'Selesai',
-          value: 'selesai'
-        },
-        {
-          text: 'Kode',
-          value: 'kode'
+          text: 'Color',
+          value: 'color'
         },
         {
           text: 'Ket',
           value: 'keterangan'
         }
       ],
-      store: 'shift',
-      state: 'shifts',
-      action: 'Shift',
+      store: 'job',
+      state: 'jobs',
+      action: 'Job',
       data: this.newData()
     }
   },
@@ -54,9 +46,7 @@ export default {
     },
     newData() {
       return {
-        mulai: undefined,
-        selesai: undefined,
-        kode: undefined,
+        color: undefined,
         keterangan: undefined
       }
     }

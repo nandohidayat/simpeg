@@ -22,9 +22,6 @@ export default (ctx, inject) => {
     ruang: repositoryWithAxios('ruang'),
     schedule: {
       ...repositoryWithAxios('schedule'),
-      export(id) {
-        return ctx.$axios.$get(`schedule/export/${id}`)
-      },
       print(query) {
         return ctx.$axios.$get(`schedule/print${queryGenerator(query)}`)
       }
@@ -32,9 +29,12 @@ export default (ctx, inject) => {
     scheduleChange: repositoryWithAxios('schedule/change'),
     scheduleRequest: repositoryWithAxios('schedule/request'),
     scheduleAssessor: repositoryWithAxios('schedule/assessor'),
+    scheduleAccess: repositoryWithAxios('schedule/access'),
     shift: repositoryWithAxios('shift'),
     shiftDepartemen: repositoryWithAxios('shift/departemen'),
-    pendapatanharian: repositoryWithAxios('pendapatanharian')
+    job: repositoryWithAxios('job'),
+    jobDepartemen: repositoryWithAxios('job/departemen'),
+    pendapatanharian: repositoryWithAxios('pendapatan/harian')
   }
 
   inject('api', repositories)

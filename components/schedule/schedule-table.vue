@@ -1,337 +1,183 @@
 <template>
-  <div :class="read ? 'mt-5' : ''">
-    <v-card class="px-4" outlined>
-      <v-row style="height: 65px;">
-        <v-col v-if="read" cols="1">
-          <v-icon v-if="read" large left>mdi-calendar</v-icon>
-        </v-col>
-        <v-col :cols="read ? 4 : 5" class="pt-4">
-          <v-select
-            :value="dept"
-            :items="departemen.departemens"
-            :item-text="(obj) => obj.nm_dept"
-            :item-value="(obj) => obj.id_dept"
-            @change="updateDept"
-            label="Departemen"
-            dense
-          >
-          </v-select>
-        </v-col>
-        <v-col :cols="read ? 4 : 3"></v-col>
-        <v-col :cols="read ? 3 : 2">
-          <v-menu
-            ref="menu"
-            v-model="menu"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-          >
-            <template #activator="{ on }">
-              <v-text-field
-                :value="dateMoment"
-                v-on="on"
-                readonly
-                outlined
-                dense
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              :value="date"
-              @change="updateDate"
-              color="teal"
-              type="month"
-              no-title
-              locale="id-id"
-            >
-            </v-date-picker>
-          </v-menu>
-        </v-col>
-        <v-col
-          v-if="!read"
-          cols="2"
-          class="d-flex justify-space-around"
-          style="margin-top: 2px;"
-        >
-          <v-btn @click="openPrint()" color="teal" icon
-            ><v-icon>mdi-download</v-icon></v-btn
-          >
-
-          <v-tooltip bottom>
-            <template #activator="{ on }">
-              <v-btn v-on="on" @click="saveSchedules" color="teal" icon
-                ><v-icon>mdi-content-save</v-icon></v-btn
-              >
-            </template>
-            <span>Save</span>
-          </v-tooltip>
-          <request-btn
-            v-if="
-              schedulerequest.schedule !== null &&
-                schedulerequest.schedule !== undefined
-            "
-          ></request-btn>
-        </v-col>
-      </v-row>
-    </v-card>
-    <v-data-table
-      :headers="schedule.header"
-      :items="schedule.schedules"
-      :height="schedule.schedules.length < 9 ? undefined : '450px'"
-      :items-per-page="50"
-      class="elevation-2 mt-3"
-      fixed-header
-      hide-default-footer
+  <v-card outlined>
+    <div
+      style="overflow-y: auto; overflow-x: auto; white-space: nowrap;max-height: 450px"
     >
-      <template
-        :slot="`header.day${h}`"
-        slot-scope="{ header }"
-        v-for="h in schedule.holiday"
+      <div
+        :style="{
+          zIndex: 10,
+          position: 'sticky',
+          backgroundColor: 'white',
+          left: 0
+        }"
+        class="shadow d-inline-block"
       >
-        <span class="white--text red font-weight-black">{{ header.text }}</span>
-      </template>
-      <template
-        :slot="`header.day${w}`"
-        slot-scope="{ header }"
-        v-for="w in schedule.weekend"
-      >
-        <span class="red--text font-weight-black">{{ header.text }}</span>
-      </template>
-      <template #item.nama="{ item, value }">
-        <v-edit-dialog
-          v-if="!read"
-          @save="updateShift"
-          @open="ranged.nik = item.id_pegawai"
-          @close="resetRanged"
-          large
-          persistent
-          offset-y
-        >
-          <div class="text-truncate">{{ value }}</div>
-          <template v-slot:input>
-            <v-date-picker
-              v-model="ranged.dates"
-              :events="redDate"
-              no-title
-              range
-              locale="id-id"
-              color="teal"
-              class="mt-3"
-              event-color="red lighten-2"
-            >
-            </v-date-picker>
-            <v-select
-              v-model="ranged.shift"
-              :items="shiftDepartemen"
-              :item-text="(obj) => obj.kode"
-              :item-value="(obj) => obj.id_shift"
-              label="Shift"
-              dense
-              clearable
-              solo
-              class="mt-3"
-            ></v-select>
-          </template>
-        </v-edit-dialog>
-        <div v-else class="text-truncate">{{ value }}</div>
-      </template>
-      <template
-        :slot="`item.day${l}`"
-        slot-scope="{ value, item }"
-        v-for="l in last"
-      >
-        <span v-if="read">
-          {{ displayShift(value) }}
-        </span>
-        <v-edit-dialog v-else>
-          {{ displayShift(value) }}
-          <template v-slot:input>
-            <v-select
-              v-model="item[`day${l}`]"
-              :items="shiftDepartemen"
-              :item-text="(obj) => obj.kode"
-              :item-value="(obj) => obj.id_shift"
-              label="Shift"
-              style="width: 100px;"
-              clearable
-            ></v-select>
-          </template>
-        </v-edit-dialog>
-      </template>
-    </v-data-table>
-  </div>
+        <div :style="{ position: 'sticky', top: 0, zIndex: 11 }" class="shadow">
+          <v-btn height="35" width="200" depressed small tile color="white">
+            Nama
+          </v-btn>
+          <v-divider></v-divider>
+        </div>
+        <div v-for="(n, i) in schedule.nama" :key="i">
+          <view-button
+            :value="n"
+            @click.native="nameClick(i)"
+            @click.native.stop="showMenu"
+          ></view-button>
+          <v-divider></v-divider>
+        </div>
+      </div>
+      <div class="d-inline-block">
+        <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
+          <v-btn
+            v-for="d in schedule.day"
+            :key="d"
+            :color="dayColor(d)"
+            height="35px"
+            width="35px"
+            tile
+            depressed
+            small
+            >{{ d }}</v-btn
+          >
+          <v-divider></v-divider>
+        </div>
+        <div v-for="(shift, i) in schedule.shift" :key="i">
+          <schedule-button
+            v-for="(s, j) in shift"
+            :key="j"
+            :shift="s"
+            :job="schedule.job[i][j]"
+            :active="active(j, i)"
+            @click.native="ranged(j, i)"
+            @click.native.stop="showMenu"
+          ></schedule-button>
+          <v-divider></v-divider>
+        </div>
+      </div>
+      <div class="d-inline-block">
+        <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
+          <v-btn height="35" width="120" depressed small tile color="white">
+            Total Jam
+          </v-btn>
+          <v-divider></v-divider>
+        </div>
+        <div v-for="(jam, i) in schedule.jam" :key="i">
+          <v-btn
+            :ripple="false"
+            height="35"
+            width="120"
+            depressed
+            small
+            tile
+            color="white"
+          >
+            {{ jam }}
+          </v-btn>
+          <v-divider></v-divider>
+        </div>
+      </div>
+      <schedule-menu
+        :staff.sync="staff"
+        :day.sync="day"
+        :menu.sync="menu"
+        :switches="switches"
+        :x="x"
+        :y="y"
+      ></schedule-menu>
+    </div>
+    <v-row style="height: 40px" no-gutters align="center" justify="end">
+      <v-switch
+        v-model="switches"
+        :hide-details="true"
+        inset
+        class="ma-0 pa-0 mr-4"
+        color="teal"
+        label="Jobs"
+        dense
+      ></v-switch>
+    </v-row>
+  </v-card>
 </template>
 
 <script>
-import moment from 'moment'
-import 'moment/locale/id'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
-import requestButton from '@/components/schedule/schedule-request-button'
+import ScheduleButton from '@/components/schedule/schedule-button'
+import ScheduleMenu from '@/components/schedule/schedule-menu'
+import ViewButton from '@/components/schedule/schedule-view-button'
 
 export default {
+  layout: 'blank',
   components: {
-    'request-btn': requestButton
-  },
-  props: {
-    date: {
-      type: String,
-      default: undefined
-    },
-    read: {
-      type: Boolean,
-      default: false
-    },
-    year: {
-      type: Number,
-      default: undefined
-    },
-    month: {
-      type: Number,
-      default: undefined
-    },
-    dept: {
-      type: String,
-      default: undefined
-    },
-    updater: {
-      type: String,
-      default: undefined
-    }
+    ScheduleButton,
+    ScheduleMenu,
+    ViewButton
   },
   data() {
     return {
+      day: [],
+      staff: undefined,
       menu: false,
-      ranged: {
-        dates: [],
-        shift: undefined,
-        nik: undefined
-      }
+      x: 0,
+      y: 0,
+      switches: false
     }
   },
   computed: {
-    ...mapState(['schedule', 'shift', 'schedulerequest', 'departemen']),
-    last() {
-      return new Date(this.year, this.month, 0).getDate()
-    },
-    dateMoment() {
-      return this.date
-        ? moment(this.date)
-            .locale('id')
-            .format('MMMM YYYY')
-        : ''
-    },
-    shiftDepartemen() {
-      return this.shift.shifts.filter((s) =>
-        this.shift.departemen.includes(s.id_shift)
-      )
-    },
-    redDate() {
-      return [
-        ...new Set(this.schedule.weekend.concat(this.schedule.holiday))
-      ].map((i) => {
-        return new Date(this.year, this.month - 1, i + 1)
-          .toISOString()
-          .substr(0, 10)
-      })
-    }
-  },
-  watch: {
-    updater() {
-      try {
-        this.$store.dispatch('schedule/fetchSchedules', {
-          year: this.year,
-          month: this.month,
-          dept: this.dept
-        })
-      } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          text: err,
-          type: 'error'
-        })
-      }
-    }
+    ...mapState(['schedule']),
+    ...mapGetters('schedule', ['dayColor'])
   },
   methods: {
-    updateVerify() {
-      if (this.ranged.dates.length === 0) return true
-
-      if (parseInt(this.ranged.dates[0].substring(5, 7)) !== this.month)
-        return true
+    ranged(day, staff) {
       if (
-        parseInt(this.ranged.dates[1]) &&
-        parseInt(this.ranged.dates[1].substring(5, 7)) !== this.month
-      )
+        this.day.length === 0 ||
+        this.day.length === 2 ||
+        this.staff !== staff
+      ) {
+        this.staff = staff
+        this.day = [day]
+      } else if (this.day[0] < day) {
+        this.day.push(day)
+      } else if (this.day[0] > day) {
+        this.day.unshift(day)
+      } else {
+        this.staff = undefined
+        this.day = []
+      }
+    },
+    active(day, staff) {
+      if (
+        this.staff === staff &&
+        (day === this.day[0] || (day > this.day[0] && day <= this.day[1]))
+      ) {
         return true
+      }
       return false
     },
-    updateShift() {
-      if (this.updateVerify()) return
-
-      let first = this.ranged.dates[0]
-      let last = this.ranged.dates[1] || this.ranged.dates[0]
-      first = parseInt(first.slice(-2))
-      last = parseInt(last.slice(-2))
-
-      if (first > last) {
-        ;[first, last] = [last, first]
-      }
-
-      const idx = this.schedule.schedules.findIndex(
-        (s) => s.id_pegawai === this.ranged.nik
-      )
-
-      for (let i = first; i <= last; i++) {
-        this.schedule.schedules[idx][`day${i}`] = this.ranged.shift
+    nameClick(staff) {
+      if (this.staff === staff) {
+        this.day = []
+        this.staff = undefined
+      } else {
+        this.staff = staff
+        this.day = [0, this.schedule.day - 1]
       }
     },
-    resetRanged() {
-      this.ranged.dates = []
-      this.ranged.shift = undefined
-      this.ranged.nik = undefined
-    },
-    updateDate(event) {
-      this.$emit('update-date', event)
-      this.menu = false
-    },
-    updateDept(event) {
-      this.$emit('update-dept', event)
-    },
-    async saveSchedules() {
-      try {
-        await this.$store.dispatch('schedule/createSchedules', {
-          schedules: this.schedule.schedules,
-          date: { year: this.year, month: this.month, dept: this.dept }
-        })
-        this.$store.dispatch('notification/addNotif', {
-          text: 'Saved Successfully',
-          type: 'success'
-        })
-      } catch (err) {
-        this.$store.dispatch('notification/addNotif', {
-          text: err,
-          type: 'error'
-        })
-      }
-    },
-    openPrint() {
-      const routeData = this.$router.resolve({
-        name: 'schedule-print',
-        query: { dept: this.dept, date: this.date }
-      })
-      window.open(routeData.href, '_blank')
-    },
-    displayShift(val) {
-      return val === null || val === undefined
-        ? undefined
-        : this.shift.shifts.find((s) => parseInt(s.id_shift) === parseInt(val))
-            .kode
+    showMenu(e) {
+      if (this.staff === undefined) return (this.menu = false)
+      this.menu = true
+      this.x = e.clientX
+      this.y = e.clientY
     }
   }
 }
 </script>
 
 <style scoped>
-a {
-  text-decoration: none;
+.shadow {
+  -webkit-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.27);
+  -moz-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.27);
+  box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.27);
 }
 </style>

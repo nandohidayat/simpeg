@@ -12,15 +12,15 @@
         >
           <template v-slot:activator="{ on }">
             <v-text-field
-              v-model="newdata['mulai']"
+              v-model="data['mulai']"
               v-on="on"
               label="Mulai"
             ></v-text-field>
           </template>
           <v-time-picker
             v-if="menu1"
-            v-model="newdata['mulai']"
-            @click:minute="$refs.menu1.save(newdata['mulai'])"
+            v-model="data['mulai']"
+            @click:minute="$refs.menu1.save(data['mulai'])"
             format="24hr"
           ></v-time-picker>
         </v-menu>
@@ -36,15 +36,15 @@
         >
           <template v-slot:activator="{ on }">
             <v-text-field
-              v-model="newdata['selesai']"
+              v-model="data['selesai']"
               v-on="on"
               label="Selesai"
             ></v-text-field>
           </template>
           <v-time-picker
             v-if="menu2"
-            v-model="newdata['selesai']"
-            @click:minute="$refs.menu2.save(newdata['selesai'])"
+            v-model="data['selesai']"
+            @click:minute="$refs.menu2.save(data['selesai'])"
             format="24hr"
           ></v-time-picker>
         </v-menu>
@@ -52,11 +52,11 @@
     </v-row>
     <v-row>
       <v-col cols="6">
-        <v-text-field v-model="newdata['kode']" label="Kode"></v-text-field>
+        <v-text-field v-model="data['kode']" label="Kode"></v-text-field>
       </v-col>
       <v-col cols="6">
         <v-text-field
-          v-model="newdata['keterangan']"
+          v-model="data['keterangan']"
           label="Keterangan"
         ></v-text-field>
       </v-col>
@@ -67,7 +67,7 @@
 <script>
 export default {
   props: {
-    newdata: {
+    data: {
       type: Object,
       default: undefined
     }

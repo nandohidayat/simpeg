@@ -31,10 +31,12 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    // '@/plugins/vuetify',
     '@/plugins/auth',
     '@/plugins/repository',
     '@/plugins/guard',
-    '@/plugins/token'
+    '@/plugins/token',
+    '@/plugins/alert'
   ],
   /*
    ** Nuxt.js dev-modules
