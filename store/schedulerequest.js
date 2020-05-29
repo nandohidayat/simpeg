@@ -6,13 +6,13 @@ export const state = () => ({
 
 export const mutations = {
   EDT_SCHEDULE(state, schedule) {
-    state.schedule = schedule
+    state.schedule.status = schedule
   }
 }
 
 export const actions = {
-  async updateSchedule({ commit }, schedule) {
-    await this.$api.scheduleRequest.update(schedule.id, schedule)
-    commit('EDT_SCHEDULE', schedule)
+  async updateSchedule({ commit }, { dept, year, month, status }) {
+    await this.$api.scheduleRequest.update(dept, { year, month, status })
+    commit('EDT_SCHEDULE', status)
   }
 }

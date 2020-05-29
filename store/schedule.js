@@ -8,8 +8,7 @@ export const state = () => ({
   job: [],
   jam: [],
   weekend: [],
-  holiday: [],
-  assessor: undefined
+  holiday: []
 })
 
 export const mutations = {
@@ -25,7 +24,6 @@ export const mutations = {
     state.jam = jam
     state.weekend = weekend.map((i) => parseInt(i))
     state.holiday = holiday.map((i) => parseInt(i))
-    state.assessor = ass
   },
   RESET(state) {
     state.nama = []
@@ -52,6 +50,11 @@ export const actions = {
 
     if (res.data.dept !== undefined)
       rootState.departemen.departemens = res.data.dept
+
+    if (res.data.assessor !== undefined) {
+      if (res.data.assessor.status === null) res.data.assessor.status = 0
+      rootState.schedulerequest.schedule = res.data.assessor
+    }
 
     commit('SET_SCHEDULES', res.data)
   },
