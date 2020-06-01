@@ -4,9 +4,9 @@
     :ripple="false"
     height="35px"
     width="35px"
-    rounded
     depressed
     small
+    tile
     >{{ kode }}</v-btn
   >
 </template>
@@ -48,4 +48,4 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

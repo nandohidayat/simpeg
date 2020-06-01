@@ -79,6 +79,9 @@
               schedulerequest.schedule !== null &&
                 schedulerequest.schedule !== undefined
             "
+            :year="year"
+            :month="month"
+            :dept="dept"
           ></request-btn>
         </v-col>
       </v-row>
@@ -91,11 +94,11 @@ import moment from 'moment'
 import 'moment/locale/id'
 import { mapState } from 'vuex'
 
-import requestButton from '@/components/schedule/schedule-request-button'
+import RequestBtn from '@/components/schedule/schedule-request-button'
 
 export default {
   components: {
-    'request-btn': requestButton
+    RequestBtn
   },
   props: {
     date: {

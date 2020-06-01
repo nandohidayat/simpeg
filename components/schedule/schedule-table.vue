@@ -49,8 +49,7 @@
             :shift="s"
             :job="schedule.job[i][j]"
             :active="active(j, i)"
-            @click.native="ranged(j, i)"
-            @click.native.stop="showMenu"
+            @click.native="(event) => ranged(event, j, i)"
           ></schedule-button>
           <v-divider></v-divider>
         </div>
@@ -129,7 +128,7 @@ export default {
     ...mapGetters('schedule', ['dayColor'])
   },
   methods: {
-    ranged(day, staff) {
+    ranged(event, day, staff) {
       if (
         this.day.length === 0 ||
         this.day.length === 2 ||
@@ -145,6 +144,7 @@ export default {
         this.staff = undefined
         this.day = []
       }
+      this.showMenu(event)
     },
     active(day, staff) {
       if (
@@ -166,15 +166,21 @@ export default {
     },
     showMenu(e) {
       if (this.staff === undefined) return (this.menu = false)
-      this.menu = true
       this.x = e.clientX
       this.y = e.clientY
+      this.menu = true
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
+.v-btn {
+  border-right: 1px solid map-get($grey, lighten-2) !important;
+}
+
 .shadow {
   -webkit-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.27);
   -moz-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.27);

@@ -2,24 +2,27 @@
   <div>
     <v-tooltip
       v-if="
-        (!schedulerequest.schedule.ass &&
-          parseInt(schedulerequest.schedule.req) === 1) ||
-          (schedulerequest.schedule.ass &&
-            parseInt(schedulerequest.schedule.req) === 0)
+        (!schedulerequest.schedule.assessor &&
+          parseInt(schedulerequest.schedule.status) === 1) ||
+          (schedulerequest.schedule.assessor &&
+            parseInt(schedulerequest.schedule.status) === 0)
       "
       bottom
+      z-index="20"
     >
       <template #activator="{ on }">
         <v-btn v-on="on" color="teal" icon><v-icon>mdi-sync</v-icon></v-btn>
       </template>
-      <span>Processing</span>
+      <span v-if="schedulerequest.schedule.assessor">Belum Dikirim</span>
+      <span v-else>Sedang Direview</span>
     </v-tooltip>
     <v-tooltip
       v-if="
-        !schedulerequest.schedule.ass &&
-          parseInt(schedulerequest.schedule.req) === 0
+        !schedulerequest.schedule.assessor &&
+          parseInt(schedulerequest.schedule.status) === 0
       "
       bottom
+      z-index="20"
     >
       <template #activator="{ on }">
         <v-btn v-on="on" @click="saveRequest(1)" color="teal" icon
@@ -30,13 +33,14 @@
     </v-tooltip>
     <v-menu
       v-if="
-        schedulerequest.schedule.ass &&
-          parseInt(schedulerequest.schedule.req) === 1
+        schedulerequest.schedule.assessor &&
+          parseInt(schedulerequest.schedule.status) === 1
       "
       bottom
+      z-index="20"
     >
       <template v-slot:activator="{ on: menu }">
-        <v-tooltip bottom>
+        <v-tooltip bottom z-index="20">
           <template v-slot:activator="{ on: tooltip }">
             <v-btn v-on="{ ...tooltip, ...menu }" color="teal" icon
               ><v-icon>mdi-send</v-icon></v-btn
@@ -45,31 +49,21 @@
           <span>Respon</span>
         </v-tooltip>
       </template>
-      <v-card>
-        <v-card-text>
-          <v-btn
-            @click="saveRequest(2)"
-            color="success"
-            class="mb-3"
-            small
-            block
-            >Accept</v-btn
-          >
-          <v-btn @click="saveRequest(0)" color="error" small block
-            >Decline</v-btn
-          >
-        </v-card-text>
-      </v-card>
+      <v-list dense>
+        <v-list-item @click="saveRequest(2)">Accept</v-list-item>
+        <v-list-item @click="saveRequest(0)">Decline</v-list-item>
+      </v-list>
     </v-menu>
     <v-menu
       v-if="
-        schedulerequest.schedule.ass &&
-          parseInt(schedulerequest.schedule.req) === 2
+        schedulerequest.schedule.assessor &&
+          parseInt(schedulerequest.schedule.status) === 2
       "
       bottom
+      z-index="20"
     >
       <template v-slot:activator="{ on: menu }">
-        <v-tooltip bottom>
+        <v-tooltip bottom z-index="20">
           <template v-slot:activator="{ on: tooltip }">
             <v-btn v-on="{ ...tooltip, ...menu }" color="teal" icon
               ><v-icon>mdi-check-bold</v-icon></v-btn
@@ -78,18 +72,17 @@
           <span>Accepted</span>
         </v-tooltip>
       </template>
-      <v-card>
-        <v-card-text>
-          <v-btn @click="saveRequest(0)" color="error" small>Cancel</v-btn>
-        </v-card-text>
-      </v-card>
+      <v-list>
+        <v-list-item @click="saveRequest(0)">Cancel</v-list-item>
+      </v-list>
     </v-menu>
     <v-tooltip
       v-if="
-        !schedulerequest.schedule.ass &&
-          parseInt(schedulerequest.schedule.req) === 2
+        !schedulerequest.schedule.assessor &&
+          parseInt(schedulerequest.schedule.status) === 2
       "
       bottom
+      z-index="20"
     >
       <template #activator="{ on }">
         <v-btn v-on="on" color="teal" icon
@@ -105,6 +98,20 @@
 import { mapState } from 'vuex'
 
 export default {
+  props: {
+    month: {
+      type: [String, Number],
+      default: undefined
+    },
+    year: {
+      type: [String, Number],
+      default: undefined
+    },
+    dept: {
+      type: String,
+      default: String
+    }
+  },
   computed: {
     ...mapState(['schedulerequest'])
   },
@@ -112,13 +119,13 @@ export default {
     async saveRequest(status) {
       if (!confirm('Apakah anda yakin?')) return
 
-      const data = {
-        ...this.schedulerequest.schedule,
-        req: status
-      }
-
       try {
-        await this.$store.dispatch('schedulerequest/updateSchedule', data)
+        await this.$store.dispatch('schedulerequest/updateSchedule', {
+          dept: this.dept,
+          year: this.year,
+          month: this.month,
+          status
+        })
         this.$alert('success', 'Successfully Saved')
       } catch (err) {
         this.$alert('error', err)
