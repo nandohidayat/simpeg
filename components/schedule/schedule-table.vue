@@ -20,9 +20,9 @@
         </div>
         <div v-for="(n, i) in schedule.nama" :key="i">
           <view-button
+            :id="`schedule${i}`"
             :value="n"
-            @click.native="nameClick(i)"
-            @click.native.stop="showMenu"
+            @click.native="(e) => nameClick(e, i)"
           ></view-button>
           <v-divider></v-divider>
         </div>
@@ -155,7 +155,7 @@ export default {
       }
       return false
     },
-    nameClick(staff) {
+    nameClick(event, staff) {
       if (this.staff === staff) {
         this.day = []
         this.staff = undefined
@@ -163,6 +163,7 @@ export default {
         this.staff = staff
         this.day = [0, this.schedule.day - 1]
       }
+      this.showMenu(event)
     },
     showMenu(e) {
       if (this.staff === undefined) return (this.menu = false)

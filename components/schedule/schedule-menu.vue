@@ -5,6 +5,7 @@
     :position-y="y"
     :close-on-click="false"
     :close-on-content-click="false"
+    :transition="false"
     absolute
     offset-y
     z-index="21"
