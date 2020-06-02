@@ -72,9 +72,6 @@
       </v-container>
     </v-content>
     <notification-bar></notification-bar>
-    <v-footer color="teal">
-      <span class="white--text">&copy; 2019</span>
-    </v-footer>
   </v-app>
 </template>
 
