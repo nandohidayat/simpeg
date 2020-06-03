@@ -3,7 +3,6 @@
     <v-btn
       :id="id"
       :ripple="false"
-      v-on="on"
       height="35"
       width="200"
       depressed
@@ -20,6 +19,7 @@
     </v-btn>
 
     <v-menu
+      v-if="order"
       :activator="`#${id}`"
       v-model="menu"
       :transition="false"
@@ -52,6 +52,10 @@ export default {
     value: {
       type: String,
       default: undefined
+    },
+    order: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

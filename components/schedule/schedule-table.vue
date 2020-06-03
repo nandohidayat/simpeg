@@ -22,6 +22,7 @@
           <view-button
             :id="`schedule${i}`"
             :value="n"
+            :order="order"
             @click.native="(e) => nameClick(e, i)"
           ></view-button>
           <v-divider></v-divider>
@@ -95,6 +96,15 @@
         label="Jobs"
         dense
       ></v-switch>
+      <v-switch
+        v-model="order"
+        :hide-details="true"
+        inset
+        class="ma-0 pa-0 mr-4"
+        color="teal"
+        label="Order"
+        dense
+      ></v-switch>
     </v-row>
   </v-card>
 </template>
@@ -120,7 +130,8 @@ export default {
       menu: false,
       x: 0,
       y: 0,
-      switches: false
+      switches: false,
+      order: false
     }
   },
   computed: {
