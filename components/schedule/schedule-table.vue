@@ -18,12 +18,17 @@
           </v-btn>
           <v-divider></v-divider>
         </div>
-        <div v-for="(n, i) in schedule.nama" :key="i">
+        <div v-for="(o, i) in schedule.order" :key="i">
+          <view-button
+            v-if="o === NaN"
+            :id="`schedule${i}`"
+            :order="order"
+          ></view-button>
           <view-button
             :id="`schedule${i}`"
-            :value="n"
+            :value="schedule.nama[o]"
             :order="order"
-            @click.native="(e) => nameClick(e, i)"
+            @click.native="(e) => nameClick(e, o)"
           ></view-button>
           <v-divider></v-divider>
         </div>
@@ -43,14 +48,19 @@
           >
           <v-divider></v-divider>
         </div>
-        <div v-for="(shift, i) in schedule.shift" :key="i">
+        <div v-for="(o, i) in schedule.order" :key="i">
           <schedule-button
-            v-for="(s, j) in shift"
+            v-if="o === NaN"
+            v-for="d in schedule.day"
+            :key="d"
+          ></schedule-button>
+          <schedule-button
+            v-for="(s, j) in schedule.shift[o]"
             :key="j"
             :shift="s"
-            :job="schedule.job[i][j]"
-            :active="active(j, i)"
-            @click.native="(event) => ranged(event, j, i)"
+            :job="schedule.job[o][j]"
+            :active="active(j, o)"
+            @click.native="(e) => ranged(e, j, o)"
           ></schedule-button>
           <v-divider></v-divider>
         </div>

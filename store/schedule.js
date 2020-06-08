@@ -1,40 +1,7 @@
 export const namespaced = true
 
 export const state = () => ({
-  order: [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30,
-    31
-  ],
+  order: [],
   id: [],
   nama: [],
   day: 30,
@@ -48,16 +15,17 @@ export const state = () => ({
 export const mutations = {
   SET_SCHEDULES(
     state,
-    { id, nama, day, shift, job, jam, weekend, holiday, ass }
+    { order, id, nama, day, shift, job, jam, weekend, holiday, ass }
   ) {
+    state.order = order.map(Number)
     state.id = id
     state.nama = nama
     state.day = day
     state.shift = shift
     state.job = job
     state.jam = jam
-    state.weekend = weekend.map((i) => parseInt(i))
-    state.holiday = holiday.map((i) => parseInt(i))
+    state.weekend = weekend.map(Number)
+    state.holiday = holiday.map(Number)
   },
   RESET(state) {
     state.nama = []
