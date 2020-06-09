@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-btn
-      :id="id"
+      :id="`schedule${id}`"
       :ripple="false"
       height="35"
       width="200"
@@ -20,7 +20,7 @@
 
     <v-menu
       v-if="order"
-      :activator="`#${id}`"
+      :activator="`#schedule${id}`"
       v-model="menu"
       :transition="false"
       open-on-hover
@@ -28,13 +28,16 @@
       max-width="58"
     >
       <v-list dense>
-        <v-list-item @click="() => {}" dense>
+        <v-list-item v-if="id !== 0" @click="reorder('up')" dense>
           <v-icon>mdi-arrow-up-circle-outline</v-icon>
         </v-list-item>
-        <v-list-item @click="() => {}" dense>
+        <v-list-item v-if="value === undefined" @click="reorder('del')" dense>
+          <v-icon>mdi-minus-circle-outline</v-icon>
+        </v-list-item>
+        <v-list-item v-else-if="!lastData(id)" @click="reorder('add')" dense>
           <v-icon>mdi-plus-circle-outline</v-icon>
         </v-list-item>
-        <v-list-item @click="() => {}" dense>
+        <v-list-item v-if="!lastData(id)" @click="reorder('down')" dense>
           <v-icon>mdi-arrow-down-circle-outline</v-icon>
         </v-list-item>
       </v-list>
@@ -43,10 +46,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: {
     id: {
-      type: String,
+      type: Number,
       default: undefined
     },
     value: {
@@ -61,6 +66,14 @@ export default {
   data() {
     return {
       menu: false
+    }
+  },
+  computed: {
+    ...mapGetters('schedule', ['lastData'])
+  },
+  methods: {
+    reorder(type) {
+      this.$store.commit('schedule/REORDER', { idx: this.id, type })
     }
   }
 }

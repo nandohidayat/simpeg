@@ -1,6 +1,7 @@
-export const namespaced = true
+import Vue from 'vue'
 
 export const state = () => ({
+  overlay: false,
   order: [],
   id: [],
   nama: [],
@@ -15,7 +16,7 @@ export const state = () => ({
 export const mutations = {
   SET_SCHEDULES(
     state,
-    { order, id, nama, day, shift, job, jam, weekend, holiday, ass }
+    { order, id, nama, day, shift, job, jam, weekend, holiday }
   ) {
     state.order = order.map(Number)
     state.id = id
@@ -41,12 +42,30 @@ export const mutations = {
         state[type][staff][i] = value
       }
     }
+  },
+  TOOGLE_OVERLAY(state, status) {
+    state.overlay = status
+  },
+  REORDER(state, { idx, type }) {
+    if (type === 'up') {
+      const temp = state.order[idx - 1]
+      Vue.set(state.order, idx - 1, state.order[idx])
+      Vue.set(state.order, idx, temp)
+    } else if (type === 'down') {
+      const temp = state.order[idx]
+      Vue.set(state.order, idx, state.order[idx + 1])
+      Vue.set(state.order, idx + 1, temp)
+    } else if (type === 'add') {
+      state.order.splice(idx + 1, 0, NaN)
+    } else {
+      state.order.splice(idx, 1)
+    }
   }
 }
 
 export const actions = {
   async fetchSchedules({ commit, rootState }, date) {
-    commit('RESET')
+    commit('TOOGLE_OVERLAY', true)
 
     const res = await this.$api.schedule.index(date)
 
@@ -59,6 +78,8 @@ export const actions = {
     }
 
     commit('SET_SCHEDULES', res.data)
+
+    commit('TOOGLE_OVERLAY', false)
   },
   async updateSchedule({ state }, { dept, year, month }) {
     const schedule = {
@@ -76,6 +97,11 @@ export const actions = {
     commit('SET_SCHEDULES', res.data)
 
     rootState.departemen.departemen = res.data.dept
+  },
+  async updateScheduleOrder({ state }, { dept }) {
+    await this.$api.scheduleOrder.update(dept, {
+      order: state.order.join()
+    })
   }
 }
 
@@ -84,5 +110,8 @@ export const getters = {
     if (state.weekend.includes(id)) return 'red'
     if (state.holiday.includes(id)) return 'red lighten-3'
     return 'white'
+  },
+  lastData: (state) => (id) => {
+    return state.order.length - 1 === id
   }
 }

@@ -120,6 +120,10 @@ export default {
     dept: {
       type: String,
       default: undefined
+    },
+    order: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -140,11 +144,17 @@ export default {
   methods: {
     async updateSchedule() {
       try {
-        await this.$store.dispatch('schedule/updateSchedule', {
-          dept: this.dept,
-          year: this.year,
-          month: this.month
-        })
+        if (this.order) {
+          await this.$store.dispatch('schedule/updateScheduleOrder', {
+            dept: this.dept
+          })
+        } else {
+          await this.$store.dispatch('schedule/updateSchedule', {
+            dept: this.dept,
+            year: this.year,
+            month: this.month
+          })
+        }
         this.$alert('success', 'Successfully Saved')
       } catch (err) {
         this.$alert('error', err)

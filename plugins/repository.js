@@ -30,6 +30,7 @@ export default (ctx, inject) => {
     scheduleRequest: repositoryWithAxios('schedule/request'),
     scheduleAssessor: repositoryWithAxios('schedule/assessor'),
     scheduleAccess: repositoryWithAxios('schedule/access'),
+    scheduleOrder: repositoryWithAxios('schedule/order'),
     shift: repositoryWithAxios('shift'),
     shiftDepartemen: repositoryWithAxios('shift/departemen'),
     job: repositoryWithAxios('job'),

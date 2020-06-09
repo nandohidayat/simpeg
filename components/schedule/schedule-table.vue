@@ -19,13 +19,10 @@
           <v-divider></v-divider>
         </div>
         <div v-for="(o, i) in schedule.order" :key="i">
+          <view-button v-if="isNaN(o)" :id="i" :order="order"></view-button>
           <view-button
-            v-if="o === NaN"
-            :id="`schedule${i}`"
-            :order="order"
-          ></view-button>
-          <view-button
-            :id="`schedule${i}`"
+            v-else
+            :id="i"
             :value="schedule.nama[o]"
             :order="order"
             @click.native="(e) => nameClick(e, o)"
@@ -49,19 +46,28 @@
           <v-divider></v-divider>
         </div>
         <div v-for="(o, i) in schedule.order" :key="i">
-          <schedule-button
-            v-if="o === NaN"
-            v-for="d in schedule.day"
-            :key="d"
-          ></schedule-button>
-          <schedule-button
-            v-for="(s, j) in schedule.shift[o]"
-            :key="j"
-            :shift="s"
-            :job="schedule.job[o][j]"
-            :active="active(j, o)"
-            @click.native="(e) => ranged(e, j, o)"
-          ></schedule-button>
+          <div v-if="isNaN(o)">
+            <v-btn
+              v-for="d in schedule.day"
+              :key="d"
+              height="35px"
+              width="35px"
+              color="white"
+              tile
+              depressed
+              small
+            ></v-btn>
+          </div>
+          <div v-else>
+            <schedule-button
+              v-for="(s, j) in schedule.shift[o]"
+              :key="j"
+              :shift="s"
+              :job="schedule.job[o][j]"
+              :active="active(j, o)"
+              @click.native="(e) => ranged(e, j, o)"
+            ></schedule-button>
+          </div>
           <v-divider></v-divider>
         </div>
       </div>
@@ -107,8 +113,9 @@
         dense
       ></v-switch>
       <v-switch
-        v-model="order"
+        :value="order"
         :hide-details="true"
+        @change="$emit('update:order', !order)"
         inset
         class="ma-0 pa-0 mr-4"
         color="teal"
@@ -116,6 +123,9 @@
         dense
       ></v-switch>
     </v-row>
+    <v-overlay :value="schedule.overlay" absolute z-index="10">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </v-card>
 </template>
 
@@ -133,6 +143,12 @@ export default {
     ScheduleMenu,
     ViewButton
   },
+  props: {
+    order: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       day: [],
@@ -140,8 +156,7 @@ export default {
       menu: false,
       x: 0,
       y: 0,
-      switches: false,
-      order: false
+      switches: false
     }
   },
   computed: {
