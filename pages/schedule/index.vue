@@ -15,8 +15,9 @@
           :date.sync="date"
           :year="year"
           :month="month"
+          :order="order"
         ></schedule-option>
-        <schedule-table class="mt-3"></schedule-table>
+        <schedule-table :order.sync="order" class="mt-3"></schedule-table>
       </v-tab-item>
       <v-tab-item>
         <absen-card :year="year" :month="month" :dept="dept"></absen-card>
@@ -53,7 +54,8 @@ export default {
     return {
       date: new Date().toISOString().substr(0, 7),
       dept: undefined,
-      tab: undefined
+      tab: undefined,
+      order: false
     }
   },
   computed: {

@@ -38,7 +38,9 @@ export default {
       return this.getKode(this.shift)
     },
     color() {
-      if (this.active) {
+      if (this.active === undefined) {
+        return 'white'
+      } else if (this.active) {
         return 'grey lighten-2'
       } else {
         return this.getColor(this.job)
