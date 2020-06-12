@@ -39,7 +39,7 @@
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" outlined>
             <v-icon class="mr-2">mdi-account-circle</v-icon>
-            {{ user.user.username }}
+            {{ user.user.nama }}
           </v-btn>
         </template>
         <v-card tile>
