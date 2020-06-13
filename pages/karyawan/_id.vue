@@ -27,13 +27,13 @@
           :updater="updater"
           single
         ></schedule-change-card>
-        <absen-card
+        <!-- <absen-card
           id="data-absen"
           :year="year"
           :month="month"
           :dept="dept"
           single
-        ></absen-card>
+        ></absen-card> -->
         <karyawan-access id="data-akses" v-if="grantedAccess"></karyawan-access>
         <karyawan-delete
           id="hapus-karyawan"
@@ -47,7 +47,7 @@
 <script>
 import { mapState } from 'vuex'
 
-import absenCard from '@/components/absen/absen-card'
+// import absenCard from '@/components/absen/absen-card'
 import karyawanMenu from '@/components/karyawan/karyawan-menu'
 import karyawanData from '@/components/karyawan/karyawan-data'
 import karyawanAccess from '@/components/karyawan/karyawan-access'
@@ -69,7 +69,7 @@ export default {
     }
   },
   components: {
-    'absen-card': absenCard,
+    // 'absen-card': absenCard,
     'karyawan-menu': karyawanMenu,
     'karyawan-data': karyawanData,
     'karyawan-access': karyawanAccess,
