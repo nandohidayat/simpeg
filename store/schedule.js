@@ -98,6 +98,9 @@ export const actions = {
 
     rootState.departemen.departemen = res.data.dept
   },
+  async exportSchedule(ctx, date) {
+    await this.$api.schedule.export(date)
+  },
   async updateScheduleOrder({ state }, { dept }) {
     await this.$api.scheduleOrder.update(dept, {
       order: state.order.join()

@@ -59,11 +59,11 @@
         >
           <v-tooltip bottom z-index="20">
             <template #activator="{ on }">
-              <v-btn v-on="on" @click="openPrint()" color="teal" icon
+              <v-btn v-on="on" @click="exportSchedule()" color="teal" icon
                 ><v-icon>mdi-download</v-icon></v-btn
               >
             </template>
-            <span>Print</span>
+            <span>Export</span>
           </v-tooltip>
 
           <v-tooltip bottom z-index="20">
@@ -160,12 +160,12 @@ export default {
         this.$alert('error', err)
       }
     },
-    openPrint() {
-      const routeData = this.$router.resolve({
-        name: 'schedule-print',
-        query: { dept: this.dept, year: this.year, month: this.month }
-      })
-      window.open(routeData.href, '_blank')
+    exportSchedule() {
+      const win = window.open(
+        `${this.$axios.defaults.baseURL}schedule/export?dept=${this.dept}&year=${this.year}&month=${this.month}`,
+        '_blank'
+      )
+      win.focus()
     }
   }
 }
