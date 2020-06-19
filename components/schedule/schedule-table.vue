@@ -78,7 +78,7 @@
           </v-btn>
           <v-divider></v-divider>
         </div>
-        <div v-for="(jam, i) in schedule.jam" :key="i">
+        <div v-for="(o, i) in schedule.order" :key="i">
           <v-btn
             :ripple="false"
             height="35"
@@ -88,7 +88,7 @@
             tile
             color="white"
           >
-            {{ jam }}
+            {{ schedule.jam[o] }}
           </v-btn>
           <v-divider></v-divider>
         </div>

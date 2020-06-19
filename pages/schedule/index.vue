@@ -20,7 +20,7 @@
         <schedule-table :order.sync="order" class="mt-3"></schedule-table>
       </v-tab-item>
       <v-tab-item>
-        <absen-card :year="year" :month="month" :dept="dept"></absen-card>
+        <absen-tab></absen-tab>
       </v-tab-item>
     </v-tabs-items>
   </div>
@@ -30,7 +30,7 @@ import { mapState } from 'vuex'
 
 import ScheduleTable from '@/components/schedule/schedule-table'
 import ScheduleOption from '@/components/schedule/schedule-table-option'
-import AbsenCard from '@/components/absen/absen-card'
+import AbsenTab from '@/components/absen/absen-tab'
 
 export default {
   head() {
@@ -48,7 +48,7 @@ export default {
   components: {
     ScheduleTable,
     ScheduleOption,
-    AbsenCard
+    AbsenTab
   },
   data() {
     return {
