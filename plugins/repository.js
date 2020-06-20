@@ -27,7 +27,7 @@ export default (ctx, inject) => {
         return ctx.$axios.$get(`schedule/print${queryGenerator(query)}`)
       },
       export(query) {
-        return ctx.$axios.$get(`schedule/export${queryGenerator(query)}`)
+        return ctx.$axios.$get(`schedule/excel${queryGenerator(query)}`)
       }
     },
     scheduleChange: repositoryWithAxios('schedule/change'),
