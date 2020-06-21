@@ -1,11 +1,8 @@
 <template>
-  <div :class="read ? 'mt-5' : ''">
+  <div>
     <v-card class="px-4" outlined>
-      <v-row style="height: 65px;">
-        <v-col v-if="read" cols="1">
-          <v-icon v-if="read" large left>mdi-calendar</v-icon>
-        </v-col>
-        <v-col :cols="read ? 4 : 5" class="pt-4">
+      <v-row>
+        <v-col :cols="5" class="pt-4">
           <v-select
             :value="dept"
             :items="departemen.departemens"
@@ -15,11 +12,12 @@
             style="z-index:20"
             label="Departemen"
             dense
+            hide-details
           >
           </v-select>
         </v-col>
-        <v-col :cols="read ? 4 : 3"></v-col>
-        <v-col :cols="read ? 3 : 2">
+        <v-col :cols="1"></v-col>
+        <v-col :cols="3">
           <v-menu
             ref="menu"
             v-model="menu"
@@ -35,6 +33,7 @@
                 readonly
                 outlined
                 dense
+                hide-details
               ></v-text-field>
             </template>
             <v-date-picker
@@ -51,12 +50,7 @@
             </v-date-picker>
           </v-menu>
         </v-col>
-        <v-col
-          v-if="!read"
-          cols="2"
-          class="d-flex justify-space-around"
-          style="margin-top: 2px;"
-        >
+        <v-col cols="3" class="d-flex justify-space-around">
           <v-tooltip bottom z-index="20">
             <template #activator="{ on }">
               <v-btn v-on="on" @click="exportSchedule()" color="teal" icon
@@ -64,6 +58,14 @@
               >
             </template>
             <span>Export</span>
+          </v-tooltip>
+          <v-tooltip bottom z-index="20">
+            <template #activator="{ on }">
+              <v-btn v-on="on" @click="exportSchedule()" color="teal" icon
+                ><v-icon>mdi-upload</v-icon></v-btn
+              >
+            </template>
+            <span>Import</span>
           </v-tooltip>
 
           <v-tooltip bottom z-index="20">
