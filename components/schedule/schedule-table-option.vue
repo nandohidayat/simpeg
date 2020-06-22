@@ -1,11 +1,8 @@
 <template>
-  <div :class="read ? 'mt-5' : ''">
+  <div>
     <v-card class="px-4" outlined>
-      <v-row style="height: 65px;">
-        <v-col v-if="read" cols="1">
-          <v-icon v-if="read" large left>mdi-calendar</v-icon>
-        </v-col>
-        <v-col :cols="read ? 4 : 5" class="pt-4">
+      <v-row>
+        <v-col :cols="5" class="pt-4">
           <v-select
             :value="dept"
             :items="departemen.departemens"
@@ -15,11 +12,12 @@
             style="z-index:20"
             label="Departemen"
             dense
+            hide-details
           >
           </v-select>
         </v-col>
-        <v-col :cols="read ? 4 : 3"></v-col>
-        <v-col :cols="read ? 3 : 2">
+        <v-col :cols="1"></v-col>
+        <v-col :cols="3">
           <v-menu
             ref="menu"
             v-model="menu"
@@ -35,6 +33,7 @@
                 readonly
                 outlined
                 dense
+                hide-details
               ></v-text-field>
             </template>
             <v-date-picker
@@ -51,20 +50,49 @@
             </v-date-picker>
           </v-menu>
         </v-col>
-        <v-col
-          v-if="!read"
-          cols="2"
-          class="d-flex justify-space-around"
-          style="margin-top: 2px;"
-        >
+        <v-col cols="3" class="d-flex justify-space-around">
           <v-tooltip bottom z-index="20">
             <template #activator="{ on }">
-              <v-btn v-on="on" @click="openPrint()" color="teal" icon
+              <v-btn v-on="on" @click="exportSchedule()" color="teal" icon
                 ><v-icon>mdi-download</v-icon></v-btn
               >
             </template>
-            <span>Print</span>
+            <span>Export</span>
           </v-tooltip>
+          <v-menu
+            :close-on-content-click="false"
+            v-model="menu1"
+            z-index="20"
+            min-width="300"
+          >
+            <template #activator="{ on: menu2 }">
+              <v-tooltip bottom z-index="20">
+                <template #activator="{ on: tooltip }">
+                  <v-btn v-on="{ ...tooltip, ...menu2 }" color="teal" icon
+                    ><v-icon>mdi-upload</v-icon></v-btn
+                  >
+                </template>
+                <span>Import</span>
+              </v-tooltip>
+            </template>
+            <v-list dense>
+              <v-list-item dense>
+                <v-file-input
+                  v-model="jadwal"
+                  label="Jadwal"
+                  dense
+                  color="teal"
+                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                ></v-file-input>
+              </v-list-item>
+              <v-list-item dense>
+                <v-spacer></v-spacer>
+                <v-btn @click="importSchedule()" dark color="teal" small
+                  >Upload</v-btn
+                >
+              </v-list-item>
+            </v-list>
+          </v-menu>
 
           <v-tooltip bottom z-index="20">
             <template #activator="{ on }">
@@ -128,7 +156,9 @@ export default {
   },
   data() {
     return {
-      menu: false
+      menu: false,
+      menu1: false,
+      jadwal: undefined
     }
   },
   computed: {
@@ -160,12 +190,40 @@ export default {
         this.$alert('error', err)
       }
     },
-    openPrint() {
-      const routeData = this.$router.resolve({
-        name: 'schedule-print',
-        query: { dept: this.dept, year: this.year, month: this.month }
-      })
-      window.open(routeData.href, '_blank')
+    exportSchedule() {
+      const win = window.open(
+        `${this.$axios.defaults.baseURL}schedule/excel?dept=${this.dept}&year=${this.year}&month=${this.month}`,
+        '_blank'
+      )
+      win.focus()
+    },
+    async importSchedule() {
+      const formData = new FormData()
+      formData.append('schedules', this.jadwal)
+      try {
+        await this.$axios.$post(
+          `${this.$axios.defaults.baseURL}schedule/excel`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        )
+
+        this.menu1 = false
+        this.jadwal = undefined
+
+        this.$alert('success', 'Successfully Uploaded')
+
+        await this.$store.dispatch('schedule/fetchSchedules', {
+          year: this.year,
+          month: this.month,
+          dept: this.dept
+        })
+      } catch (err) {
+        this.$alert('error', err)
+      }
     }
   }
 }
