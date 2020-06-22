@@ -215,6 +215,12 @@ export default {
         this.jadwal = undefined
 
         this.$alert('success', 'Successfully Uploaded')
+
+        await this.$store.dispatch('schedule/fetchSchedules', {
+          year: this.year,
+          month: this.month,
+          dept: this.dept
+        })
       } catch (err) {
         this.$alert('error', err)
       }
