@@ -59,14 +59,40 @@
             </template>
             <span>Export</span>
           </v-tooltip>
-          <v-tooltip bottom z-index="20">
-            <template #activator="{ on }">
-              <v-btn v-on="on" @click="exportSchedule()" color="teal" icon
-                ><v-icon>mdi-upload</v-icon></v-btn
-              >
+          <v-menu
+            :close-on-content-click="false"
+            v-model="menu1"
+            z-index="20"
+            min-width="300"
+          >
+            <template #activator="{ on: menu2 }">
+              <v-tooltip bottom z-index="20">
+                <template #activator="{ on: tooltip }">
+                  <v-btn v-on="{ ...tooltip, ...menu2 }" color="teal" icon
+                    ><v-icon>mdi-upload</v-icon></v-btn
+                  >
+                </template>
+                <span>Import</span>
+              </v-tooltip>
             </template>
-            <span>Import</span>
-          </v-tooltip>
+            <v-list dense>
+              <v-list-item dense>
+                <v-file-input
+                  v-model="jadwal"
+                  label="Jadwal"
+                  dense
+                  color="teal"
+                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                ></v-file-input>
+              </v-list-item>
+              <v-list-item dense>
+                <v-spacer></v-spacer>
+                <v-btn @click="importSchedule()" dark color="teal" small
+                  >Upload</v-btn
+                >
+              </v-list-item>
+            </v-list>
+          </v-menu>
 
           <v-tooltip bottom z-index="20">
             <template #activator="{ on }">
@@ -130,7 +156,9 @@ export default {
   },
   data() {
     return {
-      menu: false
+      menu: false,
+      menu1: false,
+      jadwal: undefined
     }
   },
   computed: {
@@ -164,10 +192,32 @@ export default {
     },
     exportSchedule() {
       const win = window.open(
-        `${this.$axios.defaults.baseURL}schedule/export?dept=${this.dept}&year=${this.year}&month=${this.month}`,
+        `${this.$axios.defaults.baseURL}schedule/excel?dept=${this.dept}&year=${this.year}&month=${this.month}`,
         '_blank'
       )
       win.focus()
+    },
+    async importSchedule() {
+      const formData = new FormData()
+      formData.append('schedules', this.jadwal)
+      try {
+        await this.$axios.$post(
+          `${this.$axios.defaults.baseURL}schedule/excel`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        )
+
+        this.menu1 = false
+        this.jadwal = undefined
+
+        this.$alert('success', 'Successfully Uploaded')
+      } catch (err) {
+        this.$alert('error', err)
+      }
     }
   }
 }
