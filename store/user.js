@@ -5,7 +5,7 @@ export const state = () => ({
   token: undefined,
   menu: [],
   akses: [],
-  karyawan: null
+  karyawan: null,
 })
 
 export const mutations = {
@@ -23,7 +23,7 @@ export const mutations = {
   },
   SET_KARYAWAN(state, user) {
     state.karyawan = user
-  }
+  },
 }
 
 export const actions = {
@@ -41,11 +41,11 @@ export const actions = {
   async fetchUser({ commit }, id) {
     const res = await this.$auth.user(id)
     commit('SET_KARYAWAN', res.data)
-  }
+  },
 }
 
 export const getters = {
   isLogged(state) {
     return state.token !== undefined
-  }
+  },
 }
