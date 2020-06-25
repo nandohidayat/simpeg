@@ -41,8 +41,8 @@ export default {
     // '@/plugins/vuetify',
     '@/plugins/auth',
     '@/plugins/repository',
-    '@/plugins/guard',
-    '@/plugins/token',
+    // '@/plugins/guard',
+    // '@/plugins/token',
     '@/plugins/alert',
   ],
   /*
@@ -130,15 +130,24 @@ export default {
       local: {
         endpoints: {
           login: {
-            url: '/api/login',
+            url: 'login',
             method: 'post',
             propertyName: 'token',
           },
-          logout: { url: '/api/logout', method: 'get' },
-          user: false,
+          logout: { url: 'logout', method: 'get' },
+          user: {
+            url: 'user',
+            method: 'get',
+            propertyName: 'user',
+          },
         },
-        autoFetchUser: false,
       },
+    },
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      callback: '/login',
+      home: '/',
     },
   },
 }

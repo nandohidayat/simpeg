@@ -1,8 +1,8 @@
 <template>
   <v-app dark>
-    <v-content>
+    <v-main>
       <nuxt />
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
@@ -10,7 +10,7 @@
 export default {
   head() {
     return {
-      titleTemplate: '%s - Schedule Manager',
+      titleTemplate: '%s - SIMPEG',
       meta: [
         {
           hid: 'description',

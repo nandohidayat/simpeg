@@ -7,9 +7,11 @@
       :color="notif.type"
     >
       {{ notif.text }}
-      <v-btn color="white" text @click="del">
-        Close
-      </v-btn>
+      <template #action="{attrs}">
+        <v-btn color="white" v-bind="attrs" text @click="del">
+          Close
+        </v-btn>
+      </template>
     </v-snackbar>
   </div>
 </template>
