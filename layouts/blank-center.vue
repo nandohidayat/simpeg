@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
     <v-content>
-      <v-container fluid style="min-height: 100vh" class="d-flex">
+      <v-container fluid style="min-height: 100vh;" class="d-flex">
         <nuxt />
       </v-container>
     </v-content>
@@ -17,10 +17,10 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: 'Penjadwalan Karyawan'
-        }
-      ]
+          content: 'Penjadwalan Karyawan',
+        },
+      ],
     }
-  }
+  },
 }
 </script>

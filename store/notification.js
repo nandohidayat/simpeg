@@ -2,7 +2,7 @@ export const namespaced = true
 
 export const state = () => ({
   notifications: [],
-  snackbar: false
+  snackbar: false,
 })
 
 export const mutations = {
@@ -13,7 +13,7 @@ export const mutations = {
   DEL(state) {
     state.notifications.pop()
     state.snackbar = state.notifications.lenght !== 0
-  }
+  },
 }
 
 export const actions = {
@@ -22,5 +22,5 @@ export const actions = {
   },
   delNotif({ commit }) {
     commit('DEL')
-  }
+  },
 }

@@ -1,4 +1,4 @@
-import jsCookie from 'js-cookie'
+// import jsCookie from 'js-cookie'
 
 export const state = () => ({
   user: undefined,
@@ -10,15 +10,15 @@ export const state = () => ({
 
 export const mutations = {
   SET_USER(state, user) {
-    jsCookie.set('user', JSON.stringify(user))
-    this.$axios.setToken(user.token, 'Bearer')
+    // jsCookie.set('user', JSON.stringify(user))
+    // this.$axios.setToken(user.token, 'Bearer')
     state.token = user.token
     state.user = user.user
     state.menu = user.menu
     state.akses = user.akses
   },
   REMOVE_USER(state) {
-    jsCookie.remove('user')
+    // jsCookie.remove('user')
     location.reload()
   },
   SET_KARYAWAN(state, user) {
@@ -31,7 +31,7 @@ export const actions = {
     await this.$auth.register(user)
   },
   async login({ commit }, user) {
-    const res = await this.$auth.login(user)
+    const res = await this.$auth.loginWith('local', user)
     commit('SET_USER', res)
   },
   logout({ commit }) {

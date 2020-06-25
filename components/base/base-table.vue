@@ -24,7 +24,7 @@
         >
           <slot></slot>
         </base-form>
-        <v-icon @click="deleteData(item)" small>
+        <v-icon small @click="deleteData(item)">
           mdi-delete
         </v-icon>
       </template>
@@ -40,33 +40,33 @@ import baseForm from '@/components/base/base-form'
 export default {
   components: {
     'base-card': baseCard,
-    'base-form': baseForm
+    'base-form': baseForm,
   },
   props: {
     header: {
       type: Array,
-      default: undefined
+      default: undefined,
     },
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     store: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     state: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     action: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     data: {
       type: Object,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   computed: {
     headers() {
@@ -76,15 +76,15 @@ export default {
           text: 'Action',
           value: 'action',
           sortable: false,
-          width: '100px'
-        }
+          width: '100px',
+        },
       ]
     },
     ...mapState({
       items(state) {
         return state[this.store]
-      }
-    })
+      },
+    }),
   },
   methods: {
     edit(value) {
@@ -98,9 +98,7 @@ export default {
       } catch (err) {
         this.$alert('error', err)
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

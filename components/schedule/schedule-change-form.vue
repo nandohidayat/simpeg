@@ -18,17 +18,17 @@
           <v-menu v-model="menu" :close-on-content-click="false" offset-y>
             <template v-slot:activator="{ on }">
               <v-text-field
-                v-on="on"
                 v-model="newdata['mulai']"
                 label="Mulai"
+                v-on="on"
               ></v-text-field>
             </template>
             <v-date-picker
               v-model="newdata['mulai']"
-              @input="menu = false"
               no-title
               scrollable
               color="teal"
+              @input="menu = false"
             >
             </v-date-picker>
           </v-menu>
@@ -37,17 +37,17 @@
           <v-menu v-model="menu1" :close-on-content-click="false" offset-y>
             <template v-slot:activator="{ on }">
               <v-text-field
-                v-on="on"
                 v-model="newdata['selesai']"
                 label="Selesai"
+                v-on="on"
               ></v-text-field>
             </template>
             <v-date-picker
               v-model="newdata['selesai']"
-              @input="menu1 = false"
               no-title
               scrollable
               color="teal"
+              @input="menu1 = false"
             >
             </v-date-picker>
           </v-menu>
@@ -75,22 +75,22 @@ export default {
   props: {
     newdata: {
       type: Object,
-      default: undefined
+      default: undefined,
     },
     dept: {
       type: String,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   data() {
     return {
       date: new Date().toISOString().substr(0, 10),
       menu: false,
-      menu1: false
+      menu1: false,
     }
   },
   computed: {
-    ...mapState(['karyawan'])
+    ...mapState(['karyawan']),
   },
   watch: {
     newdata: {
@@ -98,10 +98,8 @@ export default {
         this.newdata.dept = this.dept
         if (this.newdata.type === '2') this.newdata.dengan = undefined
       },
-      deep: true
-    }
-  }
+      deep: true,
+    },
+  },
 }
 </script>
-
-<style scoped></style>

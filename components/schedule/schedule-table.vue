@@ -1,14 +1,19 @@
 <template>
   <v-card outlined>
     <div
-      style="overflow-y: auto; overflow-x: auto; white-space: nowrap;max-height: 450px"
+      style="
+        overflow-y: auto;
+        overflow-x: auto;
+        white-space: nowrap;
+        max-height: 450px;
+      "
     >
       <div
         :style="{
           zIndex: 10,
           position: 'sticky',
           backgroundColor: 'white',
-          left: 0
+          left: 0,
         }"
         class="shadow d-inline-block"
       >
@@ -102,7 +107,7 @@
         :y="y"
       ></schedule-menu>
     </div>
-    <v-row style="height: 40px" no-gutters align="center" justify="end">
+    <v-row style="height: 40px;" no-gutters align="center" justify="end">
       <v-switch
         v-model="switches"
         :hide-details="true"
@@ -115,12 +120,12 @@
       <v-switch
         :value="order"
         :hide-details="true"
-        @change="$emit('update:order', !order)"
         inset
         class="ma-0 pa-0 mr-4"
         color="teal"
         label="Order"
         dense
+        @change="$emit('update:order', !order)"
       ></v-switch>
     </v-row>
     <v-overlay :value="schedule.overlay" absolute z-index="10">
@@ -141,13 +146,13 @@ export default {
   components: {
     ScheduleButton,
     ScheduleMenu,
-    ViewButton
+    ViewButton,
   },
   props: {
     order: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -156,12 +161,12 @@ export default {
       menu: false,
       x: 0,
       y: 0,
-      switches: false
+      switches: false,
     }
   },
   computed: {
     ...mapState(['schedule']),
-    ...mapGetters('schedule', ['dayColor'])
+    ...mapGetters('schedule', ['dayColor']),
   },
   methods: {
     ranged(event, day, staff) {
@@ -206,8 +211,8 @@ export default {
       this.x = e.clientX
       this.y = e.clientY
       this.menu = true
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -219,8 +224,8 @@ export default {
 }
 
 .shadow {
-  -webkit-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.27);
-  -moz-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.27);
-  box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.27);
+  -webkit-box-shadow: 4px 0 5px 0 rgba(0, 0, 0, 0.27);
+  -moz-box-shadow: 4px 0 5px 0 rgba(0, 0, 0, 0.27);
+  box-shadow: 4px 0 5px 0 rgba(0, 0, 0, 0.27);
 }
 </style>

@@ -4,10 +4,10 @@
       <v-icon large left>mdi-shield-account</v-icon
       ><span class="title font-weight-light">Data Akses</span>
       <v-spacer></v-spacer>
-      <v-btn v-if="editing" @click="createUser()" text icon color="teal"
+      <v-btn v-if="editing" text icon color="teal" @click="createUser()"
         ><v-icon>mdi-content-save</v-icon></v-btn
       >
-      <v-btn v-else @click="editing = true" text icon color="teal"
+      <v-btn v-else text icon color="teal" @click="editing = true"
         ><v-icon>mdi-pencil</v-icon></v-btn
       >
     </v-card-title>
@@ -73,12 +73,12 @@ export default {
       newUser: {
         username: undefined,
         password: undefined,
-        current: undefined
-      }
+        current: undefined,
+      },
     }
   },
   computed: {
-    ...mapState(['user', 'karyawan'])
+    ...mapState(['user', 'karyawan']),
   },
   methods: {
     async createUser() {
@@ -86,7 +86,7 @@ export default {
       try {
         await this.$store.dispatch('user/register', {
           ...this.newUser,
-          nik: this.karyawan.karyawan.id
+          nik: this.karyawan.karyawan.id,
         })
         await this.$store.dispatch('user/fetchUser', this.$route.params.id)
 
@@ -95,9 +95,7 @@ export default {
       } catch (err) {
         this.$alert('error', err)
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

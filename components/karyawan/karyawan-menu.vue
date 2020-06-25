@@ -6,7 +6,7 @@
       </v-avatar>
       <v-list dense>
         <v-list-item-group color="teal">
-          <v-list-item :to="`#${k.id}`" v-for="(k, i) in menu" :key="i">
+          <v-list-item v-for="(k, i) in menu" :key="i" :to="`#${k.id}`">
             <v-list-item-icon>
               <v-icon>{{ k.icon }}</v-icon>
             </v-list-item-icon>
@@ -25,12 +25,12 @@ export default {
   props: {
     access: {
       type: Boolean,
-      default: false
+      default: false,
     },
     delete: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     menu() {
@@ -38,25 +38,25 @@ export default {
         {
           icon: 'mdi-clipboard-account-outline',
           text: 'Data Karyawan',
-          id: 'data-karyawan'
+          id: 'data-karyawan',
         },
         {
           icon: 'mdi-calendar',
           text: 'Data Jadwal',
-          id: 'data-jadwal'
+          id: 'data-jadwal',
         },
         {
           icon: 'mdi-fingerprint',
           text: 'Data Absen',
-          id: 'data-absen'
-        }
+          id: 'data-absen',
+        },
       ]
 
       if (this.access) {
         arr.push({
           icon: 'mdi-shield-account',
           text: 'Data Akses',
-          id: 'data-akses'
+          id: 'data-akses',
         })
       }
 
@@ -64,13 +64,13 @@ export default {
         arr.push({
           icon: 'mdi-alert',
           text: 'Hapus Karyawan',
-          id: 'hapus-karyawan'
+          id: 'hapus-karyawan',
         })
       }
 
       return arr
-    }
-  }
+    },
+  },
 }
 </script>
 

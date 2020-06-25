@@ -36,25 +36,13 @@
 
 <script>
 export default {
-  head() {
-    return {
-      title: 'Login',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Login'
-        }
-      ]
-    }
-  },
   data() {
     return {
       newUser: {
         username: undefined,
-        password: undefined
+        password: undefined,
       },
-      error: false
+      error: false,
     }
   },
   methods: {
@@ -67,8 +55,20 @@ export default {
         this.$nuxt.$loading.finish()
         this.error = true
       }
+    },
+  },
+  head() {
+    return {
+      title: 'Login',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Login',
+        },
+      ],
     }
   },
-  layout: 'blank-center'
+  layout: 'blank-center',
 }
 </script>

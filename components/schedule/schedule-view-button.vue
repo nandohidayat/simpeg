@@ -20,24 +20,24 @@
 
     <v-menu
       v-if="order"
-      :activator="`#schedule${id}`"
       v-model="menu"
+      :activator="`#schedule${id}`"
       :transition="false"
       open-on-hover
       offset-x
       max-width="58"
     >
       <v-list dense>
-        <v-list-item v-if="id !== 0" @click="reorder('up')" dense>
+        <v-list-item v-if="id !== 0" dense @click="reorder('up')">
           <v-icon>mdi-arrow-up-circle-outline</v-icon>
         </v-list-item>
-        <v-list-item v-if="value === undefined" @click="reorder('del')" dense>
+        <v-list-item v-if="value === undefined" dense @click="reorder('del')">
           <v-icon>mdi-minus-circle-outline</v-icon>
         </v-list-item>
-        <v-list-item v-else-if="!lastData(id)" @click="reorder('add')" dense>
+        <v-list-item v-else-if="!lastData(id)" dense @click="reorder('add')">
           <v-icon>mdi-plus-circle-outline</v-icon>
         </v-list-item>
-        <v-list-item v-if="!lastData(id)" @click="reorder('down')" dense>
+        <v-list-item v-if="!lastData(id)" dense @click="reorder('down')">
           <v-icon>mdi-arrow-down-circle-outline</v-icon>
         </v-list-item>
       </v-list>
@@ -52,31 +52,29 @@ export default {
   props: {
     id: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     value: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     order: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      menu: false
+      menu: false,
     }
   },
   computed: {
-    ...mapGetters('schedule', ['lastData'])
+    ...mapGetters('schedule', ['lastData']),
   },
   methods: {
     reorder(type) {
       this.$store.commit('schedule/REORDER', { idx: this.id, type })
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

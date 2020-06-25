@@ -1,4 +1,4 @@
-export default function({ $axios, redirect }) {
+export default function ({ $axios, redirect }) {
   $axios.onError((error) => {
     if (error.response !== undefined && error.response.status === 401) {
       redirect('/login')

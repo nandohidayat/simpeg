@@ -1,7 +1,7 @@
 export const namespaced = true
 
 export const state = () => ({
-  schedules: []
+  schedules: [],
 })
 
 export const mutations = {
@@ -22,7 +22,7 @@ export const mutations = {
   },
   RESET(state) {
     state.schedules = []
-  }
+  },
 }
 
 export const actions = {
@@ -38,7 +38,7 @@ export const actions = {
     await dispatch('fetchSchedules', {
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
-      dept: schedule.dept
+      dept: schedule.dept,
     })
   },
   async updateSchedule({ commit, dispatch }, schedule) {
@@ -53,19 +53,19 @@ export const actions = {
         {
           month: new Date().getMonth() + 1,
           year: new Date().getFullYear(),
-          dept: schedule.dept
+          dept: schedule.dept,
         },
         { root: true }
       ),
       dispatch('fetchSchedules', {
         month: new Date().getMonth() + 1,
         year: new Date().getFullYear(),
-        dept: schedule.dept
-      })
+        dept: schedule.dept,
+      }),
     ])
   },
   async deleteSchedule({ commit }, id) {
     await this.$api.scheduleChange.delete(id)
     commit('DEL_SCHEDULE', id)
-  }
+  },
 }

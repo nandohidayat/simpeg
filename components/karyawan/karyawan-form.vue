@@ -1,10 +1,10 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ on }">
-      <v-btn v-if="editing" v-on="on" text icon color="teal"
+      <v-btn v-if="editing" text icon color="teal" v-on="on"
         ><v-icon>mdi-pencil</v-icon></v-btn
       >
-      <v-btn v-else v-on="on" color="teal" dark small
+      <v-btn v-else color="teal" dark small v-on="on"
         ><v-icon>mdi-plus</v-icon></v-btn
       >
     </template>
@@ -53,7 +53,7 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="createKaryawan" color="teal" dark small>
+        <v-btn color="teal" dark small @click="createKaryawan">
           <span>{{ editing ? 'Update' : 'Create' }}</span>
         </v-btn>
       </v-card-actions>
@@ -68,26 +68,26 @@ export default {
   props: {
     editing: {
       type: Boolean,
-      default: false
+      default: false,
     },
     karyawan: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   data() {
     return {
       dialog: false,
-      newKaryawan: this.defaultKaryawan()
+      newKaryawan: this.defaultKaryawan(),
     }
   },
   computed: {
-    ...mapState(['departemen', 'ruang'])
+    ...mapState(['departemen', 'ruang']),
   },
   watch: {
     dialog(val) {
       val || this.close()
-    }
+    },
   },
   methods: {
     defaultKaryawan() {
@@ -95,7 +95,7 @@ export default {
         nik: this.karyawan ? this.karyawan.nik : undefined,
         nama: this.karyawan ? this.karyawan.nama : undefined,
         id_departemen: this.karyawan ? this.karyawan.id_departemen : undefined,
-        id_ruang: this.karyawan ? this.karyawan.id_ruang : undefined
+        id_ruang: this.karyawan ? this.karyawan.id_ruang : undefined,
       }
     },
     close() {
@@ -113,9 +113,7 @@ export default {
       } catch (err) {
         this.$store.dispatch('notification/addError', err)
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

@@ -18,16 +18,16 @@ export default {
   props: {
     shift: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     job: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     active: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     ...mapGetters('shift', ['getKode']),
@@ -45,9 +45,7 @@ export default {
       } else {
         return this.getColor(this.job)
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style lang="scss" scoped></style>

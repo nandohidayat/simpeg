@@ -28,7 +28,7 @@ export default (ctx, inject) => {
       },
       export(query) {
         return ctx.$axios.$get(`schedule/excel${queryGenerator(query)}`)
-      }
+      },
     },
     scheduleChange: repositoryWithAxios('schedule/change'),
     scheduleRequest: repositoryWithAxios('schedule/request'),
@@ -39,7 +39,7 @@ export default (ctx, inject) => {
     shiftDepartemen: repositoryWithAxios('shift/departemen'),
     job: repositoryWithAxios('job'),
     jobDepartemen: repositoryWithAxios('job/departemen'),
-    pendapatanharian: repositoryWithAxios('pendapatan/harian')
+    pendapatanharian: repositoryWithAxios('pendapatan/harian'),
   }
 
   inject('api', repositories)

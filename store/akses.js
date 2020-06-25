@@ -2,7 +2,7 @@ export const namespaced = true
 
 export const state = () => ({
   aksess: [],
-  akses: []
+  akses: [],
 })
 
 export const mutations = {
@@ -16,7 +16,7 @@ export const mutations = {
   },
   ADD_AKSES(state, akses) {
     state.aksess.push(akses)
-  }
+  },
 }
 
 export const actions = {
@@ -30,5 +30,5 @@ export const actions = {
   },
   async createAkses({ commit }, akses) {
     await this.$api.akses.create(akses)
-  }
+  },
 }

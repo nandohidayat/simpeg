@@ -20,19 +20,17 @@ export default {
   props: {
     toolbar: {
       type: Boolean,
-      default: false
+      default: false,
     },
     full: {
       type: Boolean,
-      default: false
+      default: false,
     },
     title: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
-  methods: {}
+  methods: {},
 }
 </script>
-
-<style scoped></style>

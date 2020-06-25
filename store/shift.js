@@ -2,7 +2,7 @@ export const namespaced = true
 
 export const state = () => ({
   shifts: [],
-  departemen: []
+  departemen: [],
 })
 
 export const mutations = {
@@ -22,7 +22,7 @@ export const mutations = {
   },
   SET_DEPARTEMEN(state, shift) {
     state.departemen = shift.map((i) => parseInt(i))
-  }
+  },
 }
 
 export const actions = {
@@ -52,7 +52,7 @@ export const actions = {
   },
   async updateDepartemen({ commit }, { departemen, shift }) {
     await this.$api.shiftDepartemen.update(departemen, { shift })
-  }
+  },
 }
 
 export const getters = {
@@ -67,5 +67,5 @@ export const getters = {
       (s) => parseInt(s.id_shift) === parseInt(id)
     )
     return shift ? shift.kode : undefined
-  }
+  },
 }

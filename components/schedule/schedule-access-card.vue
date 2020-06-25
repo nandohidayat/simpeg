@@ -19,7 +19,7 @@ import scheduleForm from '@/components/schedule/schedule-access-form'
 export default {
   components: {
     'base-table': baseTable,
-    'schedule-form': scheduleForm
+    'schedule-form': scheduleForm,
   },
   data() {
     return {
@@ -27,21 +27,21 @@ export default {
       header: [
         {
           text: 'Departemen',
-          value: 'nm_dept'
+          value: 'nm_dept',
         },
         {
           text: 'Access',
-          value: 'nm_acc'
+          value: 'nm_acc',
         },
         {
           text: 'Assessor',
-          value: 'assessor'
-        }
+          value: 'assessor',
+        },
       ],
       store: 'scheduleaccess',
       state: 'schedules',
       action: 'Schedule',
-      data: this.newData()
+      data: this.newData(),
     }
   },
   methods: {
@@ -52,11 +52,9 @@ export default {
       return {
         dept: undefined,
         access: undefined,
-        assessor: false
+        assessor: false,
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

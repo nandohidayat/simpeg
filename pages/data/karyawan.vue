@@ -30,24 +30,12 @@ import Shift from '@/components/shift/shift-card'
 import Job from '@/components/job/job-card'
 
 export default {
-  head() {
-    return {
-      title: 'Database Karyawan',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Data Karyawan'
-        }
-      ]
-    }
-  },
   components: {
     DeptSj,
     ScheduleAccess,
     PendapatanHarian,
     Shift,
-    Job
+    Job,
   },
   async fetch({ store }) {
     await Promise.all([
@@ -55,10 +43,20 @@ export default {
       store.dispatch('shift/fetchShifts'),
       store.dispatch('job/fetchJobs'),
       store.dispatch('pendapatanharian/fetchPendapatans'),
-      store.dispatch('scheduleaccess/fetchSchedules')
+      store.dispatch('scheduleaccess/fetchSchedules'),
     ])
-  }
+  },
+  head() {
+    return {
+      title: 'Database Karyawan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Data Karyawan',
+        },
+      ],
+    }
+  },
 }
 </script>
-
-<style scoped></style>

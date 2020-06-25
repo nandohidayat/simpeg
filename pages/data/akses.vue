@@ -8,15 +8,15 @@
             :items="departemen.departemens"
             :item-value="(obj) => obj.id_dept"
             :item-text="(obj) => obj.nm_dept"
-            @change="getAkses"
             label="Departemen"
             clearable
+            @change="getAkses"
           ></v-autocomplete>
         </v-col>
         <v-col cols="1" class="d-flex align-center">
           <v-divider vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-btn @click="saveAkses" color="teal" dark small
+          <v-btn color="teal" dark small @click="saveAkses"
             ><v-icon>mdi-content-save</v-icon></v-btn
           >
         </v-col>
@@ -56,34 +56,22 @@
 import { mapState } from 'vuex'
 
 export default {
-  head() {
-    return {
-      title: 'Database Akses',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Data Akses'
-        }
-      ]
-    }
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('departemen/fetchDepartemens'),
+      store.dispatch('akses/fetchAksess'),
+    ])
   },
   data() {
     return {
       dept: undefined,
       selectedSemua: undefined,
       selectedKepala: undefined,
-      tab: undefined
+      tab: undefined,
     }
   },
   computed: {
-    ...mapState(['departemen', 'akses'])
-  },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('departemen/fetchDepartemens'),
-      store.dispatch('akses/fetchAksess')
-    ])
+    ...mapState(['departemen', 'akses']),
   },
   methods: {
     async getAkses() {
@@ -106,15 +94,25 @@ export default {
         await this.$store.dispatch('akses/createAkses', {
           dept: this.dept,
           semua: this.selectedSemua,
-          kepala: this.selectedKepala
+          kepala: this.selectedKepala,
         })
         this.$alert('success', 'Successfully Saved')
       } catch (err) {
         this.$alert('error', err)
       }
+    },
+  },
+  head() {
+    return {
+      title: 'Database Akses',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Data Akses',
+        },
+      ],
     }
-  }
+  },
 }
 </script>
-
-<style scoped></style>

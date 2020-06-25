@@ -1,10 +1,10 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ on }">
-      <v-icon v-if="edit" v-on="on" small class="mr-2">
+      <v-icon v-if="edit" small class="mr-2" v-on="on">
         mdi-pencil
       </v-icon>
-      <v-btn v-else v-on="on" icon>
+      <v-btn v-else icon v-on="on">
         <v-icon>mdi-plus-circle</v-icon>
       </v-btn>
     </template>
@@ -21,11 +21,11 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-          @click="createData()"
           :disabled="disabled"
           color="teal"
           small
           dark
+          @click="createData()"
           ><v-icon>mdi-content-save</v-icon></v-btn
         >
       </v-card-actions>
@@ -38,29 +38,29 @@ export default {
   props: {
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     store: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     action: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     data: {
       type: Object,
-      default: undefined
+      default: undefined,
     },
     edit: {
       type: Object,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   data() {
     return {
       dialog: false,
-      disabled: false
+      disabled: false,
     }
   },
   watch: {
@@ -71,7 +71,7 @@ export default {
       if (!val) {
         this.$emit('reset')
       }
-    }
+    },
   },
   methods: {
     async createData() {
@@ -92,9 +92,7 @@ export default {
       } finally {
         this.disabled = false
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

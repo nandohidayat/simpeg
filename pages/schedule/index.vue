@@ -7,7 +7,7 @@
     <v-tabs-items
       v-model="tab"
       class="mt-3"
-      style="background-color: transparent"
+      style="background-color: transparent;"
     >
       <v-tab-item>
         <schedule-option
@@ -33,29 +33,23 @@ import ScheduleOption from '@/components/schedule/schedule-table-option'
 import AbsenTab from '@/components/absen/absen-tab'
 
 export default {
-  head() {
-    return {
-      title: 'Jadwal Karyawan',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Jadwal Karyawan'
-        }
-      ]
-    }
-  },
   components: {
     ScheduleTable,
     ScheduleOption,
-    AbsenTab
+    AbsenTab,
+  },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('shift/fetchShifts'),
+      store.dispatch('job/fetchJobs'),
+    ])
   },
   data() {
     return {
       date: new Date().toISOString().substr(0, 7),
       dept: undefined,
       tab: undefined,
-      order: false
+      order: false,
     }
   },
   computed: {
@@ -68,35 +62,41 @@ export default {
     },
     updater() {
       return `${this.dept}${this.date}`
-    }
+    },
   },
   watch: {
     async updater(val) {
       await this.$store.dispatch('schedule/fetchSchedules', {
         year: this.year,
         month: this.month,
-        dept: this.dept
+        dept: this.dept,
       })
-    }
-  },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('shift/fetchShifts'),
-      store.dispatch('job/fetchJobs')
-    ])
+    },
   },
   async created() {
     await this.$store.dispatch('schedule/fetchSchedules', {
       year: this.year,
-      month: this.month
+      month: this.month,
     })
 
     this.dept = this.departemen.departemens[0].id_dept
 
     await Promise.all([
       this.$store.dispatch('shift/fetchShift', this.dept),
-      this.$store.dispatch('job/fetchJob', this.dept)
+      this.$store.dispatch('job/fetchJob', this.dept),
     ])
-  }
+  },
+  head() {
+    return {
+      title: 'Jadwal Karyawan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Jadwal Karyawan',
+        },
+      ],
+    }
+  },
 }
 </script>

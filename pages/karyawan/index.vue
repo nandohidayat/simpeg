@@ -47,7 +47,7 @@
     >
       <template v-slot:item.dept="{ item }">
         Utama:
-        <div v-for="d in item.dept">- {{ d }}</div>
+        <div v-for="(d, i) in item.dept" :key="i">- {{ d }}</div>
         Sub:
       </template>
       <template v-slot:item.action="{ item }">
@@ -66,20 +66,19 @@ import { mapState } from 'vuex'
 import karyawanForm from '@/components/karyawan/karyawan-form'
 
 export default {
-  head() {
-    return {
-      title: 'Daftar Karyawan',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Daftar Karyawan'
-        }
-      ]
-    }
-  },
   components: {
-    'karyawan-form': karyawanForm
+    'karyawan-form': karyawanForm,
+  },
+  async fetch({ store }) {
+    try {
+      await Promise.all([
+        store.dispatch('departemen/fetchDepartemens', { select: 1 }),
+        // store.dispatch('ruang/fetchRuangs'),
+        store.dispatch('karyawan/fetchKaryawans'),
+      ])
+    } catch (err) {
+      store.dispatch('notification/addError', err)
+    }
   },
   data() {
     return {
@@ -90,11 +89,11 @@ export default {
         {
           text: 'NIK',
           value: 'nik',
-          width: '100px'
+          width: '100px',
         },
         {
           text: 'Nama',
-          value: 'nama'
+          value: 'nama',
         },
         {
           text: 'Jenis Kelamin',
@@ -104,7 +103,7 @@ export default {
             if (!this.search.kelamin) return true
 
             return value === this.search.kelamin
-          }
+          },
         },
         {
           text: 'Department',
@@ -114,26 +113,29 @@ export default {
             if (!this.search.departemen) return true
 
             return value.includes(this.search.departemen)
-          }
+          },
         },
-        { text: 'Detail', value: 'action', sortable: false, width: '80px' }
-      ]
+        { text: 'Detail', value: 'action', sortable: false, width: '80px' },
+      ],
     }
   },
+
   computed: {
-    ...mapState(['departemen', 'ruang', 'karyawan'])
+    ...mapState(['departemen', 'ruang', 'karyawan']),
   },
-  async fetch({ store }) {
-    try {
-      await Promise.all([
-        store.dispatch('departemen/fetchDepartemens', { select: 1 }),
-        // store.dispatch('ruang/fetchRuangs'),
-        store.dispatch('karyawan/fetchKaryawans')
-      ])
-    } catch (err) {
-      store.dispatch('notification/addError', err)
+
+  head() {
+    return {
+      title: 'Daftar Karyawan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Daftar Karyawan',
+        },
+      ],
     }
-  }
+  },
 }
 </script>
 

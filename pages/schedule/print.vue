@@ -16,7 +16,7 @@
             <td
               v-for="i in schedule.day"
               :key="i"
-              style="width: 27px"
+              style="width: 27px;"
               class="sch"
             >
               {{ i }}
@@ -26,7 +26,7 @@
             <td class="text-center sch">{{ i + 1 }}</td>
             <td
               class="text-truncate text-capitalize sch"
-              style="max-width: 130px"
+              style="max-width: 130px;"
             >
               {{ nama }}
             </td>
@@ -90,6 +90,45 @@ import 'moment/locale/id'
 import { mapState } from 'vuex'
 
 export default {
+  async fetch({ store, route }) {
+    await store.dispatch('schedule/printSchedules', {
+      dept: route.query.dept,
+      year: route.query.year,
+      month: route.query.month,
+    })
+  },
+  data() {
+    return {
+      color: [
+        {
+          color: 'lightgrey',
+          keterangan: 'Hari Minggu',
+        },
+        {
+          color: 'lightcoral',
+          keterangan: 'Hari Libur',
+        },
+      ],
+    }
+  },
+  layout: 'blank',
+  computed: {
+    ...mapState(['departemen', 'schedule', 'shift']),
+    dateMoment() {
+      return this.date ? moment(this.date).locale('id').format('MMMM YYYY') : ''
+    },
+    date() {
+      return `${this.$route.query.year}-${this.$route.query.month.padStart(
+        2,
+        '0'
+      )}`
+    },
+  },
+  methods: {
+    lowerName(name) {
+      return name.toLowerCase()
+    },
+  },
   head() {
     return {
       title: `Jadwal Kerja ${this.departemen.departemen}`,
@@ -97,61 +136,17 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: 'Try'
-        }
-      ]
-    }
-  },
-  data() {
-    return {
-      color: [
-        {
-          color: 'lightgrey',
-          keterangan: 'Hari Minggu'
+          content: 'Try',
         },
-        {
-          color: 'lightcoral',
-          keterangan: 'Hari Libur'
-        }
-      ]
+      ],
     }
   },
-
-  layout: 'blank',
-  computed: {
-    ...mapState(['departemen', 'schedule', 'shift']),
-    dateMoment() {
-      return this.date
-        ? moment(this.date)
-            .locale('id')
-            .format('MMMM YYYY')
-        : ''
-    },
-    date() {
-      return `${this.$route.query.year}-${this.$route.query.month.padStart(
-        2,
-        '0'
-      )}`
-    }
-  },
-  async fetch({ store, route }) {
-    await store.dispatch('schedule/printSchedules', {
-      dept: route.query.dept,
-      year: route.query.year,
-      month: route.query.month
-    })
-  },
-  methods: {
-    lowerName(name) {
-      return name.toLowerCase()
-    }
-  }
 }
 </script>
 
 <style scoped>
 .blank {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 
 .sch {

@@ -14,10 +14,8 @@ export default {
   props: {
     newdata: {
       type: Object,
-      default: undefined
-    }
-  }
+      default: undefined,
+    },
+  },
 }
 </script>
-
-<style scoped></style>

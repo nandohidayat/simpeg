@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer v-model="drawer" temporary app style="z-index:1000">
+    <v-navigation-drawer v-model="drawer" temporary app style="z-index: 1000;">
       <v-list dense>
         <v-list-item to="/">
           <v-list-item-action>
@@ -20,9 +20,9 @@
             </v-list-item-content>
           </template>
           <v-list-item
-            :to="c.link"
             v-for="(c, idx) in m.children"
             :key="idx"
+            :to="c.link"
             router
             exact
           >
@@ -31,13 +31,13 @@
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app color="teal" dark style="z-index:999">
+    <v-app-bar app color="teal" dark style="z-index: 999;">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Alpha System</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn v-on="on" outlined>
+          <v-btn outlined v-on="on">
             <v-icon class="mr-2">mdi-account-circle</v-icon>
             {{ user.user.nama }}
           </v-btn>
@@ -85,7 +85,20 @@ import notificationBar from '@/components/notification/notification-bar'
 
 export default {
   components: {
-    'notification-bar': notificationBar
+    'notification-bar': notificationBar,
+  },
+  data() {
+    return {
+      drawer: false,
+    }
+  },
+  computed: {
+    ...mapState(['user']),
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('user/logout')
+    },
   },
   head() {
     return {
@@ -94,23 +107,10 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: 'Penjadwalan Karyawan'
-        }
-      ]
+          content: 'Penjadwalan Karyawan',
+        },
+      ],
     }
   },
-  data() {
-    return {
-      drawer: false
-    }
-  },
-  computed: {
-    ...mapState(['user'])
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch('user/logout')
-    }
-  }
 }
 </script>

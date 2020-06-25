@@ -10,13 +10,13 @@
 import { mapState } from 'vuex'
 
 export default {
+  computed: {
+    ...mapState(['user']),
+  },
   head() {
     return {
-      title: 'Dashboard'
+      title: 'Dashboard',
     }
   },
-  computed: {
-    ...mapState(['user'])
-  }
 }
 </script>

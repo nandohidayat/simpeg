@@ -13,14 +13,14 @@
         <template v-slot:activator="{ on }">
           <v-text-field
             v-model="data.tgl"
-            v-on="on"
             label="Tanggal"
+            v-on="on"
           ></v-text-field>
         </template>
         <v-date-picker
           v-model="data.tgl"
-          @input="menu1 = false"
           no-title
+          @input="menu1 = false"
         ></v-date-picker>
       </v-menu>
     </v-col>
@@ -35,15 +35,13 @@ export default {
   props: {
     data: {
       type: Object,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   data() {
     return {
-      menu1: false
+      menu1: false,
     }
-  }
+  },
 }
 </script>
-
-<style scoped></style>

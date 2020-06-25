@@ -15,10 +15,10 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: 'Penjadwalan Karyawan'
-        }
-      ]
+          content: 'Penjadwalan Karyawan',
+        },
+      ],
     }
-  }
+  },
 }
 </script>

@@ -22,13 +22,15 @@
         <v-col cols="6">
           <span>Departemen :</span>
           <span
-            v-for="d in karyawan.karyawan.dept"
+            v-for="(d, i) in karyawan.karyawan.dept"
+            :key="i"
             class="subtitle-1 text--primary d-block ml-3"
             >{{ d }}</span
           >
           <span class="d-block mt-4">Sub Departemen :</span>
           <span
-            v-for="sd in karyawan.karyawan.subdept"
+            v-for="(sd, i) in karyawan.karyawan.subdept"
+            :key="i"
             class="subtitle-1 text--primary d-block ml-3"
             >{{ sd }}</span
           >
@@ -48,9 +50,7 @@ export default {
     // 'karyawan-form': karyawanForm
   },
   computed: {
-    ...mapState(['karyawan'])
-  }
+    ...mapState(['karyawan']),
+  },
 }
 </script>
-
-<style scoped></style>

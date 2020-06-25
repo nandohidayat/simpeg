@@ -9,7 +9,7 @@
           home page
         </v-btn>
       </NuxtLink>
-      <v-btn v-else @click="() => this.$router.go()" rounded dark color="grey">
+      <v-btn v-else rounded dark color="grey" @click="() => this.$router.go()">
         refresh
       </v-btn>
     </v-col>
@@ -22,11 +22,8 @@ export default {
   props: {
     error: {
       type: Object,
-      default: null
-    }
-  },
-  head() {
-    return { title: this.message }
+      default: null,
+    },
   },
   computed: {
     statusCode() {
@@ -34,8 +31,11 @@ export default {
     },
     message() {
       return this.error.message
-    }
-  }
+    },
+  },
+  head() {
+    return { title: this.message }
+  },
 }
 </script>
 

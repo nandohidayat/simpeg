@@ -1,7 +1,7 @@
 export const namespaced = true
 
 export const state = () => ({
-  ruangs: []
+  ruangs: [],
 })
 
 export const mutations = {
@@ -17,7 +17,7 @@ export const mutations = {
   },
   DEL_RUANG(state, id) {
     state.ruangs = state.ruangs.filter((b) => b.id_ruang !== id)
-  }
+  },
 }
 
 export const actions = {
@@ -36,5 +36,5 @@ export const actions = {
   async deleteRuang({ commit }, id) {
     await this.$api.ruang.delete(id)
     commit('DEL_RUANG', id)
-  }
+  },
 }

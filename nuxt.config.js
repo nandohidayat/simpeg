@@ -69,6 +69,7 @@ export default {
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt/content
     '@nuxt/content',
+    '@nuxtjs/auth',
   ],
   /*
    ** Axios module configuration
@@ -123,5 +124,21 @@ export default {
   server: {
     port: 3000, // default: 3000
     host: '0.0.0.0', // default: localhost,
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/api/login',
+            method: 'post',
+            propertyName: 'token',
+          },
+          logout: { url: '/api/logout', method: 'get' },
+          user: false,
+        },
+        autoFetchUser: false,
+      },
+    },
   },
 }

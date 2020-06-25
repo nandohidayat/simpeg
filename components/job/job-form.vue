@@ -19,10 +19,8 @@ export default {
   props: {
     data: {
       type: Object,
-      default: undefined
-    }
-  }
+      default: undefined,
+    },
+  },
 }
 </script>
-
-<style scoped></style>

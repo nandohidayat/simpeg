@@ -10,7 +10,7 @@ export const state = () => ({
   job: [],
   jam: [],
   weekend: [],
-  holiday: []
+  holiday: [],
 })
 
 export const mutations = {
@@ -60,7 +60,7 @@ export const mutations = {
     } else {
       state.order.splice(idx, 1)
     }
-  }
+  },
 }
 
 export const actions = {
@@ -87,7 +87,7 @@ export const actions = {
       month,
       id: state.id,
       shift: state.shift,
-      job: state.job
+      job: state.job,
     }
     await this.$api.schedule.update(dept, schedule)
   },
@@ -103,9 +103,9 @@ export const actions = {
   },
   async updateScheduleOrder({ state }, { dept }) {
     await this.$api.scheduleOrder.update(dept, {
-      order: state.order.join()
+      order: state.order.join(),
     })
-  }
+  },
 }
 
 export const getters = {
@@ -116,5 +116,5 @@ export const getters = {
   },
   lastData: (state) => (id) => {
     return state.order.length - 1 === id
-  }
+  },
 }

@@ -1,6 +1,6 @@
 export const state = () => ({
   jobs: [],
-  departemen: []
+  departemen: [],
 })
 
 export const mutations = {
@@ -18,7 +18,7 @@ export const mutations = {
   },
   SET_DEPARTEMEN(state, job) {
     state.departemen = job.map((i) => parseInt(i))
-  }
+  },
 }
 
 export const actions = {
@@ -48,7 +48,7 @@ export const actions = {
   },
   async updateDepartemen({ commit }, { departemen, job }) {
     await this.$api.jobDepartemen.update(departemen, { job })
-  }
+  },
 }
 
 export const getters = {
@@ -61,5 +61,5 @@ export const getters = {
   getColor: (state) => (id) => {
     const job = state.jobs.find((j) => parseInt(j.id_job) === parseInt(id))
     return job ? job.color : 'white'
-  }
+  },
 }

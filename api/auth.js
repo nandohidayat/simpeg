@@ -10,5 +10,5 @@ export default ($axios) => () => ({
   },
   user(id) {
     return $axios.$get(`user/${id}`)
-  }
+  },
 })

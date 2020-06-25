@@ -1,7 +1,7 @@
 export const namespaced = true
 
 export const state = () => ({
-  pendapatans: []
+  pendapatans: [],
 })
 
 export const mutations = {
@@ -22,7 +22,7 @@ export const mutations = {
     state.pendapatans = state.pendapatans.filter(
       (b) => b.id_pendapatan_harian !== id
     )
-  }
+  },
 }
 
 export const actions = {
@@ -44,5 +44,5 @@ export const actions = {
   async deletePendapatan({ commit }, pendapatan) {
     await this.$api.pendapatanharian.delete(pendapatan.id_pendapatan_harian)
     commit('DEL_PENDAPATAN', pendapatan.id_pendapatan_harian)
-  }
+  },
 }

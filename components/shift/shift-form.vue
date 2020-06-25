@@ -13,15 +13,15 @@
           <template v-slot:activator="{ on }">
             <v-text-field
               v-model="data['mulai']"
-              v-on="on"
               label="Mulai"
+              v-on="on"
             ></v-text-field>
           </template>
           <v-time-picker
             v-if="menu1"
             v-model="data['mulai']"
-            @click:minute="$refs.menu1.save(data['mulai'])"
             format="24hr"
+            @click:minute="$refs.menu1.save(data['mulai'])"
           ></v-time-picker>
         </v-menu>
       </v-col>
@@ -37,15 +37,15 @@
           <template v-slot:activator="{ on }">
             <v-text-field
               v-model="data['selesai']"
-              v-on="on"
               label="Selesai"
+              v-on="on"
             ></v-text-field>
           </template>
           <v-time-picker
             v-if="menu2"
             v-model="data['selesai']"
-            @click:minute="$refs.menu2.save(data['selesai'])"
             format="24hr"
+            @click:minute="$refs.menu2.save(data['selesai'])"
           ></v-time-picker>
         </v-menu>
       </v-col>
@@ -69,16 +69,14 @@ export default {
   props: {
     data: {
       type: Object,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   data() {
     return {
       menu1: false,
-      menu2: false
+      menu2: false,
     }
-  }
+  },
 }
 </script>
-
-<style scoped></style>

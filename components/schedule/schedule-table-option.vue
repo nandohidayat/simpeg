@@ -8,11 +8,11 @@
             :items="departemen.departemens"
             :item-text="(obj) => obj.nm_dept"
             :item-value="(obj) => obj.id_dept"
-            @change="$emit('update:dept', $event)"
-            style="z-index:20"
+            style="z-index: 20;"
             label="Departemen"
             dense
             hide-details
+            @change="$emit('update:dept', $event)"
           >
           </v-select>
         </v-col>
@@ -29,23 +29,23 @@
             <template #activator="{ on }">
               <v-text-field
                 :value="dateMoment"
-                v-on="on"
                 readonly
                 outlined
                 dense
                 hide-details
+                v-on="on"
               ></v-text-field>
             </template>
             <v-date-picker
               :value="date"
-              @change="
-                $emit('update:date', $event)
-                menu = false
-              "
               color="teal"
               type="month"
               no-title
               locale="id-id"
+              @change="
+                $emit('update:date', $event)
+                menu = false
+              "
             >
             </v-date-picker>
           </v-menu>
@@ -53,22 +53,22 @@
         <v-col cols="3" class="d-flex justify-space-around">
           <v-tooltip bottom z-index="20">
             <template #activator="{ on }">
-              <v-btn v-on="on" @click="exportSchedule()" color="teal" icon
+              <v-btn color="teal" icon v-on="on" @click="exportSchedule()"
                 ><v-icon>mdi-download</v-icon></v-btn
               >
             </template>
             <span>Export</span>
           </v-tooltip>
           <v-menu
-            :close-on-content-click="false"
             v-model="menu1"
+            :close-on-content-click="false"
             z-index="20"
             min-width="300"
           >
             <template #activator="{ on: menu2 }">
               <v-tooltip bottom z-index="20">
                 <template #activator="{ on: tooltip }">
-                  <v-btn v-on="{ ...tooltip, ...menu2 }" color="teal" icon
+                  <v-btn color="teal" icon v-on="{ ...tooltip, ...menu2 }"
                     ><v-icon>mdi-upload</v-icon></v-btn
                   >
                 </template>
@@ -87,7 +87,7 @@
               </v-list-item>
               <v-list-item dense>
                 <v-spacer></v-spacer>
-                <v-btn @click="importSchedule()" dark color="teal" small
+                <v-btn dark color="teal" small @click="importSchedule()"
                   >Upload</v-btn
                 >
               </v-list-item>
@@ -96,7 +96,7 @@
 
           <v-tooltip bottom z-index="20">
             <template #activator="{ on }">
-              <v-btn v-on="on" @click="updateSchedule()" color="teal" icon
+              <v-btn color="teal" icon v-on="on" @click="updateSchedule()"
                 ><v-icon>mdi-content-save</v-icon></v-btn
               >
             </template>
@@ -105,7 +105,7 @@
           <request-btn
             v-if="
               schedulerequest.schedule !== null &&
-                schedulerequest.schedule !== undefined
+              schedulerequest.schedule !== undefined
             "
             :year="year"
             :month="month"
@@ -126,63 +126,59 @@ import RequestBtn from '@/components/schedule/schedule-request-button'
 
 export default {
   components: {
-    RequestBtn
+    RequestBtn,
   },
   props: {
     date: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     read: {
       type: Boolean,
-      default: false
+      default: false,
     },
     year: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     month: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     dept: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     order: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       menu: false,
       menu1: false,
-      jadwal: undefined
+      jadwal: undefined,
     }
   },
   computed: {
     ...mapState(['schedulerequest', 'departemen']),
     dateMoment() {
-      return this.date
-        ? moment(this.date)
-            .locale('id')
-            .format('MMMM YYYY')
-        : ''
-    }
+      return this.date ? moment(this.date).locale('id').format('MMMM YYYY') : ''
+    },
   },
   methods: {
     async updateSchedule() {
       try {
         if (this.order) {
           await this.$store.dispatch('schedule/updateScheduleOrder', {
-            dept: this.dept
+            dept: this.dept,
           })
         } else {
           await this.$store.dispatch('schedule/updateSchedule', {
             dept: this.dept,
             year: this.year,
-            month: this.month
+            month: this.month,
           })
         }
         this.$alert('success', 'Successfully Saved')
@@ -206,8 +202,8 @@ export default {
           formData,
           {
             headers: {
-              'Content-Type': 'multipart/form-data'
-            }
+              'Content-Type': 'multipart/form-data',
+            },
           }
         )
 
@@ -219,13 +215,13 @@ export default {
         await this.$store.dispatch('schedule/fetchSchedules', {
           year: this.year,
           month: this.month,
-          dept: this.dept
+          dept: this.dept,
         })
       } catch (err) {
         this.$alert('error', err)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
