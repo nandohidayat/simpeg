@@ -36,6 +36,7 @@
 
 <script>
 export default {
+  middleware: false,
   data() {
     return {
       newUser: {

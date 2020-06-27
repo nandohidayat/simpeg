@@ -38,12 +38,11 @@ export default {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
-    // '@/plugins/vuetify',
     '@/plugins/auth',
     '@/plugins/repository',
-    // '@/plugins/guard',
-    // '@/plugins/token',
     '@/plugins/alert',
+    '@/plugins/baseurl',
+    // '@/plugins/vuetify',
   ],
   /*
    ** Auto import components

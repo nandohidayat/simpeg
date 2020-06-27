@@ -4,11 +4,11 @@
       <h1 class="display-4 mb-4">{{ statusCode }}</h1>
       <h1 class="text-uppercase font-weight-regular mb-5">{{ message }}</h1>
 
-      <NuxtLink v-if="statusCode === 404" to="/">
+      <a v-if="statusCode === 404" href="/spp">
         <v-btn rounded dark color="grey">
           home page
         </v-btn>
-      </NuxtLink>
+      </a>
       <v-btn v-else rounded dark color="grey" @click="() => this.$router.go()">
         refresh
       </v-btn>

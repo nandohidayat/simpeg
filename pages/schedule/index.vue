@@ -33,6 +33,7 @@ import ScheduleOption from '@/components/schedule/schedule-table-option'
 import AbsenTab from '@/components/absen/absen-tab'
 
 export default {
+  middleware: 'access',
   components: {
     ScheduleTable,
     ScheduleOption,
