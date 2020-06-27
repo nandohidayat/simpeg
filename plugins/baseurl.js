@@ -6,7 +6,9 @@ export default ({ $axios }) => {
     if (hostname.split('.')[0] === '117') {
       port = ':8957'
     }
-    const url = `${protocol}//${hostname}${port}/php74/simpeg/simpeg_backend/public/api/`
+    const url = `${protocol}//${hostname}${
+      port || ''
+    }/php74/simpeg/simpeg_backend/public/api/`
     $axios.defaults.baseURL = url
   }
 }
