@@ -7,9 +7,11 @@
       :color="notif.type"
     >
       {{ notif.text }}
-      <v-btn @click="del" color="white" text>
-        Close
-      </v-btn>
+      <template #action="{attrs}">
+        <v-btn color="white" v-bind="attrs" text @click="del">
+          Close
+        </v-btn>
+      </template>
     </v-snackbar>
   </div>
 </template>
@@ -19,14 +21,12 @@ import { mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapState(['notification'])
+    ...mapState(['notification']),
   },
   methods: {
     del() {
       this.$store.dispatch('notification/delNotif')
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

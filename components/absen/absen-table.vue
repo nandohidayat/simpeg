@@ -34,7 +34,7 @@ export default {
       return `Rp ${parseFloat(val)
         .toFixed(2)
         .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
-    }
+    },
   },
   data() {
     return {
@@ -45,14 +45,12 @@ export default {
         { text: 'Masuk', value: 'masuk' },
         { text: 'Keluar', value: 'keluar' },
         { text: 'Keterangan', value: 'keterangan' },
-        { text: 'Pendapatan', value: 'pendapatan' }
-      ]
+        { text: 'Pendapatan', value: 'pendapatan' },
+      ],
     }
   },
   computed: {
-    ...mapState(['absen'])
-  }
+    ...mapState(['absen']),
+  },
 }
 </script>
-
-<style scoped></style>

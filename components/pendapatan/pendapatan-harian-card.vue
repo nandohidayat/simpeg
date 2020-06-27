@@ -19,7 +19,7 @@ import pendapatanForm from '@/components/pendapatan/pendapatan-harian-form'
 export default {
   components: {
     'base-table': baseTable,
-    'pendapatan-form': pendapatanForm
+    'pendapatan-form': pendapatanForm,
   },
   data() {
     return {
@@ -27,17 +27,17 @@ export default {
       header: [
         {
           text: 'Tanggal',
-          value: 'tgl'
+          value: 'tgl',
         },
         {
           text: 'Pendapatan',
-          value: 'pendapatan'
-        }
+          value: 'pendapatan',
+        },
       ],
       store: 'pendapatanharian',
       state: 'pendapatans',
       action: 'Pendapatan',
-      data: this.newData()
+      data: this.newData(),
     }
   },
   methods: {
@@ -47,11 +47,9 @@ export default {
     newData() {
       return {
         tgl: undefined,
-        pendapatan: undefined
+        pendapatan: undefined,
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

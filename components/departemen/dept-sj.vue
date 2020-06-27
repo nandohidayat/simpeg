@@ -7,20 +7,20 @@
           :items="departemen.departemens"
           :item-value="(obj) => obj.id_dept"
           :item-text="(obj) => obj.nm_dept"
-          @change="getSelected()"
           label="Departemen"
           clearable
+          @change="getSelected()"
         ></v-autocomplete>
       </v-col>
       <v-col cols="1" class="d-flex align-center">
         <v-divider vertical></v-divider>
         <v-spacer></v-spacer>
         <v-btn
-          @click="updateSelected()"
           :disabled="disabled"
           small
           color="teal"
           dark
+          @click="updateSelected()"
           ><v-icon>mdi-content-save</v-icon></v-btn
         >
       </v-col>
@@ -57,7 +57,7 @@ import baseCard from '@/components/base/base-card'
 
 export default {
   components: {
-    'base-card': baseCard
+    'base-card': baseCard,
   },
   data() {
     return {
@@ -65,11 +65,11 @@ export default {
       selectedshift: [],
       selectedjob: [],
       tab: undefined,
-      disabled: false
+      disabled: false,
     }
   },
   computed: {
-    ...mapState(['departemen', 'shift', 'job'])
+    ...mapState(['departemen', 'shift', 'job']),
   },
   methods: {
     async getSelected() {
@@ -80,7 +80,7 @@ export default {
         try {
           await Promise.all([
             this.$store.dispatch(`shift/fetchDepartemen`, this.dept),
-            this.$store.dispatch(`job/fetchDepartemen`, this.dept)
+            this.$store.dispatch(`job/fetchDepartemen`, this.dept),
           ])
           this.selectedshift = this.shift.departemen
           this.selectedjob = this.job.departemen
@@ -99,7 +99,7 @@ export default {
       try {
         await Promise.all([
           this.$store.dispatch(`shift/updateDepartemen`, datashift),
-          this.$store.dispatch(`job/updateDepartemen`, datajob)
+          this.$store.dispatch(`job/updateDepartemen`, datajob),
         ])
 
         this.$alert('success', 'Successfully Saved')
@@ -108,9 +108,7 @@ export default {
       } finally {
         this.disabled = false
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

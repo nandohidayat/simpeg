@@ -4,7 +4,7 @@
       <v-card class="elevation-12" tile>
         <v-form @submit.prevent="login()">
           <v-toolbar color="teal" dark flat dense>
-            <v-toolbar-title class="mx-auto">Schedule Manager</v-toolbar-title>
+            <v-toolbar-title class="mx-auto">SIMPEG</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
             <v-text-field
@@ -36,25 +36,13 @@
 
 <script>
 export default {
-  head() {
-    return {
-      title: 'Login',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Login'
-        }
-      ]
-    }
-  },
   data() {
     return {
       newUser: {
         username: undefined,
-        password: undefined
+        password: undefined,
       },
-      error: false
+      error: false,
     }
   },
   methods: {
@@ -62,13 +50,23 @@ export default {
       this.$nuxt.$loading.start()
       try {
         await this.$store.dispatch('user/login', this.newUser)
-        this.$router.push('/')
       } catch (e) {
-        this.$nuxt.$loading.finish()
         this.error = true
       }
+    },
+  },
+  head() {
+    return {
+      title: 'Login',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Login',
+        },
+      ],
     }
   },
-  layout: 'blank-center'
+  layout: 'blank-center',
 }
 </script>

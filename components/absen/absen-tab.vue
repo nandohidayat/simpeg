@@ -12,9 +12,7 @@ import AbsenTable from '@/components/absen/absen-table'
 export default {
   components: {
     AbsenOption,
-    AbsenTable
-  }
+    AbsenTable,
+  },
 }
 </script>
-
-<style lang="sass" scoped></style>

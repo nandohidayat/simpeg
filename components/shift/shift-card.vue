@@ -19,7 +19,7 @@ import shiftForm from '@/components/shift/shift-form'
 export default {
   components: {
     'base-table': baseTable,
-    'shift-form': shiftForm
+    'shift-form': shiftForm,
   },
   data() {
     return {
@@ -27,25 +27,25 @@ export default {
       header: [
         {
           text: 'Mulai',
-          value: 'mulai'
+          value: 'mulai',
         },
         {
           text: 'Selesai',
-          value: 'selesai'
+          value: 'selesai',
         },
         {
           text: 'Kode',
-          value: 'kode'
+          value: 'kode',
         },
         {
           text: 'Ket',
-          value: 'keterangan'
-        }
+          value: 'keterangan',
+        },
       ],
       store: 'shift',
       state: 'shifts',
       action: 'Shift',
-      data: this.newData()
+      data: this.newData(),
     }
   },
   methods: {
@@ -57,11 +57,9 @@ export default {
         mulai: undefined,
         selesai: undefined,
         kode: undefined,
-        keterangan: undefined
+        keterangan: undefined,
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

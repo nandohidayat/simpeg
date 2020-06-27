@@ -34,10 +34,10 @@
           :dept="dept"
           single
         ></absen-card> -->
-        <karyawan-access id="data-akses" v-if="grantedAccess"></karyawan-access>
+        <karyawan-access v-if="grantedAccess" id="data-akses"></karyawan-access>
         <karyawan-delete
-          id="hapus-karyawan"
           v-if="grantedDelete"
+          id="hapus-karyawan"
         ></karyawan-delete>
       </v-col>
     </v-row>
@@ -56,18 +56,6 @@ import scheduleTable from '@/components/schedule/schedule-table'
 import scheduleChangeCard from '@/components/schedule/schedule-change-card'
 
 export default {
-  head() {
-    return {
-      title: this.karyawan.karyawan.nama,
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Data Karyawan'
-        }
-      ]
-    }
-  },
   components: {
     // 'absen-card': absenCard,
     'karyawan-menu': karyawanMenu,
@@ -75,12 +63,18 @@ export default {
     'karyawan-access': karyawanAccess,
     'karyawan-delete': karyawanDelete,
     'schedule-table': scheduleTable,
-    'schedule-change-card': scheduleChangeCard
+    'schedule-change-card': scheduleChangeCard,
+  },
+  async fetch({ store, params }) {
+    await Promise.all([
+      store.dispatch('karyawan/fetchKaryawan', params.id),
+      store.dispatch('shift/fetchShifts'),
+    ])
   },
   data() {
     return {
       date: new Date().toISOString().substr(0, 7),
-      dept: undefined
+      dept: undefined,
     }
   },
   computed: {
@@ -102,13 +96,7 @@ export default {
     },
     grantedDelete() {
       return this.user.akses.includes('/karyawan')
-    }
-  },
-  async fetch({ store, params }) {
-    await Promise.all([
-      store.dispatch('karyawan/fetchKaryawan', params.id),
-      store.dispatch('shift/fetchShifts')
-    ])
+    },
   },
   async created() {
     const granted = []
@@ -120,7 +108,7 @@ export default {
 
     await this.$store.dispatch('schedule/fetchSchedules', {
       year: this.year,
-      month: this.month
+      month: this.month,
     })
 
     this.dept = this.departemen.departemens[0].id_dept
@@ -129,13 +117,13 @@ export default {
       this.$store.dispatch('schedulechange/fetchSchedules', {
         year: this.year,
         month: this.month,
-        dept: this.dept
+        dept: this.dept,
       }),
       this.$store.dispatch('absen/fetchAbsen', {
         id: this.user.user.id,
-        date: { year: this.year, month: this.month }
+        date: { year: this.year, month: this.month },
       }),
-      ...granted
+      ...granted,
     ])
   },
   methods: {
@@ -144,9 +132,19 @@ export default {
     },
     updateDept(val) {
       this.dept = val
+    },
+  },
+  head() {
+    return {
+      title: this.karyawan.karyawan.nama,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Data Karyawan',
+        },
+      ],
     }
-  }
+  },
 }
 </script>
-
-<style scoped></style>

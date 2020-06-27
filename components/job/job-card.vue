@@ -19,7 +19,7 @@ import JobForm from '@/components/job/job-form'
 export default {
   components: {
     BaseTable,
-    JobForm
+    JobForm,
   },
   data() {
     return {
@@ -27,17 +27,17 @@ export default {
       header: [
         {
           text: 'Color',
-          value: 'color'
+          value: 'color',
         },
         {
           text: 'Ket',
-          value: 'keterangan'
-        }
+          value: 'keterangan',
+        },
       ],
       store: 'job',
       state: 'jobs',
       action: 'Job',
-      data: this.newData()
+      data: this.newData(),
     }
   },
   methods: {
@@ -47,11 +47,9 @@ export default {
     newData() {
       return {
         color: undefined,
-        keterangan: undefined
+        keterangan: undefined,
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

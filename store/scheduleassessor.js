@@ -1,7 +1,7 @@
 export const namespaced = true
 
 export const state = () => ({
-  schedules: []
+  schedules: [],
 })
 
 export const mutations = {
@@ -20,7 +20,7 @@ export const mutations = {
     state.schedules = state.schedules.filter(
       (b) => b.id_schedule_assessor !== id
     )
-  }
+  },
 }
 
 export const actions = {
@@ -42,5 +42,5 @@ export const actions = {
   async deleteSchedule({ commit }, schedule) {
     await this.$api.scheduleAssessor.delete(schedule.id_schedule_assessor)
     commit('DEL_SCHEDULE', schedule.id_schedule_assessor)
-  }
+  },
 }

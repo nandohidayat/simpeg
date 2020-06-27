@@ -2,7 +2,7 @@ export const namespaced = true
 
 export const state = () => ({
   karyawans: [],
-  karyawan: {}
+  karyawan: {},
 })
 
 export const mutations = {
@@ -14,7 +14,7 @@ export const mutations = {
   },
   ADD_KARYAWAN(state, karyawan) {
     state.karyawans.push(karyawan)
-  }
+  },
 }
 
 export const actions = {
@@ -36,7 +36,7 @@ export const actions = {
       ).departemen,
       ruang: rootState.ruang.ruangs.find(
         (d) => d.id_ruang === karyawan.id_ruang
-      ).ruang
+      ).ruang,
     }
 
     commit('ADD_KARYAWAN', k)
@@ -51,12 +51,12 @@ export const actions = {
       ).departemen,
       ruang: rootState.ruang.ruangs.find(
         (d) => d.id_ruang === karyawan.id_ruang
-      ).ruang
+      ).ruang,
     }
 
     commit('SET_KARYAWAN', k)
   },
   async deleteKaryawan({ commit }, nik) {
     await this.$api.karyawan.delete(nik)
-  }
+  },
 }

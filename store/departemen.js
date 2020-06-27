@@ -2,7 +2,7 @@ export const namespaced = true
 
 export const state = () => ({
   departemens: [],
-  departemen: undefined
+  departemen: undefined,
 })
 
 export const mutations = {
@@ -22,7 +22,7 @@ export const mutations = {
   },
   DEL_DEPARTEMEN(state, id) {
     state.departemens = state.departemens.filter((d) => d.id_departemen !== id)
-  }
+  },
 }
 
 export const actions = {
@@ -41,5 +41,5 @@ export const actions = {
   async deleteDepartemen({ commit }, id) {
     await this.$api.departemen.delete(id)
     commit('DEL_DEPARTEMEN', id)
-  }
+  },
 }

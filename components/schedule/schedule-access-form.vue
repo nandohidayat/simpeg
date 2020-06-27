@@ -40,13 +40,11 @@ export default {
   props: {
     data: {
       type: Object,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   computed: {
-    ...mapState(['departemen'])
-  }
+    ...mapState(['departemen']),
+  },
 }
 </script>
-
-<style scoped></style>

@@ -4,12 +4,12 @@
       <h1 class="display-4 mb-4">{{ statusCode }}</h1>
       <h1 class="text-uppercase font-weight-regular mb-5">{{ message }}</h1>
 
-      <NuxtLink v-if="statusCode === 404" to="/">
+      <a v-if="statusCode === 404" href="/spp">
         <v-btn rounded dark color="grey">
           home page
         </v-btn>
-      </NuxtLink>
-      <v-btn v-else @click="() => this.$router.go()" rounded dark color="grey">
+      </a>
+      <v-btn v-else rounded dark color="grey" @click="() => this.$router.go()">
         refresh
       </v-btn>
     </v-col>
@@ -22,11 +22,8 @@ export default {
   props: {
     error: {
       type: Object,
-      default: null
-    }
-  },
-  head() {
-    return { title: this.message }
+      default: null,
+    },
   },
   computed: {
     statusCode() {
@@ -34,8 +31,11 @@ export default {
     },
     message() {
       return this.error.message
-    }
-  }
+    },
+  },
+  head() {
+    return { title: this.message }
+  },
 }
 </script>
 

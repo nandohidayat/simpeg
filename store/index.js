@@ -1,4 +1,4 @@
-import { parse } from 'cookieparser'
+// import { parse } from 'cookieparser'
 
 export const strict = false
 
@@ -7,13 +7,11 @@ export const actions = {
     if (process.server && process.static) return
     if (!req.headers.cookie) return
     if (req.headers.cookie) {
-      const parsed = parse(req.headers.cookie)
-      const userCookie = parsed.user
-      if (!userCookie) return
-
-      const user = JSON.parse(userCookie)
-
-      commit('user/SET_USER', user)
+      // const parsed = parse(req.headers.cookie)
+      // const userCookie = parsed.user
+      // if (!userCookie) return
+      // const user = JSON.parse(userCookie)
+      // commit('user/SET_USER', user)
     }
-  }
+  },
 }

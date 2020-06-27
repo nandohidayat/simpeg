@@ -23,33 +23,33 @@
         </template>
       </base-form>
     </template>
-    <div style="max-height: 743px" class="overflow-y-auto">
+    <div style="max-height: 743px;" class="overflow-y-auto">
       <v-list>
         <template v-for="(i, index) in schedulechange.schedules">
-          <v-list-item @click.stop="openDialog(i)" class="body-2">
+          <v-list-item :key="index" class="body-2" @click.stop="openDialog(i)">
             <v-row>
               <v-col v-if="single" cols="1"></v-col>
               <v-col cols="9">
                 <div class="mb-1">
-                  <span style="width: 80px" class="d-inline-block"
+                  <span style="width: 80px;" class="d-inline-block"
                     >Permintaan</span
                   >
                   : <span class="ml-1">{{ i.type | permintaan }}</span>
                 </div>
                 <div class="mb-1">
-                  <span style="width: 80px" class="d-inline-block">Mulai</span>
+                  <span style="width: 80px;" class="d-inline-block">Mulai</span>
                   :
                   <span class="ml-1">{{ i.mulai | date }}</span>
                 </div>
                 <div class="mb-1">
-                  <span style="width: 80px" class="d-inline-block"
+                  <span style="width: 80px;" class="d-inline-block"
                     >Selesai</span
                   >
                   :
                   <span class="ml-1">{{ i.selesai | date }}</span>
                 </div>
                 <div class="mb-1">
-                  <span style="width: 80px" class="d-inline-block"
+                  <span style="width: 80px;" class="d-inline-block"
                     >Pemohon</span
                   >
                   :
@@ -58,7 +58,7 @@
                   </span>
                 </div>
                 <div v-if="i.dengan !== null && i.dengan !== undefined">
-                  <span style="width: 80px" class="d-inline-block">{{
+                  <span style="width: 80px;" class="d-inline-block">{{
                     parseInt(detail.type) === 2 ? `Pengganti` : `Dengan`
                   }}</span>
                   :
@@ -82,6 +82,7 @@
           </v-list-item>
           <v-divider
             v-if="index < schedulechange.schedules.length - 1"
+            :key="index"
           ></v-divider>
         </template>
       </v-list>
@@ -169,37 +170,37 @@
             <v-spacer></v-spacer>
             <v-btn
               v-if="parseInt(detail.status) === 1 && single"
-              @click="deleteSchedule(detail.id_schedule_change)"
               small
               dark
               color="teal"
+              @click="deleteSchedule(detail.id_schedule_change)"
               >Delete</v-btn
             >
             <div v-else-if="parseInt(detail.status) === 1">
               <v-btn
+                small
+                dark
+                color="success"
                 @click="
                   updateSchedule({
                     ...detail,
                     status: 2,
-                    dengan
+                    dengan,
                   })
                 "
-                small
-                dark
-                color="success"
                 >Approve</v-btn
               >
               <v-btn
+                small
+                dark
+                color="error"
                 @click="
                   updateSchedule({
                     ...detail,
                     status: 3,
-                    dengan
+                    dengan,
                   })
                 "
-                small
-                dark
-                color="error"
                 >Decline</v-btn
               >
             </div>
@@ -215,21 +216,19 @@ import { mapState } from 'vuex'
 import moment from 'moment'
 import 'moment/locale/id'
 
-import baseCard from '@/components/data/base-card'
-import baseForm from '@/components/data/base-form'
+import baseCard from '@/components/base/base-card'
+import baseForm from '@/components/base/base-form'
 import scheduleChangeForm from '@/components/schedule/schedule-change-form'
 
 export default {
   components: {
     'base-card': baseCard,
     'base-form': baseForm,
-    'schedule-change-form': scheduleChangeForm
+    'schedule-change-form': scheduleChangeForm,
   },
   filters: {
     date(val) {
-      return moment(val)
-        .locale('id')
-        .format('D MMMM YYYY')
+      return moment(val).locale('id').format('D MMMM YYYY')
     },
     permintaan(val) {
       if (val === undefined) return
@@ -237,53 +236,53 @@ export default {
       const list = [
         {
           key: 1,
-          text: 'Tukar Shift'
+          text: 'Tukar Shift',
         },
         {
           key: 2,
-          text: 'Cuti'
-        }
+          text: 'Cuti',
+        },
       ]
 
       return list.find((p) => p.key === parseInt(val)).text
-    }
+    },
   },
   props: {
     single: {
       type: Boolean,
-      default: false
+      default: false,
     },
     year: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     month: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     dept: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     updater: {
       type: String,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   data() {
     return {
       dialog: false,
       detail: {},
-      dengan: undefined
+      dengan: undefined,
     }
   },
   computed: {
-    ...mapState(['schedulechange', 'karyawan'])
+    ...mapState(['schedulechange', 'karyawan']),
   },
   watch: {
     updater(val) {
       this.getSchedules()
-    }
+    },
   },
   methods: {
     openDialog(i) {
@@ -301,7 +300,7 @@ export default {
         await this.$store.dispatch('schedulechange/fetchSchedules', {
           dept: this.dept,
           month: this.month,
-          year: this.year
+          year: this.year,
         })
       } catch (err) {
         this.$alert('error', err)
@@ -324,9 +323,7 @@ export default {
       } catch (err) {
         this.$alert('error', err)
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

@@ -13,40 +13,40 @@
           <template #activator="{ on, attrs }">
             <v-text-field
               :value="dateMoment"
-              v-on="on"
               v-bind="attrs"
               readonly
               outlined
               dense
               label="Tanggal"
               hide-details
+              v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
             v-model="selectedDate"
-            @input="
-              menu = false
-              getAbsens()
-            "
             color="teal"
             type="month"
             no-title
             locale="id-id"
+            @input="
+              menu = false
+              getAbsens()
+            "
           >
           </v-date-picker>
         </v-menu>
       </v-col>
       <v-col cols="4">
         <v-autocomplete
+          v-model="selectedDept"
           :items="departemen.departemens"
           :item-value="(obj) => obj.id_dept"
           :item-text="(obj) => obj.nm_dept"
-          @change="getPegawais()"
-          v-model="selectedDept"
           label="Departemen"
           dense
           outlined
           hide-details
+          @change="getPegawais()"
         ></v-autocomplete>
       </v-col>
       <v-col cols="4">
@@ -55,11 +55,11 @@
           :items="pegawai.pegawais"
           :item-value="(obj) => obj.id_pegawai"
           :item-text="(obj) => obj.nm_pegawai"
-          @change="getAbsens()"
           label="Pegawai"
           dense
           outlined
           hide-details
+          @change="getAbsens()"
         ></v-autocomplete>
       </v-col>
     </v-row>
@@ -76,28 +76,26 @@ export default {
       selectedDate: new Date().toISOString().substr(0, 7),
       selectedDept: undefined,
       selectedPegawai: undefined,
-      menu: false
+      menu: false,
     }
   },
   computed: {
     ...mapState(['departemen', 'pegawai']),
     dateMoment() {
-      return moment(this.selectedDate)
-        .locale('id')
-        .format('MMMM YYYY')
+      return moment(this.selectedDate).locale('id').format('MMMM YYYY')
     },
     year() {
       return parseInt(this.selectedDate.substr(0, 4))
     },
     month() {
       return parseInt(this.selectedDate.slice(-2))
-    }
+    },
   },
   methods: {
     async getPegawais() {
       this.selectedPegawai = undefined
       await this.$store.dispatch('pegawai/fetchPegawais', {
-        dept: this.selectedDept
+        dept: this.selectedDept,
       })
     },
     async getAbsens() {
@@ -105,11 +103,9 @@ export default {
       await this.$store.dispatch('absen/fetchAbsens', {
         pegawai: this.selectedPegawai,
         year: this.year,
-        month: this.month
+        month: this.month,
       })
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style lang="sass" scoped></style>

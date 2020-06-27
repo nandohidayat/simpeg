@@ -4,14 +4,14 @@
       v-if="
         (!schedulerequest.schedule.assessor &&
           parseInt(schedulerequest.schedule.status) === 1) ||
-          (schedulerequest.schedule.assessor &&
-            parseInt(schedulerequest.schedule.status) === 0)
+        (schedulerequest.schedule.assessor &&
+          parseInt(schedulerequest.schedule.status) === 0)
       "
       bottom
       z-index="20"
     >
       <template #activator="{ on }">
-        <v-btn v-on="on" color="teal" icon><v-icon>mdi-sync</v-icon></v-btn>
+        <v-btn color="teal" icon v-on="on"><v-icon>mdi-sync</v-icon></v-btn>
       </template>
       <span v-if="schedulerequest.schedule.assessor">Belum Dikirim</span>
       <span v-else>Sedang Direview</span>
@@ -19,13 +19,13 @@
     <v-tooltip
       v-if="
         !schedulerequest.schedule.assessor &&
-          parseInt(schedulerequest.schedule.status) === 0
+        parseInt(schedulerequest.schedule.status) === 0
       "
       bottom
       z-index="20"
     >
       <template #activator="{ on }">
-        <v-btn v-on="on" @click="saveRequest(1)" color="teal" icon
+        <v-btn color="teal" icon v-on="on" @click="saveRequest(1)"
           ><v-icon>mdi-send</v-icon></v-btn
         >
       </template>
@@ -34,7 +34,7 @@
     <v-menu
       v-if="
         schedulerequest.schedule.assessor &&
-          parseInt(schedulerequest.schedule.status) === 1
+        parseInt(schedulerequest.schedule.status) === 1
       "
       bottom
       z-index="20"
@@ -42,7 +42,7 @@
       <template v-slot:activator="{ on: menu }">
         <v-tooltip bottom z-index="20">
           <template v-slot:activator="{ on: tooltip }">
-            <v-btn v-on="{ ...tooltip, ...menu }" color="teal" icon
+            <v-btn color="teal" icon v-on="{ ...tooltip, ...menu }"
               ><v-icon>mdi-send</v-icon></v-btn
             >
           </template>
@@ -57,7 +57,7 @@
     <v-menu
       v-if="
         schedulerequest.schedule.assessor &&
-          parseInt(schedulerequest.schedule.status) === 2
+        parseInt(schedulerequest.schedule.status) === 2
       "
       bottom
       z-index="20"
@@ -65,7 +65,7 @@
       <template v-slot:activator="{ on: menu }">
         <v-tooltip bottom z-index="20">
           <template v-slot:activator="{ on: tooltip }">
-            <v-btn v-on="{ ...tooltip, ...menu }" color="teal" icon
+            <v-btn color="teal" icon v-on="{ ...tooltip, ...menu }"
               ><v-icon>mdi-check-bold</v-icon></v-btn
             >
           </template>
@@ -79,13 +79,13 @@
     <v-tooltip
       v-if="
         !schedulerequest.schedule.assessor &&
-          parseInt(schedulerequest.schedule.status) === 2
+        parseInt(schedulerequest.schedule.status) === 2
       "
       bottom
       z-index="20"
     >
       <template #activator="{ on }">
-        <v-btn v-on="on" color="teal" icon
+        <v-btn color="teal" icon v-on="on"
           ><v-icon>mdi-check-bold</v-icon></v-btn
         >
       </template>
@@ -101,19 +101,19 @@ export default {
   props: {
     month: {
       type: [String, Number],
-      default: undefined
+      default: undefined,
     },
     year: {
       type: [String, Number],
-      default: undefined
+      default: undefined,
     },
     dept: {
       type: String,
-      default: String
-    }
+      default: String,
+    },
   },
   computed: {
-    ...mapState(['schedulerequest'])
+    ...mapState(['schedulerequest']),
   },
   methods: {
     async saveRequest(status) {
@@ -124,15 +124,13 @@ export default {
           dept: this.dept,
           year: this.year,
           month: this.month,
-          status
+          status,
         })
         this.$alert('success', 'Successfully Saved')
       } catch (err) {
         this.$alert('error', err)
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

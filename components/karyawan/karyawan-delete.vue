@@ -4,7 +4,7 @@
       <v-icon large left color="error">mdi-alert</v-icon
       ><span class="title font-weight-light error--text">Hapus Karyawan</span>
       <v-spacer></v-spacer>
-      <v-btn @click="deleteKaryawan" outlined color="error"
+      <v-btn outlined color="error" @click="deleteKaryawan"
         >Hapus Karyawan</v-btn
       >
     </v-card-title>
@@ -23,9 +23,7 @@ export default {
         )
         this.$router.push('/karyawan')
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style scoped></style>

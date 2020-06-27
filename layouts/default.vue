@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer v-model="drawer" temporary app style="z-index:1000">
+    <v-navigation-drawer v-model="drawer" temporary app style="z-index: 1000;">
       <v-list dense>
         <v-list-item to="/">
           <v-list-item-action>
@@ -10,7 +10,7 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-group v-for="(m, i) in user.menu" :key="i" no-action>
+        <v-list-group v-for="(m, i) in $auth.user.menu" :key="i" no-action>
           <template v-slot:activator>
             <v-list-item-action>
               <v-icon>{{ m.icon }}</v-icon>
@@ -20,9 +20,9 @@
             </v-list-item-content>
           </template>
           <v-list-item
-            :to="c.link"
             v-for="(c, idx) in m.children"
             :key="idx"
+            :to="c.link"
             router
             exact
           >
@@ -31,21 +31,21 @@
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app color="teal" dark style="z-index:999">
+    <v-app-bar app color="teal" dark style="z-index: 999;">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Alpha System</v-toolbar-title>
+      <v-toolbar-title>SIMPEG</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn v-on="on" outlined>
+          <v-btn outlined v-on="on">
             <v-icon class="mr-2">mdi-account-circle</v-icon>
-            {{ user.user.nama }}
+            {{ $auth.user.nama }}
           </v-btn>
         </template>
         <v-card tile>
           <v-list dense>
             <v-subheader>Data</v-subheader>
-            <v-list-item :to="`/karyawan/${user.user.nik}`">
+            <v-list-item :to="`/karyawan/${$auth.user.nik}`">
               <v-list-item-icon
                 ><v-icon>mdi-account-box</v-icon></v-list-item-icon
               >
@@ -66,11 +66,11 @@
         </v-card>
       </v-menu>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <v-container fluid class="px-10">
         <nuxt />
       </v-container>
-    </v-content>
+    </v-main>
     <notification-bar></notification-bar>
     <v-footer color="teal">
       <span class="white--text">&copy; 2019</span>
@@ -85,32 +85,32 @@ import notificationBar from '@/components/notification/notification-bar'
 
 export default {
   components: {
-    'notification-bar': notificationBar
-  },
-  head() {
-    return {
-      titleTemplate: '%s - Alpha System',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Penjadwalan Karyawan'
-        }
-      ]
-    }
+    'notification-bar': notificationBar,
   },
   data() {
     return {
-      drawer: false
+      drawer: false,
     }
   },
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user']),
   },
   methods: {
     logout() {
       this.$store.dispatch('user/logout')
+    },
+  },
+  head() {
+    return {
+      titleTemplate: '%s - SIMPEG',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Penjadwalan Karyawan',
+        },
+      ],
     }
-  }
+  },
 }
 </script>
