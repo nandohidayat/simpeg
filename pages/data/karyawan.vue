@@ -30,6 +30,7 @@ import Shift from '@/components/shift/shift-card'
 import Job from '@/components/job/job-card'
 
 export default {
+  middleware: 'access',
   components: {
     DeptSj,
     ScheduleAccess,

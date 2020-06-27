@@ -56,6 +56,7 @@
 import { mapState } from 'vuex'
 
 export default {
+  middleware: 'access',
   async fetch({ store }) {
     await Promise.all([
       store.dispatch('departemen/fetchDepartemens'),
