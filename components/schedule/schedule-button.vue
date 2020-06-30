@@ -30,7 +30,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('shift', ['getKode']),
+    ...mapGetters('shift', ['getKode', 'getBgColor']),
     ...mapGetters('job', ['getColor']),
     kode() {
       if (this.shift === undefined) return
@@ -43,7 +43,7 @@ export default {
       } else if (this.active) {
         return 'grey lighten-2'
       } else {
-        return this.getColor(this.job)
+        return this.getBgColor(this.shift)
       }
     },
   },
