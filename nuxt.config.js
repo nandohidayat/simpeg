@@ -75,7 +75,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://192.168.0.106/php74/simpeg/simpeg_backend/api/',
+    baseURL: 'http://192.168.0.106/php74/simpeg/simpeg_backend/public/api/',
     headers: {
       common: {
         Accept: 'application/json, text/plain, */*',
