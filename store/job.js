@@ -58,8 +58,12 @@ export const getters = {
     )
     return [{ id: undefined, job: undefined, color: 'white' }, ...job]
   },
-  getColor: (state) => (id) => {
-    const job = state.jobs.find((j) => parseInt(j.id_job) === parseInt(id))
-    return job ? job.color : 'white'
+  getFtColor: (state) => (id) => {
+    let job = state.jobs.find((j) => parseInt(j.id_job) === parseInt(id))
+    if (job) {
+      job = job.color.split(' ')
+      return `${job[0]}--text text--${job[1]}`
+    }
+    return 'black--text'
   },
 }
