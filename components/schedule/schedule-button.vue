@@ -40,7 +40,7 @@ export default {
     bgColor() {
       if (this.active) {
         return 'grey lighten-2'
-      } else if (this.shift === undefined) {
+      } else if (this.shift === undefined || this.shift === null) {
         return 'white'
       } else {
         return this.getBgColor(this.shift)
