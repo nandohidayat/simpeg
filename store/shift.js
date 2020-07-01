@@ -68,4 +68,10 @@ export const getters = {
     )
     return shift ? shift.kode : undefined
   },
+  getBgColor: (state) => (id) => {
+    const shift = state.shifts.find(
+      (s) => parseInt(s.id_shift) === parseInt(id)
+    )
+    return shift ? shift.color : undefined
+  },
 }

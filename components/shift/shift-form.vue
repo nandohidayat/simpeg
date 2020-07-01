@@ -55,6 +55,11 @@
         <v-text-field v-model="data['kode']" label="Kode"></v-text-field>
       </v-col>
       <v-col cols="6">
+        <v-text-field v-model="data['color']" label="Color"></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
         <v-text-field
           v-model="data['keterangan']"
           label="Keterangan"

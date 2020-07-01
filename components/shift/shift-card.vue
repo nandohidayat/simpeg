@@ -38,6 +38,10 @@ export default {
           value: 'kode',
         },
         {
+          text: 'Color',
+          value: 'color',
+        },
+        {
           text: 'Ket',
           value: 'keterangan',
         },
@@ -57,6 +61,7 @@ export default {
         mulai: undefined,
         selesai: undefined,
         kode: undefined,
+        color: undefined,
         keterangan: undefined,
       }
     },

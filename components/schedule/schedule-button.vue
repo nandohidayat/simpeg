@@ -1,13 +1,13 @@
 <template>
   <v-btn
-    :color="color"
+    :color="bgColor"
     :ripple="false"
     height="35px"
     width="35px"
     depressed
     small
     tile
-    >{{ kode }}</v-btn
+    ><span :class="ftColor">{{ kode }}</span></v-btn
   >
 </template>
 
@@ -30,21 +30,24 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('shift', ['getKode']),
-    ...mapGetters('job', ['getColor']),
+    ...mapGetters('shift', ['getKode', 'getBgColor']),
+    ...mapGetters('job', ['getFtColor']),
     kode() {
       if (this.shift === undefined) return
 
       return this.getKode(this.shift)
     },
-    color() {
+    bgColor() {
       if (this.active === undefined) {
         return 'white'
       } else if (this.active) {
         return 'grey lighten-2'
       } else {
-        return this.getColor(this.job)
+        return this.getBgColor(this.shift)
       }
+    },
+    ftColor() {
+      return this.getFtColor(this.job)
     },
   },
 }
