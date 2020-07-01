@@ -41,7 +41,7 @@ export default {
     '@/plugins/auth',
     '@/plugins/repository',
     '@/plugins/alert',
-    // '@/plugins/baseurl',
+    '@/plugins/baseurl',
     // '@/plugins/vuetify',
   ],
   /*
