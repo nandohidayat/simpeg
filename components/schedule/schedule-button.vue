@@ -38,10 +38,10 @@ export default {
       return this.getKode(this.shift)
     },
     bgColor() {
-      if (this.shift === undefined) {
-        return 'white'
-      } else if (this.active) {
+      if (this.active) {
         return 'grey lighten-2'
+      } else if (this.shift === undefined) {
+        return 'white'
       } else {
         return this.getBgColor(this.shift)
       }
