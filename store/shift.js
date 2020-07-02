@@ -72,6 +72,6 @@ export const getters = {
     const shift = state.shifts.find(
       (s) => parseInt(s.id_shift) === parseInt(id)
     )
-    return shift ? shift.color : undefined
+    return shift.color ? shift.color : 'white'
   },
 }
