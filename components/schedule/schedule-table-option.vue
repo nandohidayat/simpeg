@@ -196,6 +196,8 @@ export default {
     async importSchedule() {
       const formData = new FormData()
       formData.append('schedules', this.jadwal)
+      formData.append('year', this.year)
+      formData.append('month', this.month)
       try {
         await this.$axios.$post(
           `${this.$axios.defaults.baseURL}schedule/excel`,
