@@ -9,14 +9,13 @@
             :item-value="(obj) => obj.id_dept"
             :item-text="(obj) => obj.nm_dept"
             label="Departemen"
+            hide-details
             clearable
             @change="getAkses"
           ></v-autocomplete>
         </v-col>
-        <v-col cols="1" class="d-flex align-center">
-          <v-divider vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-btn color="teal" dark small @click="saveAkses"
+        <v-col cols="1" class="d-flex align-center justify-center">
+          <v-btn color="teal" dark @click="saveAkses"
             ><v-icon>mdi-content-save</v-icon></v-btn
           >
         </v-col>

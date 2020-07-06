@@ -9,8 +9,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchPegawais({ commit }, { dept }) {
-    const res = await this.$api.pegawai.index({ dept })
+  async fetchPegawais({ commit }, query) {
+    const res = await this.$api.pegawai.index(query)
     commit('SET_PEGAWAIS', res.data)
   },
 }
