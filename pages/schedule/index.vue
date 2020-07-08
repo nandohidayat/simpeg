@@ -29,7 +29,7 @@
 import { mapState } from 'vuex'
 
 import ScheduleTable from '@/components/schedule/schedule-table'
-import ScheduleOption from '@/components/schedule/schedule-table-option'
+import ScheduleOption from '@/components/schedule/schedule-option'
 import AbsenTab from '@/components/absen/absen-tab'
 
 export default {
@@ -43,6 +43,7 @@ export default {
     await Promise.all([
       store.dispatch('shift/fetchShifts'),
       store.dispatch('job/fetchJobs'),
+      store.dispatch('schedule/fetchSchedules'),
     ])
   },
   data() {
@@ -75,11 +76,6 @@ export default {
     },
   },
   async created() {
-    await this.$store.dispatch('schedule/fetchSchedules', {
-      year: this.year,
-      month: this.month,
-    })
-
     this.dept = this.departemen.departemens[0].id_dept
 
     await Promise.all([

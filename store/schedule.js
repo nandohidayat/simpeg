@@ -64,17 +64,23 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchSchedules({ commit, rootState }, date) {
+  async fetchSchedules({ commit, rootState }, date = {}) {
     commit('TOOGLE_OVERLAY', true)
 
-    const res = await this.$api.schedule.index(date)
+    if (this.$auth.user.option.includes(6)) {
+      date.semua = 1
+    }
+
+    const res = await this.$api.schedule.index(date, date)
 
     if (res.data.dept !== undefined)
       rootState.departemen.departemens = res.data.dept
 
-    if (res.data.assessor !== undefined) {
+    if (res.data.assessor) {
       if (res.data.assessor.status === null) res.data.assessor.status = 0
       rootState.schedulerequest.schedule = res.data.assessor
+    } else {
+      rootState.schedulerequest.schedule = null
     }
 
     commit('SET_SCHEDULES', res.data)

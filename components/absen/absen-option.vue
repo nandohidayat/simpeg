@@ -96,6 +96,7 @@ export default {
       this.selectedPegawai = undefined
       await this.$store.dispatch('pegawai/fetchPegawais', {
         dept: this.selectedDept,
+        select: 1,
       })
     },
     async getAbsens() {

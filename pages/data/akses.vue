@@ -4,50 +4,32 @@
       <v-row>
         <v-col cols="11">
           <v-autocomplete
-            v-model="dept"
-            :items="departemen.departemens"
-            :item-value="(obj) => obj.id_dept"
-            :item-text="(obj) => obj.nm_dept"
-            label="Departemen"
+            v-model="current"
+            :items="pegawai.pegawais"
+            :item-value="(obj) => obj.id_pegawai"
+            :item-text="(obj) => obj.nm_pegawai"
+            label="Pegawai"
+            hide-details
             clearable
             @change="getAkses"
           ></v-autocomplete>
         </v-col>
-        <v-col cols="1" class="d-flex align-center">
-          <v-divider vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-btn color="teal" dark small @click="saveAkses"
+        <v-col cols="1" class="d-flex align-center justify-center">
+          <v-btn color="teal" dark @click="saveAkses"
             ><v-icon>mdi-content-save</v-icon></v-btn
           >
         </v-col>
       </v-row>
       <v-divider class="mt-2 mb-5"></v-divider>
-      <v-row>
-        <v-col cols="6">
-          <h1 class="display-1 font-weight-light mb-3 black--text">
-            List Akses
-          </h1>
-          <v-treeview
-            v-model="selectedSemua"
-            :items="akses.aksess"
-            selectable
-            open-all
-            selected-color="teal"
-          ></v-treeview>
-        </v-col>
-        <v-col cols="6">
-          <h1 class="display-1 font-weight-light mb-3 black--text">
-            Hanya Ketua
-          </h1>
-          <v-treeview
-            v-model="selectedKepala"
-            :items="akses.aksess"
-            selectable
-            open-all
-            selected-color="teal"
-          ></v-treeview>
-        </v-col>
-      </v-row>
+      <div class="mx-5">
+        <v-treeview
+          v-model="active"
+          :items="items"
+          selectable
+          open-all
+          selected-color="teal"
+        ></v-treeview>
+      </div>
     </v-card-text>
   </v-card>
 </template>
@@ -58,44 +40,71 @@ import { mapState } from 'vuex'
 export default {
   middleware: 'access',
   async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('departemen/fetchDepartemens'),
-      store.dispatch('akses/fetchAksess'),
-    ])
+    await store.dispatch('pegawai/fetchPegawais', { select: 1 })
   },
   data() {
     return {
-      dept: undefined,
-      selectedSemua: undefined,
-      selectedKepala: undefined,
-      tab: undefined,
+      items: [
+        {
+          id: 1001,
+          name: 'Database',
+          children: [
+            { id: 3, name: 'Data Jadwal' },
+            { id: 4, name: 'Data Akses' },
+          ],
+        },
+        {
+          id: 1002,
+          name: 'Karyawan',
+          children: [
+            { id: 1, name: 'Daftar Karyawan' },
+            {
+              id: 1003,
+              name: 'Jadwal Karyawan',
+              children: [
+                {
+                  id: 2,
+                  name: 'Read Jadwal Karyawan',
+                },
+                {
+                  id: 5,
+                  name: 'Update Jadwal Karyawan',
+                },
+                {
+                  id: 6,
+                  name: 'All Jadwal Karyawan',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      current: undefined,
+      active: [],
     }
   },
   computed: {
-    ...mapState(['departemen', 'akses']),
+    ...mapState(['akses', 'pegawai']),
   },
   methods: {
     async getAkses() {
-      if (this.dept === undefined) {
-        this.selectedSemua = []
-        this.selectedKepala = []
+      if (this.current === undefined) {
+        this.active = []
       } else {
         try {
-          await this.$store.dispatch('akses/fetchAkses', this.dept)
-          this.selectedSemua = this.akses.akses.semua
-          this.selectedKepala = this.akses.akses.kepala
+          await this.$store.dispatch('akses/fetchAkses', this.current)
+          this.active = this.akses.akses
         } catch (err) {
           this.$alert('error', err)
         }
       }
     },
     async saveAkses() {
-      if (this.dept === undefined) return
+      if (this.current === undefined) return
       try {
-        await this.$store.dispatch('akses/createAkses', {
-          dept: this.dept,
-          semua: this.selectedSemua,
-          kepala: this.selectedKepala,
+        await this.$store.dispatch('akses/updateAkses', {
+          pegawai: this.current,
+          akses: this.active,
         })
         this.$alert('success', 'Successfully Saved')
       } catch (err) {
