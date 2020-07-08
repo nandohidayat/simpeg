@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <span>
     <v-tooltip
       v-if="
         (!schedulerequest.schedule.assessor &&
@@ -91,7 +91,7 @@
       </template>
       <span>Accepted</span>
     </v-tooltip>
-  </div>
+  </span>
 </template>
 
 <script>

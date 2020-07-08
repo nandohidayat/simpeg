@@ -3,7 +3,7 @@
     <v-card class="px-4" outlined>
       <v-row>
         <v-col :cols="5" class="pt-4">
-          <v-select
+          <v-autocomplete
             :value="dept"
             :items="departemen.departemens"
             :item-text="(obj) => obj.nm_dept"
@@ -14,52 +14,58 @@
             hide-details
             @change="$emit('update:dept', $event)"
           >
-          </v-select>
+          </v-autocomplete>
         </v-col>
         <v-col :cols="1"></v-col>
-        <v-col :cols="3">
-          <v-menu
-            ref="menu"
-            v-model="menu"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-            z-index="20"
-          >
-            <template #activator="{ on }">
-              <v-text-field
-                :value="dateMoment"
-                readonly
-                outlined
-                dense
-                hide-details
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              :value="date"
-              color="teal"
-              type="month"
-              no-title
-              locale="id-id"
-              @change="
-                $emit('update:date', $event)
-                menu = false
-              "
+        <v-col :cols="6" class="text-right">
+          <v-sheet max-width="300" class="d-inline-block mx-1">
+            <v-menu
+              ref="menu"
+              v-model="menu"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              z-index="20"
             >
-            </v-date-picker>
-          </v-menu>
-        </v-col>
-        <v-col cols="3" class="d-flex justify-space-around">
+              <template #activator="{ on }">
+                <v-text-field
+                  :value="dateMoment"
+                  readonly
+                  outlined
+                  dense
+                  hide-details
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                :value="date"
+                color="teal"
+                type="month"
+                no-title
+                locale="id-id"
+                @change="
+                  $emit('update:date', $event)
+                  menu = false
+                "
+              >
+              </v-date-picker>
+            </v-menu>
+          </v-sheet>
           <v-tooltip bottom z-index="20">
             <template #activator="{ on }">
-              <v-btn color="teal" icon v-on="on" @click="exportSchedule()"
+              <v-btn
+                color="teal"
+                icon
+                class="mx-1"
+                v-on="on"
+                @click="exportSchedule()"
                 ><v-icon>mdi-download</v-icon></v-btn
               >
             </template>
             <span>Export</span>
           </v-tooltip>
           <v-menu
+            v-if="hadOption(5)"
             v-model="menu1"
             :close-on-content-click="false"
             z-index="20"
@@ -68,7 +74,11 @@
             <template #activator="{ on: menu2 }">
               <v-tooltip bottom z-index="20">
                 <template #activator="{ on: tooltip }">
-                  <v-btn color="teal" icon v-on="{ ...tooltip, ...menu2 }"
+                  <v-btn
+                    color="teal"
+                    icon
+                    class="mx-1"
+                    v-on="{ ...tooltip, ...menu2 }"
                     ><v-icon>mdi-upload</v-icon></v-btn
                   >
                 </template>
@@ -94,9 +104,14 @@
             </v-list>
           </v-menu>
 
-          <v-tooltip bottom z-index="20">
+          <v-tooltip v-if="hadOption(5)" bottom z-index="20">
             <template #activator="{ on }">
-              <v-btn color="teal" icon v-on="on" @click="updateSchedule()"
+              <v-btn
+                color="teal"
+                icon
+                class="mx-1"
+                v-on="on"
+                @click="updateSchedule()"
                 ><v-icon>mdi-content-save</v-icon></v-btn
               >
             </template>
@@ -104,6 +119,7 @@
           </v-tooltip>
           <request-btn
             v-if="
+              hadOption(5) &&
               schedulerequest.schedule !== null &&
               schedulerequest.schedule !== undefined
             "
@@ -120,7 +136,7 @@
 <script>
 import moment from 'moment'
 import 'moment/locale/id'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 import RequestBtn from '@/components/schedule/schedule-request-button'
 
@@ -163,6 +179,7 @@ export default {
   },
   computed: {
     ...mapState(['schedulerequest', 'departemen']),
+    ...mapGetters('user', ['hadOption']),
     dateMoment() {
       return this.date ? moment(this.date).locale('id').format('MMMM YYYY') : ''
     },
