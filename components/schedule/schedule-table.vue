@@ -167,9 +167,11 @@ export default {
   computed: {
     ...mapState(['schedule']),
     ...mapGetters('schedule', ['dayColor']),
+    ...mapGetters('user', ['hadOption']),
   },
   methods: {
     ranged(event, day, staff) {
+      if (!this.hadOption(5)) return
       if (
         this.day.length === 0 ||
         this.day.length === 2 ||
@@ -197,6 +199,7 @@ export default {
       return false
     },
     nameClick(event, staff) {
+      if (!this.hadOption(5)) return
       if (this.staff === staff) {
         this.day = []
         this.staff = undefined
