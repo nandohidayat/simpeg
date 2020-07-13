@@ -64,10 +64,10 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchSchedules({ commit, rootState, rootGetters }, date = {}) {
+  async fetchSchedules({ commit, rootState }, date = {}) {
     commit('TOOGLE_OVERLAY', true)
 
-    if (rootGetters['user/hadOption'](6)) {
+    if (this.$auth.user.option.map((i) => parseInt(i)).includes(6)) {
       date.semua = 1
     }
 
