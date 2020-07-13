@@ -23,7 +23,7 @@
       </div> -->
       <div>
         <v-list-item
-          v-for="(s, i) in fShift"
+          v-for="(s, i) in fShift()"
           :key="i"
           dense
           @click="updateSchedule(s.id_shift)"

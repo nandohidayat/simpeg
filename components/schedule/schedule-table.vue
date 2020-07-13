@@ -105,8 +105,20 @@
         :y="y"
       ></schedule-menu>
     </div>
-    <v-row style="height: 40px;" no-gutters align="center" justify="end">
-      <!-- <v-switch
+    <v-row class="px-3">
+      <v-col cols="6">
+        <table style="font-size: 10pt;">
+          <tr>
+            <td class="px-3" colspan="2">Keterangan:</td>
+          </tr>
+          <tr v-for="s in fShift(true)" :key="s.id_shift">
+            <td class="px-3">{{ s.kode }}</td>
+            <td>({{ showTime(s.mulai) }} - {{ showTime(s.selesai) }})</td>
+          </tr>
+        </table>
+      </v-col>
+      <v-col cols="6">
+        <!-- <v-switch
         v-model="switches"
         :hide-details="true"
         inset
@@ -115,16 +127,18 @@
         label="Jobs"
         dense
       ></v-switch> -->
-      <v-switch
-        :value="order"
-        :hide-details="true"
-        inset
-        class="ma-0 pa-0 mr-4"
-        color="teal"
-        label="Order"
-        dense
-        @change="$emit('update:order', !order)"
-      ></v-switch>
+        <v-switch
+          :value="order"
+          :hide-details="true"
+          inset
+          color="teal"
+          label="Order"
+          style="width: 100px;"
+          class="ml-auto"
+          dense
+          @change="$emit('update:order', !order)"
+        ></v-switch>
+      </v-col>
     </v-row>
     <v-overlay :value="schedule.overlay" absolute z-index="10">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -133,6 +147,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { mapState, mapGetters } from 'vuex'
 
 import ScheduleButton from '@/components/schedule/schedule-button'
@@ -166,6 +181,7 @@ export default {
     ...mapState(['schedule']),
     ...mapGetters('schedule', ['dayColor']),
     ...mapGetters('user', ['hadOption']),
+    ...mapGetters('shift', ['fShift']),
   },
   methods: {
     ranged(event, day, staff) {
@@ -212,6 +228,9 @@ export default {
       this.x = e.clientX
       this.y = e.clientY
       this.menu = true
+    },
+    showTime(time) {
+      return moment(time, 'HH:mm:ss').format('HH:mm')
     },
   },
 }
