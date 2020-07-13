@@ -68,7 +68,6 @@
               v-for="(s, j) in schedule.shift[o]"
               :key="j"
               :shift="s"
-              :job="schedule.job[o][j]"
               :active="active(j, o)"
               @click.native="(e) => ranged(e, j, o)"
             ></schedule-button>
@@ -102,13 +101,24 @@
         :staff.sync="staff"
         :day.sync="day"
         :menu.sync="menu"
-        :switches="switches"
         :x="x"
         :y="y"
       ></schedule-menu>
     </div>
-    <v-row style="height: 40px;" no-gutters align="center" justify="end">
-      <v-switch
+    <v-row class="px-3">
+      <v-col cols="6">
+        <table style="font-size: 10pt;">
+          <tr>
+            <td class="px-3" colspan="2">Keterangan:</td>
+          </tr>
+          <tr v-for="s in fShift(true)" :key="s.id_shift">
+            <td class="px-3">{{ s.kode }}</td>
+            <td>({{ showTime(s.mulai) }} - {{ showTime(s.selesai) }})</td>
+          </tr>
+        </table>
+      </v-col>
+      <v-col cols="6">
+        <!-- <v-switch
         v-model="switches"
         :hide-details="true"
         inset
@@ -116,17 +126,19 @@
         color="teal"
         label="Jobs"
         dense
-      ></v-switch>
-      <v-switch
-        :value="order"
-        :hide-details="true"
-        inset
-        class="ma-0 pa-0 mr-4"
-        color="teal"
-        label="Order"
-        dense
-        @change="$emit('update:order', !order)"
-      ></v-switch>
+      ></v-switch> -->
+        <v-switch
+          :value="order"
+          :hide-details="true"
+          inset
+          color="teal"
+          label="Order"
+          style="width: 100px;"
+          class="ml-auto"
+          dense
+          @change="$emit('update:order', !order)"
+        ></v-switch>
+      </v-col>
     </v-row>
     <v-overlay :value="schedule.overlay" absolute z-index="10">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -135,6 +147,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { mapState, mapGetters } from 'vuex'
 
 import ScheduleButton from '@/components/schedule/schedule-button'
@@ -167,9 +180,12 @@ export default {
   computed: {
     ...mapState(['schedule']),
     ...mapGetters('schedule', ['dayColor']),
+    ...mapGetters('user', ['hadOption']),
+    ...mapGetters('shift', ['fShift']),
   },
   methods: {
     ranged(event, day, staff) {
+      if (!this.hadOption(5)) return
       if (
         this.day.length === 0 ||
         this.day.length === 2 ||
@@ -197,6 +213,7 @@ export default {
       return false
     },
     nameClick(event, staff) {
+      if (!this.hadOption(5)) return
       if (this.staff === staff) {
         this.day = []
         this.staff = undefined
@@ -211,6 +228,9 @@ export default {
       this.x = e.clientX
       this.y = e.clientY
       this.menu = true
+    },
+    showTime(time) {
+      return moment(time, 'HH:mm:ss').format('HH:mm')
     },
   },
 }

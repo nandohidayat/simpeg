@@ -39,8 +39,8 @@ export const actions = {
     commit('ADD_SHIFT', res.data)
   },
   async updateShift({ commit }, shift) {
-    await this.$api.shift.update(shift.id_shift, shift)
-    commit('EDT_SHIFT', shift)
+    const res = await this.$api.shift.update(shift.id_shift, shift)
+    commit('EDT_SHIFT', res)
   },
   async deleteShift({ commit }, shift) {
     await this.$api.shift.delete(shift.id_shift)
@@ -56,11 +56,13 @@ export const actions = {
 }
 
 export const getters = {
-  fShift: (state) => {
+  fShift: (state) => (nonull = false) => {
     const shift = state.departemen.map((d) =>
       state.shifts.find((s) => s.id_shift === d)
     )
-    return [{ id: undefined, job: undefined, color: 'white' }, ...shift]
+    return nonull
+      ? shift
+      : [{ id: undefined, kode: undefined, color: 'white' }, ...shift]
   },
   getKode: (state) => (id) => {
     const shift = state.shifts.find(

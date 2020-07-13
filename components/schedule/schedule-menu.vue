@@ -11,7 +11,7 @@
     z-index="21"
   >
     <v-list dense>
-      <div v-if="switches">
+      <!-- <div v-if="switches">
         <v-list-item
           v-for="(j, i) in fJob"
           :key="i"
@@ -20,10 +20,10 @@
         >
           <v-list-item-title>{{ j.keterangan }}</v-list-item-title>
         </v-list-item>
-      </div>
-      <div v-else>
+      </div> -->
+      <div>
         <v-list-item
-          v-for="(s, i) in fShift"
+          v-for="(s, i) in fShift()"
           :key="i"
           dense
           @click="updateSchedule(s.id_shift)"
@@ -51,10 +51,10 @@ export default {
       type: Array,
       default: () => [],
     },
-    switches: {
-      type: Boolean,
-      default: false,
-    },
+    // switches: {
+    //   type: Boolean,
+    //   default: false,
+    // },
     menu: {
       type: Boolean,
       default: false,
@@ -70,7 +70,7 @@ export default {
   },
   computed: {
     ...mapGetters('shift', ['fShift']),
-    ...mapGetters('job', ['fJob']),
+    // ...mapGetters('job', ['fJob']),
   },
   methods: {
     updateSchedule(value, type = 'shift') {
