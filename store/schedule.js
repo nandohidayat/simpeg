@@ -67,7 +67,7 @@ export const actions = {
   async fetchSchedules({ commit, rootState, rootGetters }, date = {}) {
     commit('TOOGLE_OVERLAY', true)
 
-    if (rootGetters.hadOption(6)) {
+    if (rootGetters['user/hadOption'](6)) {
       date.semua = 1
     }
 
