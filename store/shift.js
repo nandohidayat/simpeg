@@ -60,7 +60,7 @@ export const getters = {
     const shift = state.departemen.map((d) =>
       state.shifts.find((s) => s.id_shift === d)
     )
-    return [{ id: undefined, job: undefined, color: 'white' }, ...shift]
+    return [{ id: undefined, kode: undefined, color: 'white' }, ...shift]
   },
   getKode: (state) => (id) => {
     const shift = state.shifts.find(

@@ -68,7 +68,6 @@
               v-for="(s, j) in schedule.shift[o]"
               :key="j"
               :shift="s"
-              :job="schedule.job[o][j]"
               :active="active(j, o)"
               @click.native="(e) => ranged(e, j, o)"
             ></schedule-button>
@@ -102,13 +101,12 @@
         :staff.sync="staff"
         :day.sync="day"
         :menu.sync="menu"
-        :switches="switches"
         :x="x"
         :y="y"
       ></schedule-menu>
     </div>
     <v-row style="height: 40px;" no-gutters align="center" justify="end">
-      <v-switch
+      <!-- <v-switch
         v-model="switches"
         :hide-details="true"
         inset
@@ -116,7 +114,7 @@
         color="teal"
         label="Jobs"
         dense
-      ></v-switch>
+      ></v-switch> -->
       <v-switch
         :value="order"
         :hide-details="true"
