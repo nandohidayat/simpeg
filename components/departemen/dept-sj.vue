@@ -27,10 +27,10 @@
     </v-row>
     <header>Shift</header>
     <v-row>
-      <v-col v-for="s in shift.shifts" :key="s.id_shift" cols="2">
+      <v-col v-for="s in shift.shifts" :key="s.id_shift" cols="3">
         <v-checkbox
           v-model="selectedshift"
-          :label="s.kode"
+          :label="`${s.kode} - (${s.mulai} - ${s.selesai})`"
           :value="s.id_shift"
           color="teal"
         ></v-checkbox>

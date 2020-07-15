@@ -68,11 +68,14 @@ export default {
   },
   watch: {
     async updater(val) {
-      await this.$store.dispatch('schedule/fetchSchedules', {
-        year: this.year,
-        month: this.month,
-        dept: this.dept,
-      })
+      await Promise.all([
+        this.$store.dispatch('schedule/fetchSchedules', {
+          year: this.year,
+          month: this.month,
+          dept: this.dept,
+        }),
+        this.$store.dispatch('shift/fetchShift', this.dept),
+      ])
     },
   },
   async created() {
