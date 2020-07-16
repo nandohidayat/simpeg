@@ -36,7 +36,7 @@ export const actions = {
   },
   async createShift({ commit }, shift) {
     const res = await this.$api.shift.create(shift)
-    commit('ADD_SHIFT', res.data)
+    commit('ADD_SHIFT', { ...shift, id_shift: res.data.id_shift })
   },
   async updateShift({ commit }, shift) {
     const res = await this.$api.shift.update(shift.id_shift, shift)
@@ -74,6 +74,6 @@ export const getters = {
     const shift = state.shifts.find(
       (s) => parseInt(s.id_shift) === parseInt(id)
     )
-    return shift.color !== null ? shift.color : 'white'
+    return shift ? (shift.color !== null ? shift.color : 'white') : 'white'
   },
 }
