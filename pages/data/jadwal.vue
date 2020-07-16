@@ -49,7 +49,7 @@ export default {
   },
   head() {
     return {
-      title: 'Database Karyawan',
+      title: 'Database Jadwal',
       meta: [
         {
           hid: 'description',
