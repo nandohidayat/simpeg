@@ -1,36 +1,60 @@
 <template>
   <v-row align="center" justify="center">
-    <v-col cols="12" sm="8" md="4">
-      <v-card class="elevation-12" tile>
-        <v-form @submit.prevent="login()">
-          <v-toolbar color="teal" dark flat dense>
-            <v-toolbar-title class="mx-auto">SIMPEG</v-toolbar-title>
-          </v-toolbar>
-          <v-card-text>
-            <v-text-field
-              v-model="newUser.username"
-              :error="error"
-              label="Username"
-              type="text"
-              name="username"
-            ></v-text-field>
-
-            <v-text-field
-              v-model="newUser.password"
-              :error="error"
-              label="Password"
-              type="password"
-              name="password"
-            ></v-text-field>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="teal" dark small type="submit">Login</v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card>
+    <v-col cols="11" sm="7">
+      <v-sheet elevation="20">
+        <v-row no-gutters>
+          <v-col
+            md="6"
+            class="d-none d-md-flex align-center justify-center teal lighten-5"
+          >
+            <v-img src="/spp/roemani.png" contain width="400"></v-img>
+          </v-col>
+          <v-col cols="12" md="6" class="pt-12 pb-12 pl-8 pr-8">
+            <h2 class="h2 font-weight-regular">Login</h2>
+            <h4 class="h4 font-weight-light mt-2">
+              Welcome back, please login to your account
+            </h4>
+            <form @submit.prevent="login()">
+              <v-text-field
+                v-model="newUser.username"
+                :error="error"
+                label="Username"
+                name="username"
+                type="text"
+                outlined
+                dense
+                class="mt-10"
+              ></v-text-field>
+              <v-text-field
+                v-model="newUser.password"
+                :error="error"
+                label="Password"
+                type="password"
+                name="password"
+                outlined
+                dense
+              ></v-text-field>
+              <div class="text-right">
+                <a class="teal--text d-block" @click="dialog = true">
+                  Forgot Password?
+                </a>
+                <v-btn color="teal" dark depressed class="mt-10" type="submit"
+                  >Login</v-btn
+                >
+              </div>
+            </form>
+          </v-col>
+        </v-row>
+      </v-sheet>
     </v-col>
+    <v-dialog v-model="dialog" max-width="250">
+      <v-card>
+        <v-card-title>Terjadi kendala?</v-card-title>
+        <v-card-text>
+          Silahkan hubungi SIM di <span class="font-weight-bold">2051</span>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -42,6 +66,7 @@ export default {
         username: undefined,
         password: undefined,
       },
+      dialog: false,
       error: false,
     }
   },

@@ -1,79 +1,74 @@
 <template>
   <v-container>
-    <v-card class="px-4">
-      <v-row>
-        <v-col cols="5">
-          <v-text-field
-            v-model="search.nama"
-            label="NIK / Nama Karyawan"
-            dense
-            clearable
-            class="mt-4"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="3">
-          <v-select
-            v-model="search.kelamin"
-            :items="kelamin"
-            label="Jenis Kelamin"
-            dense
-            clearable
-            class="mt-4"
-          ></v-select>
-        </v-col>
-        <v-col cols="3">
-          <v-select
-            v-model="search.departemen"
-            :items="departemen.departemens"
-            label="Departemen"
-            dense
-            clearable
-            class="mt-4"
-          ></v-select>
-        </v-col>
-        <v-col cols="1" class="d-flex align-center">
-          <v-divider vertical></v-divider>
-          <v-spacer></v-spacer>
-          <karyawan-form> </karyawan-form>
-        </v-col>
-      </v-row>
+    <v-card elevation="5">
+      <v-card-text>
+        <v-row>
+          <v-col cols="12" md="4" sm="8">
+            <v-text-field
+              v-model="search.nama"
+              outlined
+              label="NIK / Nama Karyawan"
+              dense
+              clearable
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="2" sm="4">
+            <v-select
+              v-model="search.kelamin"
+              :items="kelamin"
+              label="Jenis Kelamin"
+              dense
+              clearable
+              outlined
+              hide-details
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="4" sm="8">
+            <v-autocomplete
+              v-model="search.departemen"
+              :items="departemen.departemens"
+              label="Departemen"
+              dense
+              outlined
+              clearable
+              hide-details
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="12" md="2" sm="4">
+            <v-select
+              v-model="search.status"
+              :items="status"
+              label="Status"
+              dense
+              clearable
+              outlined
+              hide-details
+            ></v-select>
+          </v-col>
+        </v-row>
+      </v-card-text>
     </v-card>
     <v-data-table
       :headers="headers"
       :items="karyawan.karyawans"
       :items-per-page="20"
       :search="search.nama"
-      class="elevation-2 mt-3"
+      class="elevation-5 mt-5"
+      multi-sort
     >
-      <template v-slot:item.dept="{ item }">
-        Utama:
-        <div v-for="(d, i) in item.dept" :key="i">- {{ d }}</div>
-        Sub:
-      </template>
-      <template v-slot:item.action="{ item }">
-        <nuxt-link :to="`/karyawan/${item.nik}`">
-          <v-icon>
-            mdi-arrow-right
-          </v-icon>
-        </nuxt-link>
-      </template>
     </v-data-table>
   </v-container>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import karyawanForm from '@/components/karyawan/karyawan-form'
 
 export default {
-  components: {
-    'karyawan-form': karyawanForm,
-  },
   async fetch({ store }) {
     try {
       await Promise.all([
         store.dispatch('departemen/fetchDepartemens', { select: 1 }),
-        // store.dispatch('ruang/fetchRuangs'),
         store.dispatch('karyawan/fetchKaryawans'),
       ])
     } catch (err) {
@@ -83,13 +78,18 @@ export default {
   data() {
     return {
       // search: { nama: undefined, departemen: undefined, ruang: undefined },
-      search: { nama: undefined, kelamin: undefined, departemen: undefined },
+      search: {
+        nama: undefined,
+        kelamin: undefined,
+        departemen: undefined,
+        status: undefined,
+      },
       kelamin: ['P', 'L'],
+      status: ['Active', 'Non Active'],
       headers: [
         {
           text: 'NIK',
           value: 'nik',
-          width: '100px',
         },
         {
           text: 'Nama',
@@ -97,8 +97,7 @@ export default {
         },
         {
           text: 'Jenis Kelamin',
-          value: 'sex',
-          width: '150px',
+          value: 'kelamin',
           filter: (value) => {
             if (!this.search.kelamin) return true
 
@@ -108,14 +107,23 @@ export default {
         {
           text: 'Department',
           value: 'dept',
-          width: '450px',
           filter: (value) => {
             if (!this.search.departemen) return true
-
-            return value.includes(this.search.departemen)
+            if (value) {
+              return value.includes(this.search.departemen)
+            }
+            return false
           },
         },
-        { text: 'Detail', value: 'action', sortable: false, width: '80px' },
+        {
+          text: 'Status',
+          value: 'status',
+          filter: (value) => {
+            if (!this.search.status) return true
+
+            return value.includes(this.search.status)
+          },
+        },
       ],
     }
   },

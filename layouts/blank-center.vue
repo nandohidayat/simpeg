@@ -1,7 +1,11 @@
 <template>
   <v-app dark>
     <v-main>
-      <v-container fluid style="min-height: 100vh;" class="d-flex">
+      <v-container
+        fluid
+        style="min-height: 100vh;"
+        class="d-flex teal lighten-4"
+      >
         <nuxt />
       </v-container>
     </v-main>

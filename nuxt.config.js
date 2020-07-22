@@ -127,19 +127,25 @@ export default {
   auth: {
     strategies: {
       local: {
-        endpoints: {
-          login: {
-            url: 'login',
-            method: 'post',
-            propertyName: 'token',
-          },
-          logout: { url: 'logout', method: 'get' },
-          user: {
-            url: 'user',
-            method: 'get',
-            propertyName: 'user',
-          },
+        scheme: 'refresh',
+        token: {
+          property: 'token',
+          maxAge: 60 * 60,
         },
+        refreshToken: {
+          property: 'token',
+          data: 'token',
+          maxAge: 60 * 60 * 24,
+        },
+        user: {
+          property: 'user',
+        },
+        endpoints: {
+          login: { url: 'login', method: 'post' },
+          logout: { url: 'logout', method: 'post' },
+          user: { url: 'user', method: 'get' },
+        },
+        autoLogout: true,
       },
     },
     redirect: {
