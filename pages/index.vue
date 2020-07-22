@@ -1,9 +1,5 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      {{ user }}
-    </v-flex>
-  </v-layout>
+  <v-layout> </v-layout>
 </template>
 
 <script>
