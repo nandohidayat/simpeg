@@ -72,7 +72,7 @@ export default {
         store.dispatch('karyawan/fetchKaryawans'),
       ])
     } catch (err) {
-      store.dispatch('notification/addError', err)
+      this.$alert('error', err)
     }
   },
   data() {
