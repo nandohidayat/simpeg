@@ -57,6 +57,11 @@
       class="elevation-5 mt-5"
       multi-sort
     >
+      <template #item.nama="{item}">
+        <nuxt-link :to="`/karyawan/${parseInt(item.nik)}`">{{
+          item.nama
+        }}</nuxt-link>
+      </template>
     </v-data-table>
   </v-container>
 </template>
@@ -77,7 +82,6 @@ export default {
   },
   data() {
     return {
-      // search: { nama: undefined, departemen: undefined, ruang: undefined },
       search: {
         nama: undefined,
         kelamin: undefined,
