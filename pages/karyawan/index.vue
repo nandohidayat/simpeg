@@ -62,6 +62,9 @@
           item.nama
         }}</nuxt-link>
       </template>
+      <template #item.dept="{item}">
+        <div v-for="(d, i) in item.dept" :key="i">- {{ d }}</div>
+      </template>
     </v-data-table>
   </v-container>
 </template>
