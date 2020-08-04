@@ -161,11 +161,11 @@
 import { mapState } from 'vuex'
 
 export default {
-  async fetch({ params, store }) {
+  async fetch({ params, store, route }) {
     try {
       await store.dispatch('karyawan/fetchKaryawan', params.id)
     } catch (err) {
-      console.log(err)
+      route.redirect('/404')
     }
   },
   computed: {
