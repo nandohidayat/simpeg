@@ -6,8 +6,11 @@ export const actions = {
   async login(ctx, user) {
     await this.$auth.loginWith('local', { data: user })
   },
-  logout({ commit }) {
+  logout(ctx) {
     this.$auth.logout()
+  },
+  async reset(ctx, id) {
+    await this.$authModul.reset(id)
   },
 }
 

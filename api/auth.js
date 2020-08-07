@@ -11,4 +11,7 @@ export default ($axios) => () => ({
   user(id) {
     return $axios.$get(`user/${id}`)
   },
+  reset(id) {
+    return $axios.$put(`reset/${id}`)
+  },
 })
