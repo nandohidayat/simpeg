@@ -15,7 +15,12 @@
       <v-tab-item>
         <karyawan-information :data="karyawan.karyawan"></karyawan-information>
       </v-tab-item>
-      <v-tab-item>A</v-tab-item>
+      <v-tab-item>
+        <v-data-table
+          :headers="header"
+          :items="logdepartemen.logs"
+        ></v-data-table>
+      </v-tab-item>
     </v-tabs-items>
     <v-card-actions>
       <v-spacer> </v-spacer>
@@ -54,6 +59,7 @@ export default {
   async fetch({ params, store, route }) {
     try {
       await store.dispatch('karyawan/fetchKaryawan', params.id)
+      await store.dispatch('logdepartemen/fetchLog', params.id)
     } catch (err) {
       route.redirect('/404')
     }
@@ -62,10 +68,15 @@ export default {
     return {
       tab: undefined,
       dialog: false,
+      header: [
+        { text: 'Tanggal', value: 'tgl' },
+        { text: 'Type', value: 'nm_type' },
+        { text: 'Departemen', value: 'nm_dept' },
+      ],
     }
   },
   computed: {
-    ...mapState(['karyawan']),
+    ...mapState(['karyawan', 'logdepartemen']),
   },
   methods: {
     async updateKaryawan() {
