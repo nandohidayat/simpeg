@@ -26,14 +26,14 @@ export const actions = {
   },
   async createLog({ commit }, log) {
     const res = await this.$api.logdepartemen.create(log)
-    commit('ADD_LOG', { ...log, id_log_departemen: res.data.id_log_departemen })
+    commit('ADD_LOG', res.data)
   },
   async updateLog({ commit }, log) {
     const res = await this.$api.logdepartemen.update(log.id_log_departemen, log)
-    commit('EDT_LOG', res)
+    commit('EDT_LOG', res.data)
   },
-  async deleteLog({ commit }, log) {
-    await this.$api.logdepartemen.delete(log.id_log_departemen)
-    commit('DEL_LOG', log.id_log_departemen)
+  async deleteLog({ commit }, id) {
+    await this.$api.logdepartemen.delete(id)
+    commit('DEL_LOG', id)
   },
 }

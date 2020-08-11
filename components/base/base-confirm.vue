@@ -1,5 +1,9 @@
 <template>
-  <v-dialog v-model="value" max-width="300">
+  <v-dialog
+    :value="value"
+    max-width="300"
+    @click:outside="$emit('input', false)"
+  >
     <v-card>
       <v-card-title class="grey lighten-5">Confirm</v-card-title>
       <v-card-text class="subtitle-1 pt-4">
@@ -27,11 +31,6 @@ export default {
     value: {
       type: Boolean,
       default: false,
-    },
-  },
-  watch: {
-    value(val) {
-      this.$emit('input', val)
     },
   },
 }

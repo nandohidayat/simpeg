@@ -3,7 +3,7 @@
     <v-tabs v-model="tab" color="teal">
       <v-tab><v-icon left>mdi-account-outline</v-icon>Account</v-tab>
       <v-tab><v-icon left>mdi-information-outline</v-icon>Information</v-tab>
-      <v-tab><v-icon left>mdi-share-variant-outline</v-icon>Disposition</v-tab>
+      <v-tab><v-icon left>mdi-share-variant-outline</v-icon>Mutasi</v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item>
@@ -16,10 +16,7 @@
         <karyawan-information :data="karyawan.karyawan"></karyawan-information>
       </v-tab-item>
       <v-tab-item>
-        <v-data-table
-          :headers="header"
-          :items="logdepartemen.logs"
-        ></v-data-table>
+        <karyawan-departemen :id="karyawan.karyawan.id"></karyawan-departemen>
       </v-tab-item>
     </v-tabs-items>
     <v-card-actions>
@@ -48,18 +45,23 @@
 import { mapState } from 'vuex'
 import KaryawanAccount from '@/components/karyawan/karyawan-account'
 import KaryawanInformation from '@/components/karyawan/karyawan-information'
+import KaryawanDepartemen from '@/components/karyawan/karyawan-departemen'
 import BaseConfirm from '@/components/base/base-confirm'
 
 export default {
   components: {
     KaryawanAccount,
     KaryawanInformation,
+    KaryawanDepartemen,
     BaseConfirm,
   },
   async fetch({ params, store, route }) {
     try {
-      await store.dispatch('karyawan/fetchKaryawan', params.id)
-      await store.dispatch('logdepartemen/fetchLog', params.id)
+      await Promise.all([
+        store.dispatch('karyawan/fetchKaryawan', params.id),
+        store.dispatch('logdepartemen/fetchLog', params.id),
+        store.dispatch('departemen/fetchDepartemens'),
+      ])
     } catch (err) {
       route.redirect('/404')
     }
@@ -68,15 +70,10 @@ export default {
     return {
       tab: undefined,
       dialog: false,
-      header: [
-        { text: 'Tanggal', value: 'tgl' },
-        { text: 'Type', value: 'nm_type' },
-        { text: 'Departemen', value: 'nm_dept' },
-      ],
     }
   },
   computed: {
-    ...mapState(['karyawan', 'logdepartemen']),
+    ...mapState(['karyawan']),
   },
   methods: {
     async updateKaryawan() {
