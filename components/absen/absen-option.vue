@@ -101,7 +101,7 @@ export default {
     },
     async getAbsens() {
       if (this.selectedPegawai === undefined) return
-      await this.$store.dispatch('absen/fetchAbsens', {
+      await this.$store.dispatch('absen/fetchAbsen', {
         pegawai: this.selectedPegawai,
         year: this.year,
         month: this.month,
