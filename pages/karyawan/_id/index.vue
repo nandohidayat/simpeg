@@ -85,7 +85,14 @@
           </v-col>
         </v-row>
         <div class="my-3"></div>
-        <v-btn color="teal" dark depressed
+        <v-btn
+          color="teal"
+          dark
+          depressed
+          :to="{
+            name: 'karyawan-id-edit',
+            params: { id: karyawan.karyawan.nik },
+          }"
           ><v-icon left>mdi-pencil</v-icon> Edit</v-btn
         >
       </v-card-text>
@@ -161,11 +168,11 @@
 import { mapState } from 'vuex'
 
 export default {
-  async fetch({ params, store }) {
+  async fetch({ params, store, redirect }) {
     try {
       await store.dispatch('karyawan/fetchKaryawan', params.id)
     } catch (err) {
-      console.log(err)
+      redirect('/404')
     }
   },
   computed: {

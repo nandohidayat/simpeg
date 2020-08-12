@@ -42,19 +42,9 @@ export const actions = {
     commit('ADD_KARYAWAN', k)
   },
   async updateKaryawan({ commit, rootState }, karyawan) {
-    await this.$api.karyawan.update(karyawan.nik, karyawan)
+    await this.$api.karyawan.update(karyawan.id, karyawan)
 
-    const k = {
-      ...karyawan,
-      departemen: rootState.departemen.departemens.find(
-        (d) => d.id_departemen === karyawan.id_departemen
-      ).departemen,
-      ruang: rootState.ruang.ruangs.find(
-        (d) => d.id_ruang === karyawan.id_ruang
-      ).ruang,
-    }
-
-    commit('SET_KARYAWAN', k)
+    commit('SET_KARYAWAN', karyawan)
   },
   async deleteKaryawan({ commit }, nik) {
     await this.$api.karyawan.delete(nik)
