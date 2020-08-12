@@ -28,37 +28,6 @@
           Disposisi Departemen
         </v-card-title>
         <v-card-text class="pt-4">
-          <v-menu
-            ref="menu"
-            v-model="menu"
-            :close-on-content-click="false"
-            max-width="290px"
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="data.tgl"
-                outlined
-                dense
-                label="Tanggal"
-                v-bind="attrs"
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="data.tgl"
-              no-title
-              color="teal"
-              @input="menu = false"
-            ></v-date-picker>
-          </v-menu>
-          <v-select
-            v-model="data.type"
-            :items="type"
-            outlined
-            dense
-            label="Type"
-          ></v-select>
           <v-autocomplete
             v-model="data.dept"
             dense
@@ -68,10 +37,60 @@
             :items="departemen.departemens"
             label="Departemen"
           ></v-autocomplete>
+          <v-menu
+            ref="menu"
+            v-model="menu"
+            :close-on-content-click="false"
+            max-width="290px"
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="data.masuk"
+                outlined
+                dense
+                label="Masuk"
+                v-bind="attrs"
+                clearable
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="data.masuk"
+              no-title
+              color="teal"
+              @input="menu = false"
+            ></v-date-picker>
+          </v-menu>
+          <v-menu
+            ref="menu1"
+            v-model="menu1"
+            :close-on-content-click="false"
+            max-width="290px"
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="data.keluar"
+                outlined
+                dense
+                label="Keluar"
+                v-bind="attrs"
+                clearable
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="data.keluar"
+              no-title
+              color="teal"
+              @input="menu1 = false"
+            ></v-date-picker>
+          </v-menu>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text color="teal" @click="saveMutasi()">Save</v-btn>
+          <v-btn text color="teal" @click="saveData()">Save</v-btn>
           <v-btn text color="warning" @click="dialog = false">Cancel</v-btn>
         </v-card-actions>
       </v-card>
@@ -101,29 +120,25 @@ export default {
   data() {
     return {
       header: [
-        { text: 'Tanggal', value: 'tgl' },
-        { text: 'Type', value: 'nm_type' },
         { text: 'Departemen', value: 'nm_dept' },
+        { text: 'Masuk', value: 'masuk' },
+        { text: 'Keluar', value: 'keluar' },
         { text: 'Action', value: 'action' },
       ],
       edit: false,
       menu: false,
+      menu1: false,
       dialog: false,
-      data: { tgl: undefined, type: undefined, dept: undefined },
+      data: { dept: undefined, masuk: undefined, keluar: undefined },
       confirm: false,
       del: undefined,
-      type: [
-        { text: 'Masuk', value: 0 },
-        { text: 'Keluar', value: 1 },
-      ],
-      test: undefined,
     }
   },
   computed: {
     ...mapState(['logdepartemen', 'departemen']),
   },
   methods: {
-    async saveMutasi() {
+    async saveData() {
       try {
         this.data.pegawai = this.id
         await this.$store.dispatch(
@@ -151,13 +166,13 @@ export default {
       if (item) {
         this.data = {
           id_log_departemen: item.id_log_departemen,
-          tgl: item.tgl,
-          type: item.type,
           dept: item.id_dept,
+          masuk: item.masuk,
+          keluar: item.keluar,
         }
         this.edit = true
       } else {
-        this.data = { tgl: undefined, type: undefined, dept: undefined }
+        this.data = { dept: undefined, masuk: undefined, keluar: undefined }
         this.edit = false
       }
       this.dialog = true
