@@ -11,9 +11,9 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchAbsens({ commit, rootState }, { pegawai, year, month }) {
+  async fetchAbsen({ commit, rootState }, { pegawai, year, month }) {
     if (pegawai === undefined) pegawai = rootState.user.user.id
-    const res = await this.$api.absen.index({ pegawai, year, month })
+    const res = await this.$api.absen.show(pegawai, { year, month })
     commit('SET_ABSENS', res.data)
   },
 }
