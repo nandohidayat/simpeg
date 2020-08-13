@@ -9,6 +9,12 @@ export const actions = {
   logout(ctx) {
     this.$auth.logout()
   },
+  async password(ctx, password) {
+    await this.$authModul.password(password.id, {
+      current: password.current,
+      password: password.password,
+    })
+  },
   async reset(ctx, id) {
     await this.$authModul.reset(id)
   },

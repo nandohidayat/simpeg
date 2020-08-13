@@ -46,7 +46,7 @@ export default {
     return {
       items: [
         {
-          id: 1001,
+          id: 1000,
           name: 'Database',
           children: [
             { id: 3, name: 'Data Jadwal' },
@@ -54,12 +54,25 @@ export default {
           ],
         },
         {
-          id: 1002,
+          id: 2000,
           name: 'Karyawan',
           children: [
-            { id: 1, name: 'Daftar Karyawan' },
             {
-              id: 1003,
+              id: 2100,
+              name: 'Daftar Karyawan',
+              children: [
+                {
+                  id: 1,
+                  name: 'Read Daftar Karyawan',
+                },
+                {
+                  id: 7,
+                  name: 'Edit Daftar Karyawan',
+                },
+              ],
+            },
+            {
+              id: 2200,
               name: 'Jadwal Karyawan',
               children: [
                 {
