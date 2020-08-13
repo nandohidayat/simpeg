@@ -49,6 +49,11 @@ import KaryawanDepartemen from '@/components/karyawan/karyawan-departemen'
 import BaseConfirm from '@/components/base/base-confirm'
 
 export default {
+  middleware({ redirect, $auth }) {
+    if (!$auth.user.option.map((o) => parseInt(o)).includes(7)) {
+      return redirect('/404')
+    }
+  },
   components: {
     KaryawanAccount,
     KaryawanInformation,

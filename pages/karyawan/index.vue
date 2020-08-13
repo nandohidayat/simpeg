@@ -73,6 +73,7 @@
 import { mapState } from 'vuex'
 
 export default {
+  middleware: ['karyawan'],
   async fetch({ store }) {
     try {
       await Promise.all([
