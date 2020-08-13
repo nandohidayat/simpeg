@@ -144,8 +144,8 @@ export default {
           login: { url: 'login', method: 'post' },
           logout: { url: 'logout', method: 'post' },
           user: { url: 'user', method: 'get' },
+          refresh: { url: 'refresh', method: 'post' },
         },
-        autoLogout: true,
       },
     },
     redirect: {
