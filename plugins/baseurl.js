@@ -8,7 +8,7 @@ export default ({ $axios }) => {
     }
     const url = `${protocol}//${hostname}${
       port || ''
-    }/php74/simpeg/simpeg_backend/public/api/`
+    }/php74/simpeg_testing/simpeg_backend/public/api/`
     $axios.defaults.baseURL = url
   }
 }
