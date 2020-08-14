@@ -28,17 +28,11 @@
       max-width="58"
     >
       <v-list dense>
-        <v-list-item v-if="id !== 0" dense @click="reorder('up')">
-          <v-icon>mdi-arrow-up-circle-outline</v-icon>
-        </v-list-item>
         <v-list-item v-if="value === undefined" dense @click="reorder('del')">
           <v-icon>mdi-minus-circle-outline</v-icon>
         </v-list-item>
         <v-list-item v-else-if="!lastData(id)" dense @click="reorder('add')">
           <v-icon>mdi-plus-circle-outline</v-icon>
-        </v-list-item>
-        <v-list-item v-if="!lastData(id)" dense @click="reorder('down')">
-          <v-icon>mdi-arrow-down-circle-outline</v-icon>
         </v-list-item>
       </v-list>
     </v-menu>

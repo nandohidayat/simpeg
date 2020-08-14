@@ -1,5 +1,3 @@
-import Vue from 'vue'
-
 export const state = () => ({
   overlay: false,
   order: [],
@@ -47,15 +45,7 @@ export const mutations = {
     state.overlay = status
   },
   REORDER(state, { idx, type }) {
-    if (type === 'up') {
-      const temp = state.order[idx - 1]
-      Vue.set(state.order, idx - 1, state.order[idx])
-      Vue.set(state.order, idx, temp)
-    } else if (type === 'down') {
-      const temp = state.order[idx]
-      Vue.set(state.order, idx, state.order[idx + 1])
-      Vue.set(state.order, idx + 1, temp)
-    } else if (type === 'add') {
+    if (type === 'add') {
       state.order.splice(idx + 1, 0, NaN)
     } else {
       state.order.splice(idx, 1)

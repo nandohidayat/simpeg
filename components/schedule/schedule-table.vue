@@ -23,17 +23,19 @@
           </v-btn>
           <v-divider></v-divider>
         </div>
-        <div v-for="(o, i) in schedule.order" :key="i">
-          <view-button v-if="isNaN(o)" :id="i" :order="order"></view-button>
-          <view-button
-            v-else
-            :id="i"
-            :value="schedule.nama[o]"
-            :order="order"
-            @click.native="(e) => nameClick(e, o)"
-          ></view-button>
-          <v-divider></v-divider>
-        </div>
+        <draggable v-model="schedule.order" group="nama" :disabled="!order">
+          <div v-for="(o, i) in schedule.order" :key="i">
+            <view-button v-if="isNaN(o)" :id="i" :order="order"></view-button>
+            <view-button
+              v-else
+              :id="i"
+              :value="schedule.nama[o]"
+              :order="order"
+              @click.native="(e) => nameClick(e, o)"
+            ></view-button>
+            <v-divider></v-divider>
+          </div>
+        </draggable>
       </div>
       <div class="d-inline-block">
         <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
@@ -149,6 +151,7 @@
 <script>
 import moment from 'moment'
 import { mapState, mapGetters } from 'vuex'
+import draggable from 'vuedraggable'
 
 import ScheduleButton from '@/components/schedule/schedule-button'
 import ScheduleMenu from '@/components/schedule/schedule-menu'
@@ -160,6 +163,7 @@ export default {
     ScheduleButton,
     ScheduleMenu,
     ViewButton,
+    draggable,
   },
   props: {
     order: {
@@ -175,6 +179,7 @@ export default {
       x: 0,
       y: 0,
       switches: false,
+      drag: false,
     }
   },
   computed: {
