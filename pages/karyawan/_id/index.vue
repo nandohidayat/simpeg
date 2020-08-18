@@ -164,6 +164,8 @@
               label="New Password"
               outlined
               type="password"
+              :error="passwordError"
+              :error-messages="passwordMessage"
               dense
             ></v-text-field>
             <v-text-field
@@ -226,6 +228,8 @@ export default {
       currentError: false,
       currentMessage: undefined,
       password: undefined,
+      passwordError: false,
+      passwordMessage: undefined,
       repeat: undefined,
       repeatError: false,
       repeatMessage: undefined,
@@ -236,16 +240,30 @@ export default {
   computed: {
     ...mapState(['karyawan']),
     ...mapGetters('user', ['hadOption']),
+    passError() {
+      return this.password + this.repeat
+    },
   },
   watch: {
-    repeat(val) {
-      if (val !== this.password) {
+    passError(val) {
+      if (this.repeat !== this.password) {
         this.repeatError = true
         this.repeatMessage = 'Confirm is different with Password'
         this.confirmDisable = true
       } else {
         this.repeatError = false
         this.repeatMessage = undefined
+        this.confirmDisable = false
+      }
+    },
+    password(val) {
+      if (this.password.length === 0) {
+        this.passwordError = true
+        this.passwordMessage = 'Password could not be empty'
+        this.confirmDisable = true
+      } else {
+        this.passwordError = false
+        this.passwordMessage = undefined
         this.confirmDisable = false
       }
     },
