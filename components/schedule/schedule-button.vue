@@ -7,6 +7,7 @@
     depressed
     small
     tile
+    :class="className"
     ><span>{{ kode }}</span></v-btn
   >
 </template>
@@ -20,18 +21,17 @@ export default {
       type: Number,
       default: undefined,
     },
-    // job: {
-    //   type: Number,
-    //   default: undefined,
-    // },
     active: {
       type: Boolean,
       default: false,
     },
+    className: {
+      type: Object,
+      default: undefined,
+    },
   },
   computed: {
     ...mapGetters('shift', ['getKode', 'getBgColor']),
-    // ...mapGetters('job', ['getFtColor']),
     kode() {
       if (this.shift === undefined) return
 
@@ -46,9 +46,6 @@ export default {
         return this.getBgColor(this.shift)
       }
     },
-    // ftColor() {
-    //   return this.getFtColor(this.job)
-    // },
   },
 }
 </script>

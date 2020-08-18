@@ -8,7 +8,8 @@
       depressed
       small
       tile
-      color="white"
+      :color="hover ? 'red lighten-5' : 'white'"
+      :disabled="order"
     >
       <span
         class="d-inline-block text-truncate text-left"
@@ -53,6 +54,10 @@ export default {
       default: undefined,
     },
     order: {
+      type: Boolean,
+      default: false,
+    },
+    hover: {
       type: Boolean,
       default: false,
     },

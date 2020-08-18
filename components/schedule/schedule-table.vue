@@ -8,97 +8,18 @@
         max-height: 450px;
       "
     >
-      <div
-        :style="{
-          zIndex: 10,
-          position: 'sticky',
-          backgroundColor: 'white',
-          left: 0,
-        }"
-        class="shadow d-inline-block"
-      >
-        <div :style="{ position: 'sticky', top: 0, zIndex: 11 }" class="shadow">
-          <v-btn height="35" width="200" depressed small tile color="white">
-            Nama
-          </v-btn>
-          <v-divider></v-divider>
-        </div>
-        <draggable v-model="schedule.order" group="nama" :disabled="!order">
-          <div v-for="(o, i) in schedule.order" :key="i">
-            <view-button v-if="isNaN(o)" :id="i" :order="order"></view-button>
-            <view-button
-              v-else
-              :id="i"
-              :value="schedule.nama[o]"
-              :order="order"
-              @click.native="(e) => nameClick(e, o)"
-            ></view-button>
-            <v-divider></v-divider>
-          </div>
-        </draggable>
-      </div>
-      <div class="d-inline-block">
-        <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
-          <v-btn
-            v-for="d in schedule.day"
-            :key="d"
-            :color="dayColor(d)"
-            height="35px"
-            width="35px"
-            tile
-            depressed
-            small
-            >{{ d }}</v-btn
-          >
-          <v-divider></v-divider>
-        </div>
-        <div v-for="(o, i) in schedule.order" :key="i">
-          <div v-if="isNaN(o)">
-            <v-btn
-              v-for="d in schedule.day"
-              :key="d"
-              height="35px"
-              width="35px"
-              color="white"
-              tile
-              depressed
-              small
-            ></v-btn>
-          </div>
-          <div v-else>
-            <schedule-button
-              v-for="(s, j) in schedule.shift[o]"
-              :key="j"
-              :shift="s"
-              :active="active(j, o)"
-              @click.native="(e) => ranged(e, j, o)"
-            ></schedule-button>
-          </div>
-          <v-divider></v-divider>
-        </div>
-      </div>
-      <div class="d-inline-block">
-        <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
-          <v-btn height="35" width="120" depressed small tile color="white">
-            Total Jam
-          </v-btn>
-          <v-divider></v-divider>
-        </div>
-        <div v-for="(o, i) in schedule.order" :key="i">
-          <v-btn
-            :ripple="false"
-            height="35"
-            width="120"
-            depressed
-            small
-            tile
-            color="white"
-          >
-            {{ schedule.jam[o] }}
-          </v-btn>
-          <v-divider></v-divider>
-        </div>
-      </div>
+      <schedule-name
+        :staff.sync="staff"
+        :day.sync="day"
+        :order="order"
+        @menu="showMenu($event)"
+      ></schedule-name>
+      <schedule-day
+        :staff.sync="staff"
+        :day.sync="day"
+        @menu="showMenu($event)"
+      ></schedule-day>
+      <schedule-jam></schedule-jam>
       <schedule-menu
         :staff.sync="staff"
         :day.sync="day"
@@ -120,15 +41,6 @@
         </table>
       </v-col>
       <v-col cols="6">
-        <!-- <v-switch
-        v-model="switches"
-        :hide-details="true"
-        inset
-        class="ma-0 pa-0 mr-4"
-        color="teal"
-        label="Jobs"
-        dense
-      ></v-switch> -->
         <v-switch
           :value="order"
           :hide-details="true"
@@ -151,19 +63,19 @@
 <script>
 import moment from 'moment'
 import { mapState, mapGetters } from 'vuex'
-import draggable from 'vuedraggable'
 
-import ScheduleButton from '@/components/schedule/schedule-button'
 import ScheduleMenu from '@/components/schedule/schedule-menu'
-import ViewButton from '@/components/schedule/schedule-view-button'
+import ScheduleName from '@/components/schedule/schedule-table-name'
+import ScheduleDay from '@/components/schedule/schedule-table-day'
+import ScheduleJam from '@/components/schedule/schedule-table-jam'
 
 export default {
   layout: 'blank',
   components: {
-    ScheduleButton,
     ScheduleMenu,
-    ViewButton,
-    draggable,
+    ScheduleName,
+    ScheduleDay,
+    ScheduleJam,
   },
   props: {
     order: {
@@ -184,50 +96,10 @@ export default {
   },
   computed: {
     ...mapState(['schedule']),
-    ...mapGetters('schedule', ['dayColor']),
     ...mapGetters('user', ['hadOption']),
     ...mapGetters('shift', ['fShift']),
   },
   methods: {
-    ranged(event, day, staff) {
-      if (!this.hadOption(5)) return
-      if (
-        this.day.length === 0 ||
-        this.day.length === 2 ||
-        this.staff !== staff
-      ) {
-        this.staff = staff
-        this.day = [day]
-      } else if (this.day[0] < day) {
-        this.day.push(day)
-      } else if (this.day[0] > day) {
-        this.day.unshift(day)
-      } else {
-        this.staff = undefined
-        this.day = []
-      }
-      this.showMenu(event)
-    },
-    active(day, staff) {
-      if (
-        this.staff === staff &&
-        (day === this.day[0] || (day > this.day[0] && day <= this.day[1]))
-      ) {
-        return true
-      }
-      return false
-    },
-    nameClick(event, staff) {
-      if (!this.hadOption(5)) return
-      if (this.staff === staff) {
-        this.day = []
-        this.staff = undefined
-      } else {
-        this.staff = staff
-        this.day = [0, this.schedule.day - 1]
-      }
-      this.showMenu(event)
-    },
     showMenu(e) {
       if (this.staff === undefined) return (this.menu = false)
       this.x = e.clientX
@@ -240,17 +112,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
-.v-btn {
-  border-right: 1px solid map-get($grey, lighten-2) !important;
-}
-
-.shadow {
-  -webkit-box-shadow: 4px 0 5px 0 rgba(0, 0, 0, 0.27);
-  -moz-box-shadow: 4px 0 5px 0 rgba(0, 0, 0, 0.27);
-  box-shadow: 4px 0 5px 0 rgba(0, 0, 0, 0.27);
-}
-</style>
