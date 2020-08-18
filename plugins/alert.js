@@ -1,8 +1,11 @@
 export default ({ store }, inject) => {
-  const alert = (type, text) => {
+  const alert = (type, message) => {
+    if (message.isAxiosError) {
+      message = message.response.data.message
+    }
     store.dispatch('notification/addNotif', {
       type,
-      text,
+      message,
     })
   }
   inject('alert', alert)

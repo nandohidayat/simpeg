@@ -235,6 +235,7 @@ export default {
       repeatMessage: undefined,
       confirm: false,
       confirmDisable: true,
+      submited: false,
     }
   },
   computed: {
@@ -246,7 +247,7 @@ export default {
   },
   watch: {
     passError(val) {
-      if (this.repeat !== this.password) {
+      if (this.repeat !== this.password && !this.submited) {
         this.repeatError = true
         this.repeatMessage = 'Confirm is different with Password'
         this.confirmDisable = true
@@ -257,7 +258,7 @@ export default {
       }
     },
     password(val) {
-      if (this.password.length === 0) {
+      if (this.password === undefined && !this.submited) {
         this.passwordError = true
         this.passwordMessage = 'Password could not be empty'
         this.confirmDisable = true
@@ -277,17 +278,19 @@ export default {
           password: this.password,
         })
 
+        this.submited = true
         this.current = undefined
         this.password = undefined
         this.repeat = undefined
         this.currentError = false
         this.currentMessage = undefined
-        this.confirm = false
         this.$alert('success', 'Successfully Changed')
       } catch (err) {
         this.currentError = true
         this.currentMessage = 'Password mismatch'
         this.$alert('error', err)
+      } finally {
+        this.confirm = false
       }
     },
   },
