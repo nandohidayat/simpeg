@@ -11,16 +11,6 @@
     z-index="21"
   >
     <v-list dense>
-      <!-- <div v-if="switches">
-        <v-list-item
-          v-for="(j, i) in fJob"
-          :key="i"
-          dense
-          @click="updateSchedule(j.id_job, 'job')"
-        >
-          <v-list-item-title>{{ j.keterangan }}</v-list-item-title>
-        </v-list-item>
-      </div> -->
       <div>
         <v-list-item
           v-for="(s, i) in fShift()"
@@ -43,18 +33,6 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: {
-    staff: {
-      type: Number,
-      default: undefined,
-    },
-    day: {
-      type: Array,
-      default: () => [],
-    },
-    // switches: {
-    //   type: Boolean,
-    //   default: false,
-    // },
     menu: {
       type: Boolean,
       default: false,
@@ -70,22 +48,18 @@ export default {
   },
   computed: {
     ...mapGetters('shift', ['fShift']),
-    // ...mapGetters('job', ['fJob']),
   },
   methods: {
-    updateSchedule(value, type = 'shift') {
-      this.$store.commit('schedule/UPDATE_SCHEDULES', {
-        staff: this.staff,
-        day: this.day,
-        value,
-        type,
-      })
+    updateSchedule(value) {
+      this.$store.commit('schedule/UPDATE_SCHEDULES', value)
       this.reset()
     },
     reset() {
+      this.$store.commit('schedule/updateSelected', {
+        day: [],
+        staff: undefined,
+      })
       this.$emit('update:menu', false)
-      this.$emit('update:staff', undefined)
-      this.$emit('update:day', [])
     },
   },
 }

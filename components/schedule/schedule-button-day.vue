@@ -7,13 +7,12 @@
     depressed
     small
     tile
-    :class="className"
     ><span>{{ kode }}</span></v-btn
   >
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -25,13 +24,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    className: {
-      type: Object,
-      default: undefined,
-    },
   },
   computed: {
     ...mapGetters('shift', ['getKode', 'getBgColor']),
+    ...mapState(['schedule']),
     kode() {
       if (this.shift === undefined) return
 

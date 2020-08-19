@@ -1,14 +1,8 @@
 <template>
   <v-card outlined>
-    <div
-      style="
-        overflow-y: auto;
-        overflow-x: auto;
-        white-space: nowrap;
-        max-height: 450px;
-      "
-    >
-      <schedule-name
+    <div style="max-height: 450px; overflow: auto;">
+      <div style="white-space: nowrap; display: table;">
+        <!-- <schedule-name
         :staff.sync="staff"
         :day.sync="day"
         :order="order"
@@ -20,13 +14,27 @@
         @menu="showMenu($event)"
       ></schedule-day>
       <schedule-jam></schedule-jam>
-      <schedule-menu
-        :staff.sync="staff"
-        :day.sync="day"
-        :menu.sync="menu"
-        :x="x"
-        :y="y"
-      ></schedule-menu>
+      -->
+
+        <schedule-header></schedule-header>
+        <draggable v-model="schedule.order" group="nama" :disabled="!order">
+          <schedule-row
+            v-for="(o, i) in schedule.order"
+            :key="i"
+            :idx-data="o"
+            :idx-order="i"
+            :order="order"
+            @menu="showMenu($event)"
+          ></schedule-row>
+        </draggable>
+        <schedule-menu
+          :staff.sync="staff"
+          :day.sync="day"
+          :menu.sync="menu"
+          :x="x"
+          :y="y"
+        ></schedule-menu>
+      </div>
     </div>
     <v-row class="px-3">
       <v-col cols="6">
@@ -63,19 +71,25 @@
 <script>
 import moment from 'moment'
 import { mapState, mapGetters } from 'vuex'
+import draggable from 'vuedraggable'
 
 import ScheduleMenu from '@/components/schedule/schedule-menu'
-import ScheduleName from '@/components/schedule/schedule-table-name'
-import ScheduleDay from '@/components/schedule/schedule-table-day'
-import ScheduleJam from '@/components/schedule/schedule-table-jam'
+// import ScheduleName from '@/components/schedule/schedule-table-name'
+// import ScheduleDay from '@/components/schedule/schedule-table-day'
+// import ScheduleJam from '@/components/schedule/schedule-table-jam'
+import ScheduleHeader from '@/components/schedule/schedule-table-header.vue'
+import ScheduleRow from '@/components/schedule/schedule-table-row.vue'
 
 export default {
   layout: 'blank',
   components: {
     ScheduleMenu,
-    ScheduleName,
-    ScheduleDay,
-    ScheduleJam,
+    // ScheduleName,
+    // ScheduleDay,
+    // ScheduleJam,
+    ScheduleHeader,
+    ScheduleRow,
+    draggable,
   },
   props: {
     order: {
@@ -101,7 +115,8 @@ export default {
   },
   methods: {
     showMenu(e) {
-      if (this.staff === undefined) return (this.menu = false)
+      if (this.schedule.selectedStaff === undefined || this.order === true)
+        return (this.menu = false)
       this.x = e.clientX
       this.y = e.clientY
       this.menu = true

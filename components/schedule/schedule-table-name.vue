@@ -30,6 +30,7 @@
           :id="i"
           :value="schedule.nama[o]"
           :order="order"
+          :hover="schedule.hover === o"
           @click.native="(e) => nameClick(e, o)"
         ></view-button>
         <v-divider></v-divider>
@@ -87,9 +88,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-#drag:hover .v-btn {
-  background-color: red;
-}
-</style>

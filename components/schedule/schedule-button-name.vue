@@ -1,15 +1,14 @@
 <template>
   <div>
     <v-btn
-      :id="`schedule${id}`"
+      :id="`schedule${idxOrder}`"
       :ripple="false"
       height="35"
       width="200"
       depressed
       small
       tile
-      :color="hover ? 'red lighten-5' : 'white'"
-      :disabled="order"
+      color="white"
     >
       <span
         class="d-inline-block text-truncate text-left"
@@ -22,7 +21,7 @@
     <v-menu
       v-if="order"
       v-model="menu"
-      :activator="`#schedule${id}`"
+      :activator="`#schedule${idxOrder}`"
       :transition="false"
       open-on-hover
       offset-x
@@ -32,7 +31,11 @@
         <v-list-item v-if="value === undefined" dense @click="reorder('del')">
           <v-icon>mdi-minus-circle-outline</v-icon>
         </v-list-item>
-        <v-list-item v-else-if="!lastData(id)" dense @click="reorder('add')">
+        <v-list-item
+          v-else-if="!lastData(idxOrder)"
+          dense
+          @click="reorder('add')"
+        >
           <v-icon>mdi-plus-circle-outline</v-icon>
         </v-list-item>
       </v-list>
@@ -45,7 +48,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: {
-    id: {
+    idxOrder: {
       type: Number,
       default: undefined,
     },
@@ -54,10 +57,6 @@ export default {
       default: undefined,
     },
     order: {
-      type: Boolean,
-      default: false,
-    },
-    hover: {
       type: Boolean,
       default: false,
     },
@@ -72,8 +71,17 @@ export default {
   },
   methods: {
     reorder(type) {
-      this.$store.commit('schedule/REORDER', { idx: this.id, type })
+      this.$store.commit('schedule/REORDER', { idx: this.idxOrder, type })
     },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
+.v-btn {
+  border-right: 1px solid map-get($grey, lighten-2) !important;
+  border-bottom: 1px solid map-get($grey, lighten-2) !important;
+}
+</style>

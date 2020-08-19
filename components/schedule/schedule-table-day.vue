@@ -27,13 +27,13 @@
           small
         ></v-btn>
       </div>
-      <div v-else>
+      <div v-else @mouseenter="hover = o" @mouseleave="hover = undefined">
         <schedule-button
           v-for="(s, j) in schedule.shift[o]"
           :key="j"
           :shift="s"
           :active="active(j, o)"
-          :class-name="{ 'n-btn': true }"
+          :order="o"
           @click.native="(e) => ranged(e, j, o)"
         ></schedule-button>
       </div>
@@ -65,6 +65,14 @@ export default {
     ...mapState(['schedule']),
     ...mapGetters('schedule', ['dayColor']),
     ...mapGetters('user', ['hadOption']),
+    hover: {
+      get() {
+        return this.schedule.hover
+      },
+      set(value) {
+        this.$store.commit('schedule/updateHover', value)
+      },
+    },
   },
   methods: {
     active(day, staff) {
