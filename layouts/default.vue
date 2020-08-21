@@ -135,3 +135,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.n-btn::before {
+  color: red !important;
+}
+</style>

@@ -9,6 +9,8 @@ export const state = () => ({
   jam: [],
   weekend: [],
   holiday: [],
+  selectedDay: [],
+  selectedStaff: undefined,
 })
 
 export const mutations = {
@@ -32,12 +34,12 @@ export const mutations = {
     state.job = []
     state.jam = []
   },
-  UPDATE_SCHEDULES(state, { staff, day, value, type }) {
-    if (day.length === 1) {
-      state[type][staff][day[0]] = value
+  UPDATE_SCHEDULES(state, value) {
+    if (state.selectedDay.length === 1) {
+      state.shift[state.selectedStaff][state.selectedDay[0]] = value
     } else {
-      for (let i = day[0]; i <= day[1]; i++) {
-        state[type][staff][i] = value
+      for (let i = state.selectedDay[0]; i <= state.selectedDay[1]; i++) {
+        state.shift[state.selectedStaff][i] = value
       }
     }
   },
@@ -50,6 +52,10 @@ export const mutations = {
     } else {
       state.order.splice(idx, 1)
     }
+  },
+  updateSelected(state, { day, staff }) {
+    state.selectedDay = day
+    state.selectedStaff = staff
   },
 }
 
@@ -112,5 +118,15 @@ export const getters = {
   },
   lastData: (state) => (id) => {
     return state.order.length - 1 === id
+  },
+  active: (state) => (day, staff) => {
+    if (
+      state.selectedStaff === staff &&
+      (day === state.selectedDay[0] ||
+        (day > state.selectedDay[0] && day <= state.selectedDay[1]))
+    ) {
+      return true
+    }
+    return false
   },
 }

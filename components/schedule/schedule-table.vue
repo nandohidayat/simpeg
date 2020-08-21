@@ -1,169 +1,50 @@
 <template>
   <v-card outlined>
-    <div
-      style="
-        overflow-y: auto;
-        overflow-x: auto;
-        white-space: nowrap;
-        max-height: 450px;
-      "
-    >
-      <div
-        :style="{
-          zIndex: 10,
-          position: 'sticky',
-          backgroundColor: 'white',
-          left: 0,
-        }"
-        class="shadow d-inline-block"
-      >
-        <div :style="{ position: 'sticky', top: 0, zIndex: 11 }" class="shadow">
-          <v-btn height="35" width="200" depressed small tile color="white">
-            Nama
-          </v-btn>
-          <v-divider></v-divider>
-        </div>
+    <div style="max-height: 450px; overflow: auto;">
+      <div style="white-space: nowrap; display: table;">
+        <schedule-header></schedule-header>
         <draggable v-model="schedule.order" group="nama" :disabled="!order">
-          <div v-for="(o, i) in schedule.order" :key="i">
-            <view-button v-if="isNaN(o)" :id="i" :order="order"></view-button>
-            <view-button
-              v-else
-              :id="i"
-              :value="schedule.nama[o]"
-              :order="order"
-              @click.native="(e) => nameClick(e, o)"
-            ></view-button>
-            <v-divider></v-divider>
-          </div>
+          <schedule-row
+            v-for="(o, i) in schedule.order"
+            :key="i"
+            :idx-data="o"
+            :idx-order="i"
+            :order="order"
+            @menu="showMenu($event)"
+          ></schedule-row>
         </draggable>
+        <schedule-menu
+          :staff.sync="staff"
+          :day.sync="day"
+          :menu.sync="menu"
+          :x="x"
+          :y="y"
+        ></schedule-menu>
       </div>
-      <div class="d-inline-block">
-        <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
-          <v-btn
-            v-for="d in schedule.day"
-            :key="d"
-            :color="dayColor(d)"
-            height="35px"
-            width="35px"
-            tile
-            depressed
-            small
-            >{{ d }}</v-btn
-          >
-          <v-divider></v-divider>
-        </div>
-        <div v-for="(o, i) in schedule.order" :key="i">
-          <div v-if="isNaN(o)">
-            <v-btn
-              v-for="d in schedule.day"
-              :key="d"
-              height="35px"
-              width="35px"
-              color="white"
-              tile
-              depressed
-              small
-            ></v-btn>
-          </div>
-          <div v-else>
-            <schedule-button
-              v-for="(s, j) in schedule.shift[o]"
-              :key="j"
-              :shift="s"
-              :active="active(j, o)"
-              @click.native="(e) => ranged(e, j, o)"
-            ></schedule-button>
-          </div>
-          <v-divider></v-divider>
-        </div>
-      </div>
-      <div class="d-inline-block">
-        <div :style="{ position: 'sticky', top: 0, zIndex: 9 }" class="shadow">
-          <v-btn height="35" width="120" depressed small tile color="white">
-            Total Jam
-          </v-btn>
-          <v-divider></v-divider>
-        </div>
-        <div v-for="(o, i) in schedule.order" :key="i">
-          <v-btn
-            :ripple="false"
-            height="35"
-            width="120"
-            depressed
-            small
-            tile
-            color="white"
-          >
-            {{ schedule.jam[o] }}
-          </v-btn>
-          <v-divider></v-divider>
-        </div>
-      </div>
-      <schedule-menu
-        :staff.sync="staff"
-        :day.sync="day"
-        :menu.sync="menu"
-        :x="x"
-        :y="y"
-      ></schedule-menu>
     </div>
-    <v-row class="px-3">
-      <v-col cols="6">
-        <table style="font-size: 10pt;">
-          <tr>
-            <td class="px-3" colspan="2">Keterangan:</td>
-          </tr>
-          <tr v-for="s in fShift(true)" :key="s.id_shift">
-            <td class="px-3">{{ s.kode }}</td>
-            <td>({{ showTime(s.mulai) }} - {{ showTime(s.selesai) }})</td>
-          </tr>
-        </table>
-      </v-col>
-      <v-col cols="6">
-        <!-- <v-switch
-        v-model="switches"
-        :hide-details="true"
-        inset
-        class="ma-0 pa-0 mr-4"
-        color="teal"
-        label="Jobs"
-        dense
-      ></v-switch> -->
-        <v-switch
-          :value="order"
-          :hide-details="true"
-          inset
-          color="teal"
-          label="Order"
-          style="width: 100px;"
-          class="ml-auto"
-          dense
-          @change="$emit('update:order', !order)"
-        ></v-switch>
-      </v-col>
-    </v-row>
-    <v-overlay :value="schedule.overlay" absolute z-index="10">
+    <schedule-footer :order.sync="order"></schedule-footer>
+    <v-overlay :value="schedule.overlay" absolute z-index="11">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
   </v-card>
 </template>
 
 <script>
-import moment from 'moment'
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import draggable from 'vuedraggable'
 
-import ScheduleButton from '@/components/schedule/schedule-button'
 import ScheduleMenu from '@/components/schedule/schedule-menu'
-import ViewButton from '@/components/schedule/schedule-view-button'
+import ScheduleHeader from '@/components/schedule/schedule-table-header.vue'
+import ScheduleRow from '@/components/schedule/schedule-table-row.vue'
+import ScheduleFooter from '@/components/schedule/schedule-table-footer.vue'
 
 export default {
-  layout: 'blank',
   components: {
-    ScheduleButton,
-    ScheduleMenu,
-    ViewButton,
     draggable,
+    ScheduleMenu,
+    ScheduleHeader,
+    ScheduleRow,
+    ScheduleFooter,
   },
   props: {
     order: {
@@ -178,79 +59,25 @@ export default {
       menu: false,
       x: 0,
       y: 0,
-      switches: false,
       drag: false,
     }
   },
   computed: {
     ...mapState(['schedule']),
-    ...mapGetters('schedule', ['dayColor']),
-    ...mapGetters('user', ['hadOption']),
-    ...mapGetters('shift', ['fShift']),
+  },
+  watch: {
+    order(val) {
+      this.$emit('update:order', val)
+    },
   },
   methods: {
-    ranged(event, day, staff) {
-      if (!this.hadOption(5)) return
-      if (
-        this.day.length === 0 ||
-        this.day.length === 2 ||
-        this.staff !== staff
-      ) {
-        this.staff = staff
-        this.day = [day]
-      } else if (this.day[0] < day) {
-        this.day.push(day)
-      } else if (this.day[0] > day) {
-        this.day.unshift(day)
-      } else {
-        this.staff = undefined
-        this.day = []
-      }
-      this.showMenu(event)
-    },
-    active(day, staff) {
-      if (
-        this.staff === staff &&
-        (day === this.day[0] || (day > this.day[0] && day <= this.day[1]))
-      ) {
-        return true
-      }
-      return false
-    },
-    nameClick(event, staff) {
-      if (!this.hadOption(5)) return
-      if (this.staff === staff) {
-        this.day = []
-        this.staff = undefined
-      } else {
-        this.staff = staff
-        this.day = [0, this.schedule.day - 1]
-      }
-      this.showMenu(event)
-    },
     showMenu(e) {
-      if (this.staff === undefined) return (this.menu = false)
+      if (this.schedule.selectedStaff === undefined || this.order === true)
+        return (this.menu = false)
       this.x = e.clientX
       this.y = e.clientY
       this.menu = true
     },
-    showTime(time) {
-      return moment(time, 'HH:mm:ss').format('HH:mm')
-    },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
-.v-btn {
-  border-right: 1px solid map-get($grey, lighten-2) !important;
-}
-
-.shadow {
-  -webkit-box-shadow: 4px 0 5px 0 rgba(0, 0, 0, 0.27);
-  -moz-box-shadow: 4px 0 5px 0 rgba(0, 0, 0, 0.27);
-  box-shadow: 4px 0 5px 0 rgba(0, 0, 0, 0.27);
-}
-</style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-btn
-      :id="`schedule${id}`"
+      :id="`schedule${idxOrder}`"
       :ripple="false"
       height="35"
       width="200"
@@ -21,7 +21,7 @@
     <v-menu
       v-if="order"
       v-model="menu"
-      :activator="`#schedule${id}`"
+      :activator="`#schedule${idxOrder}`"
       :transition="false"
       open-on-hover
       offset-x
@@ -31,7 +31,11 @@
         <v-list-item v-if="value === undefined" dense @click="reorder('del')">
           <v-icon>mdi-minus-circle-outline</v-icon>
         </v-list-item>
-        <v-list-item v-else-if="!lastData(id)" dense @click="reorder('add')">
+        <v-list-item
+          v-else-if="!lastData(idxOrder)"
+          dense
+          @click="reorder('add')"
+        >
           <v-icon>mdi-plus-circle-outline</v-icon>
         </v-list-item>
       </v-list>
@@ -44,7 +48,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: {
-    id: {
+    idxOrder: {
       type: Number,
       default: undefined,
     },
@@ -67,7 +71,7 @@ export default {
   },
   methods: {
     reorder(type) {
-      this.$store.commit('schedule/REORDER', { idx: this.id, type })
+      this.$store.commit('schedule/REORDER', { idx: this.idxOrder, type })
     },
   },
 }

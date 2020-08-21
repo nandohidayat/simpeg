@@ -1,5 +1,6 @@
 <template>
   <v-btn
+    :class="{ active: active }"
     :color="bgColor"
     :ripple="false"
     height="35px"
@@ -12,18 +13,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   props: {
+    id: {
+      type: String,
+      default: undefined,
+    },
     shift: {
       type: Number,
       default: undefined,
     },
-    // job: {
-    //   type: Number,
-    //   default: undefined,
-    // },
     active: {
       type: Boolean,
       default: false,
@@ -31,7 +32,7 @@ export default {
   },
   computed: {
     ...mapGetters('shift', ['getKode', 'getBgColor']),
-    // ...mapGetters('job', ['getFtColor']),
+    ...mapState(['schedule']),
     kode() {
       if (this.shift === undefined) return
 
@@ -46,9 +47,6 @@ export default {
         return this.getBgColor(this.shift)
       }
     },
-    // ftColor() {
-    //   return this.getFtColor(this.job)
-    // },
   },
 }
 </script>
