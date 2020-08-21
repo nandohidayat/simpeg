@@ -47,6 +47,11 @@
             ></v-select>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col class="text-right">
+            <v-btn color="teal" dark depressed>tambah pegawai</v-btn>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
     <v-data-table
