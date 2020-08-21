@@ -6,7 +6,7 @@
       :value="notification.snackbar"
       :color="notif.type"
     >
-      {{ notif.text }}
+      {{ notif.message }}
       <template #action="{attrs}">
         <v-btn color="white" v-bind="attrs" text @click="del">
           Close

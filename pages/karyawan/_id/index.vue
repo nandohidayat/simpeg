@@ -164,6 +164,8 @@
               label="New Password"
               outlined
               type="password"
+              :error="passwordError"
+              :error-messages="passwordMessage"
               dense
             ></v-text-field>
             <v-text-field
@@ -226,26 +228,43 @@ export default {
       currentError: false,
       currentMessage: undefined,
       password: undefined,
+      passwordError: false,
+      passwordMessage: undefined,
       repeat: undefined,
       repeatError: false,
       repeatMessage: undefined,
       confirm: false,
       confirmDisable: true,
+      submited: false,
     }
   },
   computed: {
     ...mapState(['karyawan']),
     ...mapGetters('user', ['hadOption']),
+    passError() {
+      return this.password + this.repeat
+    },
   },
   watch: {
-    repeat(val) {
-      if (val !== this.password) {
+    passError(val) {
+      if (this.repeat !== this.password && !this.submited) {
         this.repeatError = true
         this.repeatMessage = 'Confirm is different with Password'
         this.confirmDisable = true
       } else {
         this.repeatError = false
         this.repeatMessage = undefined
+        this.confirmDisable = false
+      }
+    },
+    password(val) {
+      if (this.password === undefined && !this.submited) {
+        this.passwordError = true
+        this.passwordMessage = 'Password could not be empty'
+        this.confirmDisable = true
+      } else {
+        this.passwordError = false
+        this.passwordMessage = undefined
         this.confirmDisable = false
       }
     },
@@ -259,17 +278,19 @@ export default {
           password: this.password,
         })
 
+        this.submited = true
         this.current = undefined
         this.password = undefined
         this.repeat = undefined
         this.currentError = false
         this.currentMessage = undefined
-        this.confirm = false
         this.$alert('success', 'Successfully Changed')
       } catch (err) {
         this.currentError = true
         this.currentMessage = 'Password mismatch'
         this.$alert('error', err)
+      } finally {
+        this.confirm = false
       }
     },
   },
