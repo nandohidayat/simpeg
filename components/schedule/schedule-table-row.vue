@@ -155,6 +155,6 @@ export default {
 }
 
 .row-parent:hover .v-btn.active {
-  background-color: map-get($red, lighten-4) !important;
+  background-color: map-get($grey, lighten-2) !important;
 }
 </style>

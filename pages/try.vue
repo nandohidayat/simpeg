@@ -1,7 +1,7 @@
 <template>
   <v-row align="center" justify="center">
     <div class="parent">
-      <v-btn class="hover-color" dark>THIS</v-btn>
+      <v-btn class="hover-color" color="teal" dark>THIS</v-btn>
     </div>
   </v-row>
 </template>
@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.parent:hover .hover-color {
-  background-color: #009688 !important;
-}
+// .parent:hover .hover-color {
+//   background-color: #009688 !important;
+// }
 </style>
