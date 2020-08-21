@@ -76,12 +76,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
-.v-btn {
-  border-right: 1px solid map-get($grey, lighten-2) !important;
-  border-bottom: 1px solid map-get($grey, lighten-2) !important;
-}
-</style>

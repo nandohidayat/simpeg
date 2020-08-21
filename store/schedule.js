@@ -9,7 +9,6 @@ export const state = () => ({
   jam: [],
   weekend: [],
   holiday: [],
-  hover: undefined,
   selectedDay: [],
   selectedStaff: undefined,
 })
@@ -53,9 +52,6 @@ export const mutations = {
     } else {
       state.order.splice(idx, 1)
     }
-  },
-  updateHover(state, h) {
-    state.hover = h
   },
   updateSelected(state, { day, staff }) {
     state.selectedDay = day

@@ -1,0 +1,50 @@
+<template>
+  <v-row class="px-3">
+    <v-col cols="6">
+      <table style="font-size: 10pt;">
+        <tr>
+          <td class="px-3" colspan="2">Keterangan:</td>
+        </tr>
+        <tr v-for="s in fShift(true)" :key="s.id_shift">
+          <td class="px-3">{{ s.kode }}</td>
+          <td>({{ s.mulai | timeFormat }} - {{ s.selesai | timeFormat }})</td>
+        </tr>
+      </table>
+    </v-col>
+    <v-col cols="6">
+      <v-switch
+        :value="order"
+        :hide-details="true"
+        inset
+        color="teal"
+        label="Order"
+        style="width: 100px;"
+        class="ml-auto"
+        dense
+        @change="$emit('update:order', !order)"
+      ></v-switch>
+    </v-col>
+  </v-row>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import moment from 'moment'
+
+export default {
+  filters: {
+    timeFormat(val) {
+      return moment(val, 'HH:mm:ss').format('HH:mm')
+    },
+  },
+  props: {
+    order: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    ...mapGetters('shift', ['fShift']),
+  },
+}
+</script>

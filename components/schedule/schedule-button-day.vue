@@ -1,5 +1,6 @@
 <template>
   <v-btn
+    :class="{ active: active }"
     :color="bgColor"
     :ripple="false"
     height="35px"
@@ -16,6 +17,10 @@ import { mapState, mapGetters } from 'vuex'
 
 export default {
   props: {
+    id: {
+      type: String,
+      default: undefined,
+    },
     shift: {
       type: Number,
       default: undefined,

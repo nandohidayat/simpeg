@@ -1,19 +1,30 @@
 <template>
-  <div>
+  <div class="row-parent">
     <div
       :style="{
         zIndex: 9,
         position: 'sticky',
-        backgroundColor: 'white',
         left: 0,
       }"
       class="d-inline-block"
     >
+      <v-btn
+        v-if="isNaN(idxData)"
+        height="35"
+        width="200"
+        depressed
+        small
+        tile
+        color="white"
+      ></v-btn>
       <button-name
+        v-else
         :idx-order="idxOrder"
         :value="schedule.nama[idxData]"
         :order="order"
         @click.native="(e) => nameClick(e, idxData)"
+        @mouseenter.native="hover = idxData"
+        @mouseleave.native="hover = undefined"
       ></button-name>
     </div>
     <div class="d-inline-block">
@@ -114,7 +125,7 @@ export default {
           day: [...this.schedule.selectedDay, day],
           staff,
         })
-      } else if (this.day[0] > day) {
+      } else if (this.schedule.selectedDay[0] > day) {
         this.$store.commit('schedule/updateSelected', {
           day: [day, ...this.schedule.selectedDay],
           staff,
@@ -131,11 +142,19 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '~vuetify/src/styles/styles.sass';
 
-.v-btn {
+.row-parent .v-btn {
   border-right: 1px solid map-get($grey, lighten-2) !important;
   border-bottom: 1px solid map-get($grey, lighten-2) !important;
+}
+
+.row-parent:hover .v-btn {
+  background-color: map-get($red, lighten-5) !important;
+}
+
+.row-parent:hover .v-btn.active {
+  background-color: map-get($red, lighten-4) !important;
 }
 </style>

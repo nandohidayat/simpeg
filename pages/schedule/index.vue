@@ -42,7 +42,6 @@ export default {
   async fetch({ store }) {
     await Promise.all([
       store.dispatch('shift/fetchShifts'),
-      // store.dispatch('job/fetchJobs'),
       store.dispatch('schedule/fetchSchedules'),
     ])
   },
@@ -81,10 +80,7 @@ export default {
   async created() {
     this.dept = this.departemen.departemens[0].id_dept
 
-    await Promise.all([
-      this.$store.dispatch('shift/fetchShift', this.dept),
-      // this.$store.dispatch('job/fetchJob', this.dept),
-    ])
+    await Promise.all([this.$store.dispatch('shift/fetchShift', this.dept)])
   },
   head() {
     return {
