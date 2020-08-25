@@ -27,6 +27,7 @@
         >
         </v-text-field>
         <v-text-field
+          v-if="edit"
           v-model="data.username"
           class="mt-1"
           label="Username"
@@ -51,18 +52,21 @@
           dense
         >
         </v-text-field>
-        <v-btn
-          block
-          color="teal"
-          dark
-          class="mt-1"
-          depressed
-          @click="dialog = true"
-          >Reset Password</v-btn
-        >
+        <v-row v-if="edit" no-gutters class="mt-1">
+          <v-col cols="6" class="pr-2">
+            <v-btn block color="teal" dark depressed @click="dialog = true"
+              >Reset Password</v-btn
+            >
+          </v-col>
+          <v-col cols="6" class="pl-2">
+            <v-btn block color="teal" dark depressed @click="dialog = true"
+              >Delete Account</v-btn
+            >
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
-    <div class="d-flex justify-space-between mb-3">
+    <div v-if="edit" class="d-flex justify-space-between mb-3">
       <span class="subtitle-1 d-inline-block">Departemen</span>
       <v-btn
         color="teal"
@@ -73,7 +77,7 @@
         >Edit</v-btn
       >
     </div>
-    <v-sheet outlined>
+    <v-sheet v-if="edit" outlined>
       <v-data-table
         :headers="header"
         :items="tableDept"
@@ -100,6 +104,10 @@ export default {
     data: {
       type: Object,
       default: () => {},
+    },
+    edit: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

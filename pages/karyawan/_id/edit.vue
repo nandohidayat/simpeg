@@ -9,6 +9,7 @@
       <v-tab-item>
         <karyawan-account
           :data="karyawan.karyawan"
+          edit
           @change-tab="tab = 2"
         ></karyawan-account>
       </v-tab-item>
@@ -90,6 +91,10 @@ export default {
 
         this.dialog = false
         this.$alert('success', 'Successfully Saved')
+        this.$router.push({
+          name: 'karyawan-id',
+          params: { id: this.$route.params.id },
+        })
       } catch (err) {
         this.$alert('error', err)
       }

@@ -146,7 +146,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="6">
+      <v-col v-if="karyawan.karyawan.username" cols="6">
         <v-card>
           <v-card-title>Change Password</v-card-title>
           <v-card-text>
@@ -224,13 +224,13 @@ export default {
   },
   data() {
     return {
-      current: undefined,
+      current: '',
       currentError: false,
       currentMessage: undefined,
-      password: undefined,
+      password: '',
       passwordError: false,
       passwordMessage: undefined,
-      repeat: undefined,
+      repeat: '',
       repeatError: false,
       repeatMessage: undefined,
       confirm: false,
@@ -258,7 +258,7 @@ export default {
       }
     },
     password(val) {
-      if (this.password === undefined && !this.submited) {
+      if (this.password.length < 1 && !this.submited) {
         this.passwordError = true
         this.passwordMessage = 'Password could not be empty'
         this.confirmDisable = true
