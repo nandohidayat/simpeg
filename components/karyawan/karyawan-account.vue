@@ -24,15 +24,7 @@
           label="Nama"
           outlined
           dense
-        >
-        </v-text-field>
-        <v-text-field
-          v-if="edit"
-          v-model="data.username"
-          class="mt-1"
-          label="Username"
-          outlined
-          dense
+          hide-details
         >
         </v-text-field>
       </v-col>
@@ -50,20 +42,49 @@
           label="Email"
           outlined
           dense
+          hide-details
         >
         </v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col v-if="data.username" cols="6">
+        <v-text-field
+          v-if="edit"
+          v-model="data.username"
+          class="mt-1"
+          label="Username"
+          outlined
+          dense
+        >
+        </v-text-field>
+      </v-col>
+      <v-col v-if="data.username" cols="6">
         <v-row v-if="edit" no-gutters class="mt-1">
           <v-col cols="6" class="pr-2">
-            <v-btn block color="teal" dark depressed @click="dialog = true"
+            <v-btn
+              block
+              color="teal"
+              dark
+              depressed
+              @click="openDialog('Reset Password?')"
               >Reset Password</v-btn
             >
           </v-col>
           <v-col cols="6" class="pl-2">
-            <v-btn block color="teal" dark depressed @click="dialog = true"
+            <v-btn
+              block
+              color="teal"
+              dark
+              depressed
+              @click="openDialog('Delete Account?')"
               >Delete Account</v-btn
             >
           </v-col>
         </v-row>
+      </v-col>
+      <v-col v-else>
+        <v-btn block color="teal" dark depressed></v-btn>
       </v-col>
     </v-row>
     <div v-if="edit" class="d-flex justify-space-between mb-3">
@@ -86,8 +107,8 @@
       ></v-data-table>
     </v-sheet>
     <base-confirm
-      v-model="dialog"
-      text="Reset Password?"
+      v-model="dialog.status"
+      :text="dialog.text"
       @confirm="resetPassword"
     ></base-confirm>
   </v-card-text>
@@ -117,7 +138,10 @@ export default {
         { text: 'Active', value: true },
         { text: 'Non Active', value: false },
       ],
-      dialog: false,
+      dialog: {
+        status: false,
+        text: '',
+      },
     }
   },
   computed: {
@@ -135,6 +159,21 @@ export default {
       } catch (err) {
         this.$alert('error', err)
       }
+    },
+    async delete() {
+      try {
+        await this.$store.dispatch('user/delete', this.data.id)
+
+        this.dialog = false
+        this.$emit('delete-account')
+        this.$alert('success', 'Successfully Deleted')
+      } catch (err) {
+        this.$alert('error', err)
+      }
+    },
+    openDialog(text) {
+      this.dialog.status = true
+      this.dialog.text = text
     },
   },
 }

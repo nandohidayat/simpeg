@@ -18,6 +18,9 @@ export const actions = {
   async reset(ctx, id) {
     await this.$authModul.reset(id)
   },
+  async delete(ctx, id) {
+    await this.$authModul.delete(id)
+  },
 }
 
 export const getters = {
