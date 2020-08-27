@@ -18,7 +18,7 @@
           dense
           @click="updateSchedule(s.id_shift)"
         >
-          <v-list-item-title>{{ s.kode || '' }}</v-list-item-title>
+          <v-list-item-title>{{ s.kode }}</v-list-item-title>
         </v-list-item>
       </div>
       <v-list-item dense @click="reset()"
