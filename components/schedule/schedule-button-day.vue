@@ -22,7 +22,7 @@ export default {
       default: undefined,
     },
     shift: {
-      type: Number || String,
+      type: [Number, String],
       default: undefined,
     },
     active: {
