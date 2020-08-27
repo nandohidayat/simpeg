@@ -3,13 +3,17 @@
     <v-tabs v-model="tab" color="teal">
       <v-tab><v-icon left>mdi-account-outline</v-icon>Account</v-tab>
       <v-tab><v-icon left>mdi-information-outline</v-icon>Information</v-tab>
-      <v-tab><v-icon left>mdi-share-variant-outline</v-icon>Mutasi</v-tab>
+      <v-tab>
+        <v-icon left>mdi-share-variant-outline</v-icon>Mutasi Departemen
+      </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item>
         <karyawan-account
           :data="karyawan.karyawan"
+          edit
           @change-tab="tab = 2"
+          @delete-account="karyawan.karyawan.username = undefined"
         ></karyawan-account>
       </v-tab-item>
       <v-tab-item>
@@ -90,6 +94,10 @@ export default {
 
         this.dialog = false
         this.$alert('success', 'Successfully Saved')
+        this.$router.push({
+          name: 'karyawan-id',
+          params: { id: this.$route.params.id },
+        })
       } catch (err) {
         this.$alert('error', err)
       }

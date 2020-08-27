@@ -17,7 +17,7 @@
                 <p>NIK</p>
               </v-col>
               <v-col cols="8" class="body-1 font-weight-regular">
-                <p>{{ karyawan.karyawan.nik }}</p>
+                <p>{{ karyawan.karyawan.id }}</p>
               </v-col>
             </v-row>
             <v-row no-gutters>
@@ -80,6 +80,14 @@
                 <p>
                   {{ karyawan.karyawan.status ? 'Active' : 'Non Active' }}
                 </p>
+              </v-col>
+            </v-row>
+            <v-row no-gutters>
+              <v-col cols="4" class="body-1 font-weight-medium">
+                <p>No Absen</p>
+              </v-col>
+              <v-col cols="8" class="body-1 font-weight-regular">
+                <p>{{ karyawan.karyawan.nik }}</p>
               </v-col>
             </v-row>
           </v-col>
@@ -146,7 +154,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="6">
+      <v-col v-if="karyawan.karyawan.username" cols="6">
         <v-card>
           <v-card-title>Change Password</v-card-title>
           <v-card-text>
@@ -224,17 +232,16 @@ export default {
   },
   data() {
     return {
-      current: undefined,
+      current: '',
       currentError: false,
       currentMessage: undefined,
-      password: undefined,
+      password: '',
       passwordError: false,
       passwordMessage: undefined,
-      repeat: undefined,
+      repeat: '',
       repeatError: false,
       repeatMessage: undefined,
       confirm: false,
-      confirmDisable: true,
       submited: false,
     }
   },
@@ -244,28 +251,27 @@ export default {
     passError() {
       return this.password + this.repeat
     },
+    confirmDisable() {
+      return this.repeatError || this.password.length < 1
+    },
   },
   watch: {
     passError(val) {
-      if (this.repeat !== this.password && !this.submited) {
+      if (this.repeat !== this.password) {
         this.repeatError = true
         this.repeatMessage = 'Confirm is different with Password'
-        this.confirmDisable = true
       } else {
         this.repeatError = false
         this.repeatMessage = undefined
-        this.confirmDisable = false
       }
     },
     password(val) {
-      if (this.password === undefined && !this.submited) {
+      if (this.password.length < 1) {
         this.passwordError = true
         this.passwordMessage = 'Password could not be empty'
-        this.confirmDisable = true
       } else {
         this.passwordError = false
         this.passwordMessage = undefined
-        this.confirmDisable = false
       }
     },
   },
@@ -278,10 +284,9 @@ export default {
           password: this.password,
         })
 
-        this.submited = true
-        this.current = undefined
-        this.password = undefined
-        this.repeat = undefined
+        this.current = ''
+        this.password = ''
+        this.repeat = ''
         this.currentError = false
         this.currentMessage = undefined
         this.$alert('success', 'Successfully Changed')

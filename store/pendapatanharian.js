@@ -41,8 +41,8 @@ export const actions = {
     )
     commit('EDT_PENDAPATAN', pendapatan)
   },
-  async deletePendapatan({ commit }, pendapatan) {
-    await this.$api.pendapatanharian.delete(pendapatan.id_pendapatan_harian)
-    commit('DEL_PENDAPATAN', pendapatan.id_pendapatan_harian)
+  async deletePendapatan({ commit }, id) {
+    await this.$api.pendapatanharian.delete(id)
+    commit('DEL_PENDAPATAN', id)
   },
 }
