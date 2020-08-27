@@ -1,45 +1,46 @@
 <template>
-  <base-card :title="`Data ${title}`" toolbar>
-    <template #action>
-      <base-form
-        :title="title"
-        :data="data"
-        :store="store"
-        :action="action"
-        @reset="$emit('reset')"
-      >
-        <slot></slot>
-      </base-form>
-    </template>
-    <v-data-table :headers="headers" :items="items[state]" multi-sort>
-      <template #item.action="{ item }">
+  <v-data-table :headers="headers" :items="items[state]" multi-sort>
+    <template #top>
+      <v-toolbar flat color="white">
+        <v-toolbar-title>{{ title }}</v-toolbar-title>
+        <v-divider class="mx-4" inset vertical></v-divider>
+        <v-spacer></v-spacer>
         <base-form
           :title="title"
+          :data="data"
           :store="store"
           :action="action"
-          :data="data"
-          :edit="item"
           @reset="$emit('reset')"
-          @edit="edit"
         >
           <slot></slot>
         </base-form>
-        <v-icon small @click="deleteData(item)">
-          mdi-delete
-        </v-icon>
-      </template>
-    </v-data-table>
-  </base-card>
+      </v-toolbar>
+    </template>
+    <template #item.action="{ item }">
+      <base-form
+        :title="title"
+        :store="store"
+        :action="action"
+        :data="data"
+        :edit="item"
+        @reset="$emit('reset')"
+        @edit="edit"
+      >
+        <slot></slot>
+      </base-form>
+      <v-icon small @click="deleteData(item)">
+        mdi-delete
+      </v-icon>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import baseCard from '@/components/base/base-card'
 import baseForm from '@/components/base/base-form'
 
 export default {
   components: {
-    'base-card': baseCard,
     'base-form': baseForm,
   },
   props: {

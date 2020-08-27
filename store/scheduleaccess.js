@@ -13,11 +13,15 @@ export const mutations = {
   },
   EDT_SCHEDULE(state, schedule) {
     state.schedules = state.schedules.map((s) =>
-      s.id_schedule_access !== schedule.id_schedule_access ? s : schedule
+      parseInt(s.id_schedule_access) !== parseInt(schedule.id_schedule_access)
+        ? s
+        : schedule
     )
   },
   DEL_SCHEDULE(state, id) {
-    state.schedules = state.schedules.filter((b) => b.id_schedule_access !== id)
+    state.schedules = state.schedules.filter(
+      (b) => parseInt(b.id_schedule_access) !== parseInt(id)
+    )
   },
 }
 
@@ -37,8 +41,8 @@ export const actions = {
     )
     commit('EDT_SCHEDULE', res.data)
   },
-  async deleteSchedule({ commit }, schedule) {
-    await this.$api.scheduleAccess.delete(schedule.id_schedule_access)
-    commit('DEL_SCHEDULE', schedule.id_schedule_access)
+  async deleteSchedule({ commit }, id) {
+    await this.$api.scheduleAccess.delete(id)
+    commit('DEL_SCHEDULE', id)
   },
 }

@@ -66,6 +66,17 @@
         <div v-for="(d, i) in item.dept" :key="i">- {{ d }}</div>
       </template>
     </v-data-table>
+    <v-btn
+      color="teal"
+      dark
+      depressed
+      fixed
+      bottom
+      right
+      rounded
+      :to="{ name: 'karyawan-create' }"
+      ><v-icon small class="mr-1">mdi-plus</v-icon>tambah pegawai</v-btn
+    >
   </v-container>
 </template>
 

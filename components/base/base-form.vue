@@ -1,17 +1,9 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
-    <template v-slot:activator="{ on }">
-      <v-icon v-if="edit" small class="mr-2" v-on="on">
-        mdi-pencil
-      </v-icon>
-      <v-btn v-else icon v-on="on">
-        <v-icon>mdi-plus-circle</v-icon>
-      </v-btn>
-    </template>
     <v-card>
-      <v-card-title>
+      <v-card-title class="grey lighten-5">
         <span class="text-capitalize"
-          >{{ edit ? 'Edit' : 'Buat' }} {{ title }}</span
+          >{{ edit ? 'Edit' : 'Tambah' }} {{ title }}</span
         >
       </v-card-title>
       <v-card-text>
@@ -20,13 +12,8 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          :disabled="disabled"
-          color="teal"
-          small
-          dark
-          @click="createData()"
-          ><v-icon>mdi-content-save</v-icon></v-btn
+        <v-btn :disabled="disabled" color="teal" dark @click="createData()"
+          ><v-icon left>mdi-content-save</v-icon> Simpan</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -56,21 +43,24 @@ export default {
       type: Object,
       default: undefined,
     },
+    value: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      dialog: false,
       disabled: false,
     }
   },
-  watch: {
-    dialog(val) {
-      if (val && this.edit !== undefined) {
-        this.$emit('edit', this.edit)
-      }
-      if (!val) {
-        this.$emit('reset')
-      }
+  computed: {
+    dialog: {
+      get() {
+        return this.value
+      },
+      set(value) {
+        this.$emit('input', value)
+      },
     },
   },
   methods: {
@@ -84,13 +74,12 @@ export default {
       try {
         await this.$store.dispatch(url, this.data)
 
-        this.dialog = false
-
         this.$alert('success', 'Successfully Saved')
       } catch (err) {
         this.$alert('error', err)
       } finally {
         this.disabled = false
+        this.dialog = false
       }
     },
   },
