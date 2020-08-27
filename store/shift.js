@@ -14,11 +14,13 @@ export const mutations = {
   },
   EDT_SHIFT(state, shift) {
     state.shifts = state.shifts.map((s) =>
-      s.id_shift !== shift.id_shift ? s : shift
+      parseInt(s.id_shift) !== parseInt(shift.id_shift) ? s : shift
     )
   },
   DEL_SHIFT(state, id) {
-    state.shifts = state.shifts.filter((b) => b.id_shift !== id)
+    state.shifts = state.shifts.filter(
+      (b) => parseInt(b.id_shift) !== parseInt(id)
+    )
   },
   SET_DEPARTEMEN(state, shift) {
     state.departemen = shift
@@ -40,18 +42,18 @@ export const actions = {
   },
   async updateShift({ commit }, shift) {
     const res = await this.$api.shift.update(shift.id_shift, shift)
-    commit('EDT_SHIFT', res)
+    commit('EDT_SHIFT', res.data)
   },
-  async deleteShift({ commit }, shift) {
-    await this.$api.shift.delete(shift.id_shift)
-    commit('DEL_SHIFT', shift.id_shift)
+  async deleteShift({ commit }, id) {
+    await this.$api.shift.delete(id)
+    commit('DEL_SHIFT', id)
   },
   async fetchDepartemen({ commit }, id) {
     const res = await this.$api.shiftDepartemen.show(id)
     commit('SET_DEPARTEMEN', res.data)
   },
-  async updateDepartemen({ commit }, { departemen, shift }) {
-    await this.$api.shiftDepartemen.update(departemen, { shift })
+  async updateDepartemen({ commit }, { dept, shift }) {
+    await this.$api.shiftDepartemen.update(dept, { shift })
   },
 }
 

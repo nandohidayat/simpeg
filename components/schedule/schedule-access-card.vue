@@ -1,29 +1,52 @@
 <template>
-  <base-table
-    :header="header"
-    :title="title"
-    :store="store"
-    :state="state"
-    :action="action"
-    :data.sync="data"
-    @reset="reset()"
-  >
-    <schedule-form :data="data"></schedule-form>
-  </base-table>
+  <div>
+    <v-data-table
+      :headers="header"
+      :items="scheduleaccess.schedules"
+      multi-sort
+      items-per-page="100"
+    >
+      <template #top>
+        <v-toolbar flat class="my-2">
+          <v-toolbar-title>Schedule Access</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-btn color="teal" dark depressed @click="openDialog()"
+            ><v-icon left>mdi-plus</v-icon>Tambah Akses</v-btn
+          >
+        </v-toolbar>
+      </template>
+      <template #item.action="{item}">
+        <v-icon @click="openDialog(item)">
+          mdi-pencil
+        </v-icon>
+        <v-icon @click="deleteConfirm(item)">
+          mdi-delete
+        </v-icon>
+      </template>
+    </v-data-table>
+    <base-confirm
+      v-model="confirm"
+      :text="text"
+      @confirm="deleteData()"
+    ></base-confirm>
+    <schedule-form v-model="dialog" :edit="edit" :data="data"></schedule-form>
+  </div>
 </template>
 
 <script>
-import baseTable from '@/components/base/base-table'
-import scheduleForm from '@/components/schedule/schedule-access-form'
+import { mapState } from 'vuex'
+
+import ScheduleForm from '@/components/schedule/schedule-access-form'
+import BaseConfirm from '@/components/base/base-confirm'
 
 export default {
   components: {
-    'base-table': baseTable,
-    'schedule-form': scheduleForm,
+    ScheduleForm,
+    BaseConfirm,
   },
   data() {
     return {
-      title: 'Schedule Access',
       header: [
         {
           text: 'Departemen',
@@ -37,22 +60,54 @@ export default {
           text: 'Assessor',
           value: 'assessor',
         },
+        {
+          text: 'Actions',
+          value: 'action',
+        },
       ],
-      store: 'scheduleaccess',
-      state: 'schedules',
-      action: 'Schedule',
-      data: this.newData(),
-    }
-  },
-  methods: {
-    reset() {
-      this.data = this.newData()
-    },
-    newData() {
-      return {
+      dialog: false,
+      edit: false,
+      data: undefined,
+      confirm: false,
+      text: '',
+      delete: undefined,
+      newSchedule: {
         dept: undefined,
         access: undefined,
         assessor: false,
+      },
+    }
+  },
+  computed: {
+    ...mapState(['scheduleaccess']),
+  },
+  methods: {
+    openDialog(item = undefined) {
+      if (item) {
+        this.edit = true
+        this.data = item
+      } else {
+        this.edit = false
+        this.data = this.newSchedule
+      }
+      this.dialog = true
+    },
+    deleteConfirm(del) {
+      this.delete = del
+      this.text = `Hapus akses?`
+      this.confirm = true
+    },
+    async deleteData() {
+      try {
+        await this.$store.dispatch(
+          'scheduleaccess/deleteSchedule',
+          this.delete.id_schedule_access
+        )
+
+        this.confirm = false
+        this.$alert('success', 'Successfully Deleted')
+      } catch (e) {
+        this.$alert('error', e)
       }
     },
   },
