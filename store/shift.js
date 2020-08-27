@@ -60,7 +60,7 @@ export const actions = {
 export const getters = {
   fShift: (state) => (nonull = false) => {
     const shift = state.departemen.map((d) =>
-      state.shifts.find((s) => s.id_shift === d)
+      state.shifts.find((s) => parseInt(s.id_shift) === parseInt(d))
     )
     return nonull
       ? shift
