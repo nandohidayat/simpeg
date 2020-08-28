@@ -41,10 +41,12 @@
 <script>
 import { mapState } from 'vuex'
 
+import BaseConfirm from '@/components/base/base-confirm'
 import PendapatanForm from '@/components/pendapatan/pendapatan-harian-form'
 
 export default {
   components: {
+    BaseConfirm,
     PendapatanForm,
   },
   data() {
