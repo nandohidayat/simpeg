@@ -40,7 +40,7 @@ export default {
       default: undefined,
     },
     edit: {
-      type: Object,
+      type: Boolean,
       default: undefined,
     },
     value: {

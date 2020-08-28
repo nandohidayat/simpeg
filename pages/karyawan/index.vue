@@ -140,7 +140,7 @@ export default {
           filter: (value) => {
             if (!this.search.status) return true
 
-            return value.includes(this.search.status)
+            return value === this.search.status
           },
         },
       ],

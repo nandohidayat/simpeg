@@ -11,11 +11,15 @@ export const mutations = {
   },
   EDT_LOG(state, log) {
     state.logs = state.logs.map((s) =>
-      s.id_log_departemen !== log.id_log_departemen ? s : log
+      parseInt(s.id_log_departemen) !== parseInt(log.id_log_departemen)
+        ? s
+        : log
     )
   },
   DEL_LOG(state, id) {
-    state.logs = state.logs.filter((b) => b.id_log_departemen !== id)
+    state.logs = state.logs.filter(
+      (b) => parseInt(b.id_log_departemen) !== parseInt(id)
+    )
   },
 }
 

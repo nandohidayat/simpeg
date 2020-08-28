@@ -84,7 +84,7 @@
         </v-row>
       </v-col>
       <v-col v-else>
-        <v-btn block color="teal" dark depressed></v-btn>
+        <v-btn block color="teal" dark depressed>Buat akun</v-btn>
       </v-col>
     </v-row>
     <div v-if="edit" class="d-flex justify-space-between mb-3">
