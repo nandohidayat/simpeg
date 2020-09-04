@@ -1,8 +1,14 @@
+import moment from 'moment'
+
 export const state = () => ({
   profils: [],
   id: 0,
   personalia: [],
   keuangan: [],
+  tipe: [
+    { value: 'format_personalia', text: 'Format Personalia' },
+    { value: 'format_keuangan', text: 'Format Keuangan' },
+  ],
 })
 
 export const mutations = {
@@ -103,5 +109,29 @@ export const actions = {
   async deleteProfil({ commit }, id) {
     await this.$api.pendapatanprofil.delete(id)
     commit('DEL_PROFIL', id)
+  },
+  exportTemplate(ctx, { profil, tipe }) {
+    const win = window.open(
+      `${this.$axios.defaults.baseURL}pendapatanpeg/profilp?id_profilp=${profil}&tipe_form=${tipe}`,
+      '_blank'
+    )
+    win.focus()
+  },
+  async importTemplate(ctx, { date, file, profil, tipe }) {
+    const formData = new FormData()
+    formData.append('id_profilp', profil)
+    formData.append('tipe_form', tipe)
+    formData.append('bulan_kirim', moment(date).format('MM-YYYY'))
+    formData.append('file', file)
+
+    await this.$axios.$post(
+      `${this.$axios.defaults.baseURL}pendapatanpeg/pendapatan`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    )
   },
 }

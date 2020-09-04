@@ -42,13 +42,18 @@
       <v-card-text>
         <v-tabs-items v-if="profil" v-model="tab">
           <v-tab-item>
-            <format-template :profil="profil" :tipe="tipe"></format-template>
+            <format-template
+              :profil="profil"
+              :tipe="tipe"
+              :loading="loading"
+            ></format-template>
           </v-tab-item>
           <v-tab-item>
             <format-template
               keuangan
               :profil="profil"
               :tipe="tipe"
+              :loading="loading"
             ></format-template>
           </v-tab-item>
         </v-tabs-items>
@@ -83,6 +88,7 @@ export default {
       confirm: undefined,
       text: undefined,
       tab: undefined,
+      loading: undefined,
       newProfil: {
         text: undefined,
       },
@@ -128,9 +134,12 @@ export default {
     },
     async getProfil() {
       try {
+        this.loading = true
         await this.$store.dispatch('pendapatanprofil/fetchProfil', this.profil)
       } catch (e) {
         this.$alert('error', e)
+      } finally {
+        this.loading = false
       }
     },
   },

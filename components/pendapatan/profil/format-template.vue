@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row class="grey lighten-5">
     <v-col cols="3">
       <v-btn
         block
@@ -25,11 +25,17 @@
     </v-col>
     <v-col cols="3"> </v-col>
     <v-col cols="6">
-      <format-sorter
-        v-model="realValue"
-        @del="openConfirm"
-        @edit="(e) => openDialog(e)"
-      ></format-sorter>
+      <v-card flat min-height="100">
+        <format-sorter
+          v-model="realValue"
+          class="grey lighten-5"
+          @del="openConfirm"
+          @edit="(e) => openDialog(e)"
+        ></format-sorter>
+        <v-overlay :value="loading" absolute>
+          <v-progress-circular indeterminate size="50"></v-progress-circular>
+        </v-overlay>
+      </v-card>
     </v-col>
     <v-dialog v-model="dialog" width="500">
       <v-card>
@@ -132,6 +138,10 @@ export default {
     tipe: {
       type: String,
       default: undefined,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
