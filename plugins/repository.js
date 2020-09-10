@@ -40,6 +40,8 @@ export default (ctx, inject) => {
     job: repositoryWithAxios('job'),
     jobDepartemen: repositoryWithAxios('job/departemen'),
     pendapatanharian: repositoryWithAxios('pendapatan/harian'),
+    pendapatanprofil: repositoryWithAxios('pendapatan/profil'),
+    pendapatanpeg: repositoryWithAxios('pendapatanpeg'),
     logdepartemen: repositoryWithAxios('log/departemen'),
   }
 

@@ -89,6 +89,10 @@ export default {
                 },
               ],
             },
+            {
+              id: 8,
+              name: 'Pendapatan Karyawan',
+            },
           ],
         },
       ],
