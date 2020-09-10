@@ -51,7 +51,7 @@
             class="text-capitalize font-weight-medium"
             style="font-size: 12pt;"
           >
-            {{ nama.toLowerCase() }}
+            {{ nama }}
           </div>
           <div class="caption" style="position: relative; top: -3px;">
             Active
@@ -113,7 +113,7 @@ export default {
   computed: {
     ...mapState(['user']),
     nama() {
-      return this.$auth.user.nama || ''
+      return this.$auth.user.nama.toLowerCase() || ''
     },
   },
   methods: {
