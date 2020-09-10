@@ -23,8 +23,8 @@ export default ($axios) => (resource) => ({
     return $axios.$post(`${resource}${queryGenerator(query)}`, payload)
   },
 
-  update(id, payload) {
-    return $axios.$put(`${resource}/${id}`, payload)
+  update(id, payload, query = {}) {
+    return $axios.$put(`${resource}/${id}${queryGenerator(query)}`, payload)
   },
 
   delete(id) {
