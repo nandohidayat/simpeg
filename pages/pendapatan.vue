@@ -6,6 +6,7 @@
       <v-tab>Kirim Email Pendapatan</v-tab>
       <v-tab>Manage Template</v-tab>
     </v-tabs>
+    <v-divider></v-divider>
     <v-card-text>
       <v-tabs-items v-model="tab">
         <v-tab-item>
@@ -39,7 +40,10 @@ export default {
     PendapatanSend,
   },
   async fetch({ store }) {
-    await store.dispatch('pendapatanprofil/fetchProfils', { select: 1 })
+    await Promise.all([
+      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+      store.dispatch('karyawan/fetchKaryawans', { select: 1 }),
+    ])
   },
   data() {
     return {

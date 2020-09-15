@@ -39,6 +39,7 @@ export default (ctx, inject) => {
     shiftDepartemen: repositoryWithAxios('shift/departemen'),
     job: repositoryWithAxios('job'),
     jobDepartemen: repositoryWithAxios('job/departemen'),
+    pendapatanemail: repositoryWithAxios('pendapatan/email'),
     pendapatanharian: repositoryWithAxios('pendapatan/harian'),
     pendapatanprofil: repositoryWithAxios('pendapatan/profil'),
     pendapatanpeg: repositoryWithAxios('pendapatanpeg'),
