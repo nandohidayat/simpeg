@@ -13,4 +13,7 @@ export const actions = {
     const res = await this.$api.pendapatanemail.index(query)
     commit('SET_EMAILS', res.data)
   },
+  async sendEmails(ctx, email) {
+    await this.$axios.post('email/buat', email)
+  },
 }
