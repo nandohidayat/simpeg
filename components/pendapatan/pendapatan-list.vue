@@ -63,6 +63,7 @@
     </v-card>
     <v-card outlined>
       <v-data-table
+        dense
         :headers="pendapatanpeg.header"
         :items="pendapatanpeg.pendapatans"
       ></v-data-table>
