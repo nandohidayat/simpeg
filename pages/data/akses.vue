@@ -90,8 +90,18 @@ export default {
               ],
             },
             {
-              id: 8,
+              id: 2300,
               name: 'Pendapatan Karyawan',
+              children: [
+                {
+                  id: 8,
+                  name: 'Read Pendapatan Karyawan',
+                },
+                {
+                  id: 9,
+                  name: 'Manage Template Pendapatan',
+                },
+              ],
             },
           ],
         },
