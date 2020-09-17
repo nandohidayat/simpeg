@@ -38,3 +38,10 @@ export const actions = {
     await this.$api.karyawan.delete(nik)
   },
 }
+
+export const getters = {
+  getKar: (state) => (id) => {
+    const karyawan = state.karyawans.find((s) => s.id_pegawai === id)
+    return karyawan ? karyawan.nm_pegawai : undefined
+  },
+}

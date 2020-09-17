@@ -31,7 +31,7 @@
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app color="white" style="z-index: 999;">
+    <v-app-bar app color="white" style="z-index: 999;" hide-on-scroll>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="d-flex justify-center align-center">
         <v-img
