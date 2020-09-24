@@ -32,7 +32,11 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['typeface-roboto/index.css', '@mdi/font/css/materialdesignicons.css'],
+  css: [
+    'ant-design-vue/dist/antd.css',
+    'typeface-roboto/index.css',
+    '@mdi/font/css/materialdesignicons.css',
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -42,7 +46,7 @@ export default {
     '@/plugins/repository',
     '@/plugins/alert',
     '@/plugins/baseurl',
-    // '@/plugins/vuetify',
+    '@/plugins/antd-ui',
   ],
   /*
    ** Auto import components
@@ -112,7 +116,11 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    babel: {
+      plugins: [['import', { libraryName: 'ant-design-vue' }]],
+    },
+  },
   loading: {
     color: 'white',
   },
