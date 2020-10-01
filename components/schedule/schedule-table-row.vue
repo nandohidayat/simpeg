@@ -8,15 +8,11 @@
       }"
       class="d-inline-block"
     >
-      <v-btn
+      <button-name
         v-if="isNaN(idxData)"
-        height="35"
-        width="200"
-        depressed
-        small
-        tile
-        color="white"
-      ></v-btn>
+        :idx-order="idxOrder"
+        :order="order"
+      ></button-name>
       <button-name
         v-else
         :idx-order="idxOrder"
