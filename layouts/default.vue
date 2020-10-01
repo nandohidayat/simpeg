@@ -31,13 +31,13 @@
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app color="white" style="z-index: 999;" hide-on-scroll>
+    <v-app-bar app color="white" style="z-index: 999;" hide-on-scroll dense>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="d-flex justify-center align-center">
         <v-img
           src="/spp/roemani.png"
           contain
-          width="45"
+          width="35"
           class="d-inline-block mr-2"
         ></v-img>
         <span class="font-weight-light">
@@ -45,23 +45,20 @@
         </span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <div class="d-flex align-center">
-        <div class="text-right mr-3">
-          <div
-            class="text-capitalize font-weight-medium"
-            style="font-size: 12pt;"
-          >
-            {{ nama }}
-          </div>
-          <div class="caption" style="position: relative; top: -3px;">
-            Active
-          </div>
-        </div>
+      <div>
         <v-menu offset-y nudge-bottom="15">
-          <template v-slot:activator="{ on }">
-            <v-avatar color="teal" size="40" style="cursor: pointer;" v-on="on">
-              <v-icon dark>mdi-account-circle</v-icon>
-            </v-avatar>
+          <template v-slot:activator="{ on }" class="d-flex align-center">
+            <div v-on="on">
+              <div
+                class="overline font-weight-medium mr-3 d-inline-block"
+                style="font-size: 12pt;"
+              >
+                {{ nama }}
+              </div>
+              <v-avatar color="teal" size="30" style="cursor: pointer;">
+                <v-icon dark>mdi-account-circle</v-icon>
+              </v-avatar>
+            </div>
           </template>
           <v-card tile>
             <v-list dense>
@@ -139,5 +136,13 @@ export default {
 <style>
 .n-btn::before {
   color: red !important;
+}
+</style>
+
+<style scoped>
+.v-menu__content {
+  min-width: 0 !important;
+  left: auto !important;
+  right: 15px !important;
 }
 </style>

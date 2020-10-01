@@ -22,7 +22,7 @@
         ></schedule-menu>
       </div>
     </div>
-    <schedule-footer :order.sync="order"></schedule-footer>
+    <schedule-footer :order.sync="realValue"></schedule-footer>
     <v-overlay :value="schedule.overlay" absolute z-index="11">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
@@ -64,10 +64,13 @@ export default {
   },
   computed: {
     ...mapState(['schedule']),
-  },
-  watch: {
-    order(val) {
-      this.$emit('update:order', val)
+    realValue: {
+      get() {
+        return this.order
+      },
+      set(val) {
+        this.$emit('update:order', val)
+      },
     },
   },
   methods: {

@@ -4,7 +4,7 @@
       :headers="header"
       :items="scheduleaccess.schedules"
       multi-sort
-      items-per-page="100"
+      :items-per-page="100"
     >
       <template #top>
         <v-toolbar flat class="my-2">
