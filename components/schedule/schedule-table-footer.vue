@@ -13,7 +13,7 @@
     </v-col>
     <v-col cols="6">
       <v-switch
-        :value="order"
+        v-model="realValue"
         :hide-details="true"
         inset
         color="teal"
@@ -21,7 +21,6 @@
         style="width: 100px;"
         class="ml-auto"
         dense
-        @change="$emit('update:order', !order)"
       ></v-switch>
     </v-col>
   </v-row>
@@ -45,6 +44,14 @@ export default {
   },
   computed: {
     ...mapGetters('shift', ['fShift']),
+    realValue: {
+      get() {
+        return this.order
+      },
+      set(val) {
+        this.$emit('update:order', val)
+      },
+    },
   },
 }
 </script>
