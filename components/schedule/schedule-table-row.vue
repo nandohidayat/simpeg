@@ -19,8 +19,6 @@
         :value="schedule.nama[idxData]"
         :order="order"
         @click.native="(e) => nameClick(e, idxData)"
-        @mouseenter.native="hover = idxData"
-        @mouseleave.native="hover = undefined"
       ></button-name>
     </div>
     <div class="d-inline-block">
