@@ -1,23 +1,24 @@
 <template>
   <div>
-    <v-btn
-      :id="`schedule${idxOrder}`"
-      :ripple="false"
-      height="35"
-      width="200"
-      depressed
-      small
-      tile
-      color="white"
-    >
-      <span
-        class="d-inline-block text-truncate text-left"
-        style="width: 180px;"
+    <div :id="`schedule${idxOrder}`">
+      <v-btn
+        :ripple="false"
+        height="35"
+        width="200"
+        depressed
+        small
+        tile
+        color="white"
       >
-        {{ value }}
-      </span>
-    </v-btn>
-
+        <span
+          class="d-inline-block text-truncate text-left"
+          style="width: 180px;"
+        >
+          {{ value }}
+        </span>
+      </v-btn>
+      <v-overlay absolute opacity="0" :value="order"></v-overlay>
+    </div>
     <v-menu
       v-if="order"
       v-model="menu"

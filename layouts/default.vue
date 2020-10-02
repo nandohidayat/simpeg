@@ -99,6 +99,7 @@ import { mapState } from 'vuex'
 import notificationBar from '@/components/notification/notification-bar'
 
 export default {
+  name: 'Default',
   components: {
     'notification-bar': notificationBar,
   },
