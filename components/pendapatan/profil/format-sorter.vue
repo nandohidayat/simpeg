@@ -1,7 +1,7 @@
 <template>
   <draggable
-    :list="list"
     :value="value"
+    :list="list"
     tag="div"
     group="personalia"
     @input="emitter"
@@ -19,7 +19,7 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-sheet>
-      <format-template
+      <format-sorter
         class="ml-10"
         :list="el.elements"
         @del="delEmit"
@@ -33,7 +33,7 @@
 import draggable from 'vuedraggable'
 
 export default {
-  name: 'FormatTemplate',
+  name: 'FormatSorter',
   components: {
     draggable,
   },
