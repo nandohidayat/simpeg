@@ -18,6 +18,7 @@ export default (ctx, inject) => {
     absen: repositoryWithAxios('absen'),
     akses: repositoryWithAxios('akses'),
     departemen: repositoryWithAxios('departemen'),
+    group: repositoryWithAxios('group'),
     karyawan: repositoryWithAxios('karyawan'),
     pegawai: repositoryWithAxios('pegawai'),
     ruang: repositoryWithAxios('ruang'),
