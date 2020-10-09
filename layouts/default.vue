@@ -31,58 +31,45 @@
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app color="white" style="z-index: 999;" hide-on-scroll dense>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title class="d-flex justify-center align-center">
-        <v-img
-          src="/spp/roemani.png"
-          contain
-          width="35"
-          class="d-inline-block mr-2"
-        ></v-img>
-        <span class="font-weight-light">
-          RS ROEMANI
-        </span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <div>
-        <v-menu offset-y nudge-bottom="15">
-          <template v-slot:activator="{ on }" class="d-flex align-center">
-            <div v-on="on">
-              <div
-                class="overline font-weight-medium mr-3 d-inline-block"
-                style="font-size: 12pt;"
-              >
-                {{ nama }}
-              </div>
-              <v-avatar color="teal" size="30" style="cursor: pointer;">
-                <v-icon dark>mdi-account-circle</v-icon>
-              </v-avatar>
-            </div>
-          </template>
-          <v-card tile>
-            <v-list dense>
-              <v-list-item :to="`/karyawan/${$auth.user.nik}`">
-                <v-list-item-icon
-                  ><v-icon>mdi-account-box</v-icon></v-list-item-icon
-                >
-                <v-list-item-content>
-                  <v-list-item-title>Profile</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-divider class="my-1"></v-divider>
-              <v-list-item @click="logout">
-                <v-list-item-icon
-                  ><v-icon>mdi-exit-to-app</v-icon></v-list-item-icon
-                >
-                <v-list-item-content>
-                  <v-list-item-title>Log Out</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-menu>
-      </div>
+    <v-app-bar app color="white" style="z-index: 999;" dense>
+      <a-menu mode="horizontal" style="width: 100%;">
+        <a-menu-item key="mail0">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+        <a-menu-item key="mail1">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+        <a-menu-item key="mail2">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+        <a-menu-item key="mail3">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+        <a-menu-item key="mail4">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+        <a-menu-item key="mail5">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+        <a-menu-item key="mail6">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+        <a-menu-item key="mail7">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+        <a-menu-item key="mail8">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+        <a-menu-item key="mail9">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+        <a-menu-item key="mail10">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+        <a-menu-item key="mail11">
+          <a-icon type="mail" />Navigation One
+        </a-menu-item>
+      </a-menu>
     </v-app-bar>
     <v-main class="grey lighten-4">
       <v-container fluid class="px-10 pb-5">
@@ -137,13 +124,5 @@ export default {
 <style>
 .n-btn::before {
   color: red !important;
-}
-</style>
-
-<style scoped>
-.v-menu__content {
-  min-width: 0 !important;
-  left: auto !important;
-  right: 15px !important;
 }
 </style>

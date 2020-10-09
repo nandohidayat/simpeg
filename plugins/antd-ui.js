@@ -1,4 +1,5 @@
 import Vue from 'vue'
-import { Button } from 'ant-design-vue'
+import { Menu, Icon } from 'ant-design-vue'
 
-Vue.component('a-button', Button)
+Vue.use(Menu)
+Vue.use(Icon)
