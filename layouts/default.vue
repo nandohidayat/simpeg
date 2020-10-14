@@ -1,81 +1,78 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer v-model="drawer" temporary app style="z-index: 1000;">
-      <v-list dense>
-        <v-list-item to="/">
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
+    <v-navigation-drawer
+      v-model="drawer"
+      temporary
+      app
+      style="z-index: 1000;"
+      class="left-drawer"
+    >
+      <v-list dense nav>
+        <v-list-item-group color="#4AB0A7">
+          <v-list-item to="/">
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
             <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-group v-for="(m, i) in $auth.user.menu" :key="i" no-action>
-          <template v-slot:activator>
-            <v-list-item-action>
-              <v-icon>{{ m.icon }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>{{ m.header }}</v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item
-            v-for="(c, idx) in m.children"
-            :key="idx"
-            :to="c.link"
-            router
-            exact
-          >
-            <v-list-item-title>{{ c.header }}</v-list-item-title>
           </v-list-item>
-        </v-list-group>
+          <v-list-item to="/karyawan">
+            <v-list-item-icon>
+              <v-icon>mdi-card-account-details</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Karyawan</v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/data">
+            <v-list-item-icon>
+              <v-icon>mdi-database</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Database</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
+      <template v-slot:append>
+        <v-list dense class="elevation-17 font-weight-regular pa-0">
+          <v-list-item-group color="#4AB0A7">
+            <v-list-item :to="`/karyawan/${$auth.user.nik}`">
+              <v-list-item-avatar>
+                <v-icon size="40">mdi-account-circle</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-title class="text-capitalize">{{
+                nama
+              }}</v-list-item-title>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item color="error" link @click="logout">
+              <v-list-item-title class="text-center"
+                ><v-icon>mdi-power</v-icon> Log Out</v-list-item-title
+              >
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </template>
     </v-navigation-drawer>
-    <v-app-bar app color="white" style="z-index: 999;" dense>
-      <a-menu mode="horizontal" style="width: 100%;">
-        <a-menu-item key="mail0">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-        <a-menu-item key="mail1">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-        <a-menu-item key="mail2">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-        <a-menu-item key="mail3">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-        <a-menu-item key="mail4">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-        <a-menu-item key="mail5">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-        <a-menu-item key="mail6">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-        <a-menu-item key="mail7">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-        <a-menu-item key="mail8">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-        <a-menu-item key="mail9">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-        <a-menu-item key="mail10">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-        <a-menu-item key="mail11">
-          <a-icon type="mail" />Navigation One
-        </a-menu-item>
-      </a-menu>
-    </v-app-bar>
-    <v-main class="grey lighten-4">
-      <v-container fluid class="px-10 pb-5">
-        <nuxt />
-      </v-container>
-    </v-main>
+    <nuxt></nuxt>
+    <v-footer fixed padless style="z-index: 999;" width="100%">
+      <v-card tile width="100%" color="#90D0CB">
+        <v-row no-gutters align="center">
+          <v-col cols="auto" class="mr-auto">
+            <v-btn
+              tile
+              color="#4AB0A7"
+              dark
+              depressed
+              height="36"
+              @click.stop="drawer = !drawer"
+              ><v-icon left>mdi-menu</v-icon>SIMPEG</v-btn
+            >
+          </v-col>
+          <v-col cols="auto">
+            <div class="overline mr-3">
+              RS ROEMANI MUHAMMADIYAH SEMARANG
+            </div>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-footer>
     <notification-bar></notification-bar>
   </v-app>
 </template>
@@ -98,7 +95,7 @@ export default {
   computed: {
     ...mapState(['user']),
     nama() {
-      return this.$auth.user.nama.toLowerCase() || ''
+      return this.$auth.user.nama ? this.$auth.user.nama.toLowerCase() : ''
     },
   },
   methods: {
@@ -122,7 +119,46 @@ export default {
 </script>
 
 <style>
-.n-btn::before {
-  color: red !important;
+header.main-layout {
+  height: 38px !important;
+}
+
+header.main-layout > div.v-toolbar__content {
+  height: 38px !important;
+  padding: 0 !important;
+}
+
+.v-application ul {
+  padding-left: 0 !important;
+}
+
+.ant-menu-horizontal {
+  line-height: 36px !important ;
+}
+
+.ant-menu-item-active,
+.ant-menu-item-selected,
+.ant-menu-submenu-active > .ant-menu-submenu-title,
+.ant-menu-submenu-selected {
+  color: #4ab0a7 !important;
+}
+
+.ant-menu-horizontal > .ant-menu-item,
+.ant-menu-horizontal > .ant-menu-submenu {
+  border-bottom: 2px solid transparent !important;
+}
+
+.ant-menu-horizontal > .ant-menu-item-active,
+.ant-menu-horizontal > .ant-menu-item-selected,
+.ant-menu-horizontal > .ant-menu-submenu-active {
+  border-bottom: 2px solid #4ab0a7 !important;
+}
+
+.ant-menu-inline .ant-menu-item::after {
+  border-right: 3px solid #4ab0a7 !important;
+}
+
+.ant-menu .ant-menu-item-selected {
+  background-color: #e6f7ff !important;
 }
 </style>

@@ -26,7 +26,9 @@ export const actions = {
 export const getters = {
   hadOption(state) {
     return function (id) {
-      return this.$auth.user.option.map((i) => parseInt(i)).includes(id)
+      return this.$auth.user
+        ? this.$auth.user.option.map((i) => parseInt(i)).includes(id)
+        : []
     }
   },
 }

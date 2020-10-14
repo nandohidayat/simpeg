@@ -74,6 +74,7 @@
       bottom
       right
       rounded
+      style="bottom: 46px;"
       :to="{ name: 'karyawan-create' }"
       ><v-icon small class="mr-1">mdi-plus</v-icon>tambah pegawai</v-btn
     >
