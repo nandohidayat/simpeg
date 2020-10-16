@@ -41,11 +41,22 @@
               }}</v-list-item-title>
             </v-list-item>
             <v-divider></v-divider>
-            <v-list-item color="error" link @click="logout">
-              <v-list-item-title class="text-center"
-                ><v-icon>mdi-power</v-icon> Log Out</v-list-item-title
-              >
-            </v-list-item>
+            <v-menu offset-x max-width="150">
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-item color="error" link v-bind="attrs" v-on="on">
+                  <v-list-item-title class="text-center"
+                    ><v-icon>mdi-power</v-icon></v-list-item-title
+                  >
+                </v-list-item>
+              </template>
+              <v-list dense class="pa-0">
+                <v-list-item @click="logout">
+                  <v-list-item-title
+                    ><v-icon>mdi-power</v-icon> Log Out</v-list-item-title
+                  >
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-list-item-group>
         </v-list>
       </template>

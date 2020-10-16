@@ -24,11 +24,18 @@ export const actions = {
 }
 
 export const getters = {
-  hadOption(state) {
+  hadAkses(state) {
     return function (id) {
       return this.$auth.user
-        ? this.$auth.user.option.map((i) => parseInt(i)).includes(id)
-        : []
+        ? this.$auth.user.akses.map((i) => parseInt(i)).includes(id)
+        : false
+    }
+  },
+  hadMenu(state) {
+    return function (id) {
+      return this.$auth.user
+        ? this.$auth.user.menu.map((i) => parseInt(i)).includes(id)
+        : false
     }
   },
 }
