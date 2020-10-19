@@ -25,7 +25,7 @@
         outlined
         class="ml-3"
         depressed
-        :to="{ name: 'karyawan' }"
+        :to="{ name: 'karyawan-karyawan' }"
         >Cancel</v-btn
       >
     </v-card-actions>

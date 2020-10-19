@@ -124,5 +124,17 @@ export default {
       }
     },
   },
+  head() {
+    return {
+      title: 'Pendapatan Karyawan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Pendapatan Karyawan',
+        },
+      ],
+    }
+  },
 }
 </script>

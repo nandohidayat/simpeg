@@ -94,7 +94,7 @@
         </v-row>
         <div class="my-3"></div>
         <v-btn
-          v-if="hadOption(7)"
+          v-if="hadAkses(7)"
           color="teal"
           dark
           depressed
@@ -247,7 +247,7 @@ export default {
   },
   computed: {
     ...mapState(['karyawan']),
-    ...mapGetters('user', ['hadOption']),
+    ...mapGetters('user', ['hadAkses']),
     passError() {
       return this.password + this.repeat
     },

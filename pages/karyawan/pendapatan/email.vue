@@ -158,5 +158,17 @@ export default {
       }
     },
   },
+  head() {
+    return {
+      title: 'Email Pendapatan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Email Pendapatan',
+        },
+      ],
+    }
+  },
 }
 </script>

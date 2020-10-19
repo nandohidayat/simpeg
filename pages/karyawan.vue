@@ -8,35 +8,49 @@
       dense
       class="main-layout px-5"
     >
-      <a-menu mode="horizontal" style="width: 100%;">
+      <a-menu v-model="current" mode="horizontal" style="width: 100%;">
         <a-sub-menu>
           <span slot="title"><a-icon type="user" />Karyawan</span>
-          <a-menu-item key="daftar-karyawan">
-            Daftar Karyawan
+          <a-menu-item key="karyawan-karyawan">
+            <nuxt-link :to="{ name: 'karyawan-karyawan' }">
+              Daftar Karyawan
+            </nuxt-link>
           </a-menu-item>
         </a-sub-menu>
         <a-sub-menu>
           <span slot="title"><a-icon type="schedule" />Jadwal</span>
-          <a-menu-item key="jadwal-karyawan">
-            Jadwal Karyawan
+          <a-menu-item key="karyawan-jadwal">
+            <nuxt-link :to="{ name: 'karyawan-jadwal' }">
+              Jadwal Karyawan
+            </nuxt-link>
           </a-menu-item>
-          <a-menu-item key="absen-karyawan">
-            Absen Karyawan
+          <a-menu-item key="karyawan-jadwal-absen">
+            <nuxt-link :to="{ name: 'karyawan-jadwal-absen' }">
+              Absen Karyawan
+            </nuxt-link>
           </a-menu-item>
         </a-sub-menu>
         <a-sub-menu>
           <span slot="title"><a-icon type="dollar" />Pendapatan</span>
-          <a-menu-item key="daftar-pendapatan">
-            Daftar Pendapatan
+          <a-menu-item key="karyawan-pendapatan">
+            <nuxt-link :to="{ name: 'karyawan-pendapatan' }">
+              Daftar Pendapatan
+            </nuxt-link>
           </a-menu-item>
-          <a-menu-item key="template-pendapatan">
-            Template Pendapatan
+          <a-menu-item key="karyawan-pendapatan-template">
+            <nuxt-link :to="{ name: 'karyawan-pendapatan-template' }">
+              Template Pendapatan
+            </nuxt-link>
           </a-menu-item>
-          <a-menu-item key="email-pendapatan">
-            Email Pendapatan
+          <a-menu-item key="karyawan-pendapatan-email">
+            <nuxt-link :to="{ name: 'karyawan-pendapatan-email' }">
+              Email Pendapatan
+            </nuxt-link>
           </a-menu-item>
-          <a-menu-item key="manage-template">
-            Manage Template
+          <a-menu-item key="karyawan-pendapatan-manage">
+            <nuxt-link :to="{ name: 'karyawan-pendapatan-manage' }">
+              Manage Template
+            </nuxt-link>
           </a-menu-item>
         </a-sub-menu>
       </a-menu>
@@ -49,5 +63,14 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      current: [],
+    }
+  },
+  created() {
+    this.current = [this.$route.name]
+  },
+}
 </script>

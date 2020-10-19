@@ -109,6 +109,11 @@ export default {
       return this.$auth.user.nama ? this.$auth.user.nama.toLowerCase() : ''
     },
   },
+  created() {
+    if (this.$route.path === '/') {
+      this.drawer = true
+    }
+  },
   methods: {
     logout() {
       this.$store.dispatch('user/logout')

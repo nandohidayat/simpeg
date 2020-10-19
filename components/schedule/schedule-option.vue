@@ -65,7 +65,7 @@
         <span>Export</span>
       </v-tooltip>
       <v-menu
-        v-if="hadOption(5)"
+        v-if="hadAkses(5)"
         v-model="menu1"
         :close-on-content-click="false"
         z-index="20"
@@ -104,7 +104,7 @@
         </v-list>
       </v-menu>
 
-      <v-tooltip v-if="hadOption(5)" bottom z-index="20">
+      <v-tooltip v-if="hadAkses(5)" bottom z-index="20">
         <template #activator="{ on }">
           <v-btn
             color="teal"
@@ -119,7 +119,7 @@
       </v-tooltip>
       <request-btn
         v-if="
-          hadOption(5) &&
+          hadAkses(5) &&
           schedulerequest.schedule !== null &&
           schedulerequest.schedule !== undefined
         "
@@ -177,7 +177,7 @@ export default {
   },
   computed: {
     ...mapState(['schedulerequest', 'departemen']),
-    ...mapGetters('user', ['hadOption']),
+    ...mapGetters('user', ['hadAkses']),
     dateMoment() {
       return this.date ? moment(this.date).locale('id').format('MMMM YYYY') : ''
     },
