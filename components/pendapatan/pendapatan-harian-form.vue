@@ -70,6 +70,7 @@ export default {
         tgl: undefined,
         pendapatan: undefined,
       },
+      menu: false,
     }
   },
   computed: {

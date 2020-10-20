@@ -54,7 +54,7 @@ import BaseConfirm from '@/components/base/base-confirm'
 
 export default {
   middleware({ redirect, $auth }) {
-    if (!$auth.user.option.map((o) => parseInt(o)).includes(7)) {
+    if (!$auth.user.akses.map((o) => parseInt(o)).includes(7)) {
       return redirect('/404')
     }
   },

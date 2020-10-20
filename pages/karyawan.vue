@@ -17,6 +17,7 @@
             </nuxt-link>
           </a-menu-item>
         </a-sub-menu>
+        <a-divider type="vertical" />
         <a-sub-menu>
           <span slot="title"><a-icon type="schedule" />Jadwal</span>
           <a-menu-item key="karyawan-jadwal">
@@ -30,6 +31,7 @@
             </nuxt-link>
           </a-menu-item>
         </a-sub-menu>
+        <a-divider type="vertical" />
         <a-sub-menu>
           <span slot="title"><a-icon type="dollar" />Pendapatan</span>
           <a-menu-item key="karyawan-pendapatan">

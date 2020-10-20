@@ -15,13 +15,13 @@
             </v-list-item-icon>
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/karyawan">
+          <v-list-item v-if="hadMenu(1)" to="/karyawan">
             <v-list-item-icon>
               <v-icon>mdi-card-account-details</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Karyawan</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/data">
+          <v-list-item v-if="hadMenu(2)" to="/data">
             <v-list-item-icon>
               <v-icon>mdi-database</v-icon>
             </v-list-item-icon>
@@ -68,7 +68,7 @@
           <v-col cols="auto" class="mr-auto">
             <v-btn
               tile
-              color="#4AB0A7"
+              color="teal"
               dark
               depressed
               height="36"
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 import notificationBar from '@/components/notification/notification-bar'
 
@@ -105,6 +105,7 @@ export default {
   },
   computed: {
     ...mapState(['user']),
+    ...mapGetters('user', ['hadMenu']),
     nama() {
       return this.$auth.user.nama ? this.$auth.user.nama.toLowerCase() : ''
     },
@@ -152,8 +153,8 @@ header.main-layout > div.v-toolbar__content {
   line-height: 36px !important ;
 }
 
-.ant-menu-item-active,
-.ant-menu-item-selected,
+.ant-menu-item-active > a,
+.ant-menu-item-selected > a,
 .ant-menu-submenu-active > .ant-menu-submenu-title,
 .ant-menu-submenu-selected {
   color: #4ab0a7 !important;
