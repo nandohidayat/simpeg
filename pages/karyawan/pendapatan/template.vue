@@ -118,6 +118,9 @@ import moment from 'moment'
 import { mapState } from 'vuex'
 
 export default {
+  async fetch({ store }) {
+    await store.dispatch('pendapatanprofil/fetchProfils', { select: 1 })
+  },
   data() {
     return {
       exTemp: {
@@ -169,6 +172,18 @@ export default {
         this.$alert('error', e)
       }
     },
+  },
+  head() {
+    return {
+      title: 'Template Pendapatan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Template Pendapatan',
+        },
+      ],
+    }
   },
 }
 </script>

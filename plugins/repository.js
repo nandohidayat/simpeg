@@ -17,6 +17,7 @@ export default (ctx, inject) => {
   const repositories = {
     absen: repositoryWithAxios('absen'),
     akses: repositoryWithAxios('akses'),
+    aksesgroup: repositoryWithAxios('akses/group'),
     departemen: repositoryWithAxios('departemen'),
     group: repositoryWithAxios('group'),
     karyawan: repositoryWithAxios('karyawan'),

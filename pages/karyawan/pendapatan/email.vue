@@ -86,6 +86,12 @@ import { mapState, mapGetters } from 'vuex'
 import moment from 'moment'
 
 export default {
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+      store.dispatch('karyawan/fetchKaryawans', { select: 1 }),
+    ])
+  },
   data() {
     return {
       data: {

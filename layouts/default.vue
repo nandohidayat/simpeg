@@ -178,4 +178,13 @@ header.main-layout > div.v-toolbar__content {
 .ant-menu .ant-menu-item-selected {
   background-color: #e6f7ff !important;
 }
+
+.v-application a {
+  color: #4ab0a7 !important;
+}
+
+.sim.ant-btn:hover {
+  color: #4ab0a7;
+  border-color: #4ab0a7;
+}
 </style>

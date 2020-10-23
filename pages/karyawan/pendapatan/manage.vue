@@ -88,6 +88,9 @@ export default {
     FormTemplate,
     FormatTemplate,
   },
+  async fetch({ store }) {
+    await store.dispatch('pendapatanprofil/fetchProfils', { select: 1 })
+  },
   data() {
     return {
       profil: undefined,
@@ -151,6 +154,18 @@ export default {
         this.loading = false
       }
     },
+  },
+  head() {
+    return {
+      title: 'Manage Template Pendapatan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Manage Template Pendapatan',
+        },
+      ],
+    }
   },
 }
 </script>

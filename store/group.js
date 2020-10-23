@@ -15,7 +15,7 @@ export const mutations = {
   },
   EDT_GROUP(state, group) {
     state.groups = state.groups.map((g) =>
-      parseInt(g.id_group) !== parseInt(group.id_group) ? g : group.label
+      parseInt(g.id_group) !== parseInt(group.id_group) ? g : group
     )
     state.akses = group.akses
   },

@@ -16,6 +16,11 @@
               User Akses
             </nuxt-link>
           </a-menu-item>
+          <a-menu-item key="data-akses-group">
+            <nuxt-link :to="{ name: 'data-akses-group' }">
+              Group
+            </nuxt-link>
+          </a-menu-item>
         </a-sub-menu>
         <a-divider type="vertical" />
         <a-sub-menu>
