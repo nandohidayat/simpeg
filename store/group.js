@@ -1,6 +1,5 @@
 export const state = () => ({
   groups: [],
-  akses: [],
 })
 
 export const mutations = {
@@ -17,7 +16,6 @@ export const mutations = {
     state.groups = state.groups.map((g) =>
       parseInt(g.id_group) !== parseInt(group.id_group) ? g : group
     )
-    state.akses = group.akses
   },
   DEL_GROUP(state, id) {
     state.groups = state.groups.filter(

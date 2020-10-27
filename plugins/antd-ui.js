@@ -8,6 +8,7 @@ import {
   Table,
   Button,
   Tree,
+  Popconfirm,
 } from 'ant-design-vue'
 
 Vue.use(Menu)
@@ -18,3 +19,4 @@ Vue.use(Input)
 Vue.use(Table)
 Vue.use(Button)
 Vue.use(Tree)
+Vue.use(Popconfirm)

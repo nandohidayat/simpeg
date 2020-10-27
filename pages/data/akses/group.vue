@@ -39,7 +39,12 @@
                 @click="openDialog(true, item)"
                 >Edit Data</a-button
               >
-              <a-button size="small" type="danger">Hapus</a-button>
+              <a-popconfirm
+                title="Anda yakin akan menghapus data ini?"
+                @confirm="deleteGroup(item.id_group)"
+              >
+                <a-button size="small" type="danger">Hapus</a-button>
+              </a-popconfirm>
             </template>
           </v-data-table>
         </v-card>
@@ -293,6 +298,15 @@ export default {
         this.dialog = false
 
         this.$alert('success', 'Sukses Menyimpan Data')
+      } catch (e) {
+        this.$alert('error', e)
+      }
+    },
+    async deleteGroup(id) {
+      try {
+        await this.$store.dispatch('group/deleteGroup', id)
+
+        this.$alert('success', 'Sukses menghapus data')
       } catch (e) {
         this.$alert('error', e)
       }

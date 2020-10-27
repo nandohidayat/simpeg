@@ -187,4 +187,19 @@ header.main-layout > div.v-toolbar__content {
   color: #4ab0a7;
   border-color: #4ab0a7;
 }
+
+.ant-btn-primary {
+  background-color: #009688;
+  border-color: #009b8b;
+}
+
+.ant-btn-primary:hover {
+  background-color: #4db6ac;
+  border-color: #4db6ac;
+}
+
+.ant-btn-primary:active {
+  background-color: #00897b;
+  border-color: #00897b;
+}
 </style>
