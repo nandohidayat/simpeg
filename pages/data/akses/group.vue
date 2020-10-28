@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-breadcrumbs :items="bread" class="pt-0"></v-breadcrumbs>
+    <group-bc></group-bc>
     <v-card>
       <v-card-text>
         <v-row no-gutters justify="center" class="mb-4">
@@ -62,84 +62,30 @@
       @click="openDialog()"
       ><v-icon small class="mr-1">mdi-plus</v-icon>tambah group</v-btn
     >
-    <v-dialog v-model="dialog" width="700">
-      <v-card>
-        <v-card-title>{{ edit ? 'Edit' : 'Tambah' }} Group</v-card-title>
-        <v-card-text class="py-3">
-          <v-card outlined flat>
-            <v-simple-table>
-              <tbody>
-                <tr>
-                  <td>
-                    Nama Group
-                  </td>
-                  <td>
-                    <a-input
-                      v-model="submit.label"
-                      placeholder="Nama Group"
-                    ></a-input>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Permission
-                  </td>
-                  <td>
-                    <v-treeview
-                      v-model="submit.permission"
-                      selectable
-                      :items="tree"
-                      dense
-                      selected-color="teal"
-                    >
-                    </v-treeview>
-                  </td>
-                </tr>
-              </tbody>
-            </v-simple-table>
-          </v-card>
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <a-button class="sim" @click="() => savePermission()"
-            >Simpan</a-button
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <group-dialog
+      :dialog.sync="dialog"
+      :id-group="submit.id_group"
+      :label.sync="submit.label"
+      :permission.sync="submit.permission"
+    ></group-dialog>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import GroupDialog from '@/components/group/group-dialog'
+import GroupBc from '@/components/group/group-bc'
 
 export default {
+  components: {
+    GroupDialog,
+    GroupBc,
+  },
   async fetch({ store }) {
     await store.dispatch('group/fetchGroups')
   },
   data() {
     return {
-      bread: [
-        {
-          text: 'Home',
-          to: '/',
-        },
-        {
-          text: 'Database',
-          to: '/data',
-          exact: true,
-        },
-        {
-          text: 'User Akses',
-          to: '/data/akses',
-          exact: true,
-        },
-        {
-          text: 'Group',
-          disabled: true,
-        },
-      ],
       columns: [
         {
           text: 'Nama Group',
@@ -157,116 +103,12 @@ export default {
           filterable: false,
         },
       ],
-      tree: [
-        {
-          name: 'Karyawan',
-          id: 'K',
-          children: [
-            {
-              name: 'Karyawan',
-              id: 'K1',
-              children: [
-                {
-                  name: 'Daftar Karyawan',
-                  id: 1,
-                },
-                {
-                  name: 'Daftar Karyawan > Edit Karyawan',
-                  id: 7,
-                },
-              ],
-            },
-            {
-              name: 'Jadwal',
-              id: 'K2',
-              children: [
-                {
-                  name: 'Jadwal Karyawan',
-                  id: 2,
-                },
-                {
-                  name: 'Jadwal Karyawan > Edit Jadwal',
-                  id: 5,
-                },
-                {
-                  name: 'Jadwal Karyawan > Semua Jadwal',
-                  id: 6,
-                },
-                {
-                  name: 'Absen Karyawan',
-                  id: 10,
-                },
-              ],
-            },
-            {
-              name: 'Pendapatan',
-              id: 'K3',
-              children: [
-                {
-                  name: 'Pendapatan Karyawan',
-                  id: 8,
-                },
-                {
-                  name: 'Template Pendapatan',
-                  id: 11,
-                },
-                {
-                  name: 'Email Pendapatan',
-                  id: 12,
-                },
-                {
-                  name: 'Manage Template',
-                  id: 9,
-                },
-              ],
-            },
-          ],
-        },
-        {
-          name: 'Database',
-          id: 'D',
-          children: [
-            {
-              name: 'Akses',
-              id: 'D1',
-              children: [
-                {
-                  name: 'User Akses',
-                  id: 4,
-                },
-                {
-                  name: 'Group',
-                  id: 13,
-                },
-              ],
-            },
-            {
-              name: 'Jadwal',
-              id: 'D2',
-              children: [
-                {
-                  name: 'Data Shift',
-                  id: 3,
-                },
-                {
-                  name: 'Akses Jadwal',
-                  id: 14,
-                },
-                {
-                  name: 'Pendapatan Harian',
-                  id: 15,
-                },
-              ],
-            },
-          ],
-        },
-      ],
       search: undefined,
       dialog: false,
       edit: false,
       submit: {
         id_group: undefined,
-        label: undefined,
+        label: '',
         permission: [],
       },
     }
@@ -283,24 +125,11 @@ export default {
         this.edit = false
         this.submit = {
           id_group: undefined,
-          label: undefined,
+          label: '',
           permission: [],
         }
       }
       this.dialog = true
-    },
-    async savePermission() {
-      try {
-        await this.$store.dispatch(
-          `group/${this.edit ? 'update' : 'create'}Group`,
-          this.submit
-        )
-        this.dialog = false
-
-        this.$alert('success', 'Sukses Menyimpan Data')
-      } catch (e) {
-        this.$alert('error', e)
-      }
     },
     async deleteGroup(id) {
       try {

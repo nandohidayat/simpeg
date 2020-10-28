@@ -27,13 +27,24 @@
           >
             <template v-slot:item.action>
               <a-button size="small" class="mr-1 sim">Edit Data</a-button>
-              <a-button size="small" class="mr-1 sim">Group</a-button>
               <a-button size="small" type="danger">Hapus</a-button>
             </template>
           </v-data-table>
         </v-card>
       </v-card-text>
     </v-card>
+    <v-btn
+      color="teal"
+      dark
+      depressed
+      fixed
+      bottom
+      right
+      rounded
+      style="bottom: 46px;"
+      @click="openDialog()"
+      ><v-icon small class="mr-1">mdi-plus</v-icon>tambah user</v-btn
+    >
   </div>
 </template>
 
@@ -84,6 +95,9 @@ export default {
   },
   computed: {
     ...mapState(['akses']),
+  },
+  methods: {
+    openDialog() {},
   },
   head() {
     return {

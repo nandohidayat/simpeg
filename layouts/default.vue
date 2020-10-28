@@ -188,6 +188,11 @@ header.main-layout > div.v-toolbar__content {
   border-color: #4ab0a7;
 }
 
+.sim.ant-btn:active {
+  color: #4ab0a7;
+  border-color: #4ab0a7;
+}
+
 .ant-btn-primary {
   background-color: #009688;
   border-color: #009b8b;
