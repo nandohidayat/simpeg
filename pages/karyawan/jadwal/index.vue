@@ -1,28 +1,13 @@
 <template>
   <div>
-    <v-tabs v-model="tab" color="teal" grow>
-      <v-tab>Schedule</v-tab>
-      <v-tab>Absen</v-tab>
-    </v-tabs>
-    <v-tabs-items
-      v-model="tab"
-      class="mt-3"
-      style="background-color: transparent;"
-    >
-      <v-tab-item>
-        <schedule-option
-          :dept.sync="dept"
-          :date.sync="date"
-          :year="year"
-          :month="month"
-          :order="order"
-        ></schedule-option>
-        <schedule-table :order.sync="order" class="mt-3"></schedule-table>
-      </v-tab-item>
-      <v-tab-item>
-        <absen-tab></absen-tab>
-      </v-tab-item>
-    </v-tabs-items>
+    <schedule-option
+      :dept.sync="dept"
+      :date.sync="date"
+      :year="year"
+      :month="month"
+      :order="order"
+    ></schedule-option>
+    <schedule-table :order.sync="order" class="mt-3"></schedule-table>
   </div>
 </template>
 <script>
@@ -30,14 +15,16 @@ import { mapState } from 'vuex'
 
 import ScheduleTable from '@/components/schedule/schedule-table'
 import ScheduleOption from '@/components/schedule/schedule-option'
-import AbsenTab from '@/components/absen/absen-tab'
 
 export default {
-  middleware: 'access',
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](2)) {
+      return redirect('/404')
+    }
+  },
   components: {
     ScheduleTable,
     ScheduleOption,
-    AbsenTab,
   },
   async fetch({ store }) {
     await Promise.all([
@@ -49,7 +36,6 @@ export default {
     return {
       date: new Date().toISOString().substr(0, 7),
       dept: undefined,
-      tab: undefined,
       order: false,
     }
   },

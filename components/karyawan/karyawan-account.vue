@@ -14,7 +14,7 @@
         >
       </div>
     </div>
-    <v-row class="mt-5">
+    <v-row class="my-5">
       <v-col cols="6">
         <v-text-field v-model="data.nik" label="NIK" outlined dense>
         </v-text-field>
@@ -47,46 +47,6 @@
         </v-text-field>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col v-if="data.username" cols="6">
-        <v-text-field
-          v-if="edit"
-          v-model="data.username"
-          class="mt-1"
-          label="Username"
-          outlined
-          dense
-        >
-        </v-text-field>
-      </v-col>
-      <v-col v-if="data.username" cols="6">
-        <v-row v-if="edit" no-gutters class="mt-1">
-          <v-col cols="6" class="pr-2">
-            <v-btn
-              block
-              color="teal"
-              dark
-              depressed
-              @click="openDialog('Reset Password?')"
-              >Reset Password</v-btn
-            >
-          </v-col>
-          <v-col cols="6" class="pl-2">
-            <v-btn
-              block
-              color="teal"
-              dark
-              depressed
-              @click="openDialog('Delete Account?')"
-              >Delete Account</v-btn
-            >
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col v-else>
-        <v-btn block color="teal" dark depressed>Buat akun</v-btn>
-      </v-col>
-    </v-row>
     <div v-if="edit" class="d-flex justify-space-between mb-3">
       <span class="subtitle-1 d-inline-block">Departemen</span>
       <v-btn
@@ -106,21 +66,11 @@
         hide-default-header
       ></v-data-table>
     </v-sheet>
-    <base-confirm
-      v-model="dialog.status"
-      :text="dialog.text"
-      @confirm="resetPassword"
-    ></base-confirm>
   </v-card-text>
 </template>
 
 <script>
-import BaseConfirm from '@/components/base/base-confirm'
-
 export default {
-  components: {
-    BaseConfirm,
-  },
   props: {
     data: {
       type: Object,
@@ -138,42 +88,11 @@ export default {
         { text: 'Active', value: true },
         { text: 'Non Active', value: false },
       ],
-      dialog: {
-        status: false,
-        text: '',
-      },
     }
   },
   computed: {
     tableDept() {
       return this.data.dept.map((d) => ({ dept: d }))
-    },
-  },
-  methods: {
-    async resetPassword() {
-      try {
-        await this.$store.dispatch('user/reset', this.data.id)
-
-        this.dialog = false
-        this.$alert('success', 'Successfully Reset')
-      } catch (err) {
-        this.$alert('error', err)
-      }
-    },
-    async delete() {
-      try {
-        await this.$store.dispatch('user/delete', this.data.id)
-
-        this.dialog = false
-        this.$emit('delete-account')
-        this.$alert('success', 'Successfully Deleted')
-      } catch (err) {
-        this.$alert('error', err)
-      }
-    },
-    openDialog(text) {
-      this.dialog.status = true
-      this.dialog.text = text
     },
   },
 }

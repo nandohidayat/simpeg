@@ -1,39 +1,43 @@
 <template>
   <div>
-    <v-row align="center">
-      <v-col cols="6">
-        <v-select
-          v-model="profil"
-          label="Profil Pendapatan"
-          :items="pendapatanprofil.profils"
-          dense
-          outlined
-          hide-details
-          @change="getProfil"
-        ></v-select>
-      </v-col>
-      <v-col cols="2"
-        ><v-btn
-          color="teal"
-          depressed
-          dark
-          block
-          :disabled="!profil"
-          @click="openDialog(true)"
-          ><v-icon left>mdi-pencil</v-icon> EDIT</v-btn
-        ></v-col
-      >
-      <v-col cols="2"
-        ><v-btn color="teal" depressed dark block @click="openDialog()"
-          ><v-icon left>mdi-plus</v-icon> ADD</v-btn
-        ></v-col
-      >
-      <v-col cols="2"
-        ><v-btn color="teal" depressed dark block @click="deleteConfirm()"
-          ><v-icon left>mdi-minus</v-icon> REMOVE</v-btn
-        ></v-col
-      >
-    </v-row>
+    <v-card outlined class="mb-3">
+      <v-card-text>
+        <v-row align="center">
+          <v-col cols="6">
+            <v-select
+              v-model="profil"
+              label="Profil Pendapatan"
+              :items="pendapatanprofil.profils"
+              dense
+              outlined
+              hide-details
+              @change="getProfil"
+            ></v-select>
+          </v-col>
+          <v-col cols="2"
+            ><v-btn
+              color="teal"
+              depressed
+              dark
+              block
+              :disabled="!profil"
+              @click="openDialog(true)"
+              ><v-icon left>mdi-pencil</v-icon> EDIT</v-btn
+            ></v-col
+          >
+          <v-col cols="2"
+            ><v-btn color="teal" depressed dark block @click="openDialog()"
+              ><v-icon left>mdi-plus</v-icon> ADD</v-btn
+            ></v-col
+          >
+          <v-col cols="2"
+            ><v-btn color="teal" depressed dark block @click="deleteConfirm()"
+              ><v-icon left>mdi-minus</v-icon> REMOVE</v-btn
+            ></v-col
+          >
+        </v-row>
+      </v-card-text>
+    </v-card>
     <v-card class="grey lighten-5" flat>
       <v-tabs v-model="tab" color="teal" grow background-color="transparent">
         <v-tab>Format Personalia</v-tab>
@@ -75,14 +79,17 @@ import FormTemplate from '@/components/pendapatan/profil/form-template'
 import FormatTemplate from '@/components/pendapatan/profil/format-template'
 
 export default {
-  middleware({ redirect, $auth }) {
-    if (!$auth.user.option.map((o) => parseInt(o)).includes(9)) {
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](9)) {
       return redirect('/404')
     }
   },
   components: {
     FormTemplate,
     FormatTemplate,
+  },
+  async fetch({ store }) {
+    await store.dispatch('pendapatanprofil/fetchProfils', { select: 1 })
   },
   data() {
     return {
@@ -147,6 +154,18 @@ export default {
         this.loading = false
       }
     },
+  },
+  head() {
+    return {
+      title: 'Manage Template Pendapatan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Manage Template Pendapatan',
+        },
+      ],
+    }
   },
 }
 </script>
