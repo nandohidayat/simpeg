@@ -1,134 +1,132 @@
 <template>
-  <div>
-    <v-toolbar flat>
-      <span style="width: 350px;">
-        <v-autocomplete
-          outlined
-          :value="dept"
-          :items="departemen.departemens"
-          :item-text="(obj) => obj.nm_dept"
-          :item-value="(obj) => obj.id_dept"
-          style="z-index: 20;"
-          label="Departemen"
-          dense
-          hide-details
-          @change="$emit('update:dept', $event)"
-        >
-        </v-autocomplete>
-      </span>
-      <v-spacer></v-spacer>
-      <v-sheet max-width="300" class="d-inline-block mx-1">
-        <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          transition="scale-transition"
-          offset-y
-          z-index="20"
-        >
-          <template #activator="{ on }">
-            <v-text-field
-              :value="dateMoment"
-              readonly
-              outlined
-              dense
-              label="Bulan"
-              hide-details
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            :value="date"
-            color="teal"
-            type="month"
-            no-title
-            locale="id-id"
-            @change="
-              $emit('update:date', $event)
-              menu = false
-            "
-          >
-          </v-date-picker>
-        </v-menu>
-      </v-sheet>
-      <v-tooltip bottom z-index="20">
-        <template #activator="{ on }">
-          <v-btn
-            color="teal"
-            dark
-            class="mx-1"
-            v-on="on"
-            @click="exportSchedule()"
-            ><v-icon left>mdi-download</v-icon> DOWNLOAD</v-btn
-          >
-        </template>
-        <span>Export</span>
-      </v-tooltip>
-      <v-menu
-        v-if="hadAkses(5)"
-        v-model="menu1"
-        :close-on-content-click="false"
-        z-index="20"
-        min-width="300"
+  <v-toolbar outlined flat>
+    <span style="width: 350px;">
+      <v-autocomplete
+        outlined
+        :value="dept"
+        :items="departemen.departemens"
+        :item-text="(obj) => obj.nm_dept"
+        :item-value="(obj) => obj.id_dept"
+        style="z-index: 20;"
+        label="Departemen"
+        dense
+        hide-details
+        @change="$emit('update:dept', $event)"
       >
-        <template #activator="{ on: menu2 }">
-          <v-tooltip bottom z-index="20">
-            <template #activator="{ on: tooltip }">
-              <v-btn
-                color="teal"
-                dark
-                class="mx-1"
-                v-on="{ ...tooltip, ...menu2 }"
-                ><v-icon left>mdi-upload</v-icon> Upload</v-btn
-              >
-            </template>
-            <span>Import</span>
-          </v-tooltip>
-        </template>
-        <v-list dense>
-          <v-list-item dense>
-            <v-file-input
-              v-model="jadwal"
-              label="Jadwal"
-              dense
-              color="teal"
-              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-            ></v-file-input>
-          </v-list-item>
-          <v-list-item dense>
-            <v-spacer></v-spacer>
-            <v-btn dark color="teal" small @click="importSchedule()"
-              >Upload</v-btn
-            >
-          </v-list-item>
-        </v-list>
-      </v-menu>
-
-      <v-tooltip v-if="hadAkses(5)" bottom z-index="20">
+      </v-autocomplete>
+    </span>
+    <v-spacer></v-spacer>
+    <v-sheet max-width="300" class="d-inline-block mx-1">
+      <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        z-index="20"
+      >
         <template #activator="{ on }">
-          <v-btn
-            color="teal"
-            dark
-            class="mx-1"
+          <v-text-field
+            :value="dateMoment"
+            readonly
+            outlined
+            dense
+            label="Bulan"
+            hide-details
             v-on="on"
-            @click="updateSchedule()"
-            ><v-icon left>mdi-content-save</v-icon> SIMPAN</v-btn
-          >
+          ></v-text-field>
         </template>
-        <span>Save</span>
-      </v-tooltip>
-      <request-btn
-        v-if="
-          hadAkses(5) &&
-          schedulerequest.schedule !== null &&
-          schedulerequest.schedule !== undefined
-        "
-        :year="year"
-        :month="month"
-        :dept="dept"
-      ></request-btn>
-    </v-toolbar>
-  </div>
+        <v-date-picker
+          :value="date"
+          color="teal"
+          type="month"
+          no-title
+          locale="id-id"
+          @change="
+            $emit('update:date', $event)
+            menu = false
+          "
+        >
+        </v-date-picker>
+      </v-menu>
+    </v-sheet>
+    <v-tooltip bottom z-index="20">
+      <template #activator="{ on }">
+        <v-btn
+          color="teal"
+          dark
+          class="mx-1"
+          v-on="on"
+          @click="exportSchedule()"
+          ><v-icon left>mdi-download</v-icon> DOWNLOAD</v-btn
+        >
+      </template>
+      <span>Export</span>
+    </v-tooltip>
+    <v-menu
+      v-if="hadAkses(5)"
+      v-model="menu1"
+      :close-on-content-click="false"
+      z-index="20"
+      min-width="300"
+    >
+      <template #activator="{ on: menu2 }">
+        <v-tooltip bottom z-index="20">
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              color="teal"
+              dark
+              class="mx-1"
+              v-on="{ ...tooltip, ...menu2 }"
+              ><v-icon left>mdi-upload</v-icon> Upload</v-btn
+            >
+          </template>
+          <span>Import</span>
+        </v-tooltip>
+      </template>
+      <v-list dense>
+        <v-list-item dense>
+          <v-file-input
+            v-model="jadwal"
+            label="Jadwal"
+            dense
+            color="teal"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+          ></v-file-input>
+        </v-list-item>
+        <v-list-item dense>
+          <v-spacer></v-spacer>
+          <v-btn dark color="teal" small @click="importSchedule()"
+            >Upload</v-btn
+          >
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
+    <v-tooltip v-if="hadAkses(5)" bottom z-index="20">
+      <template #activator="{ on }">
+        <v-btn
+          color="teal"
+          dark
+          class="mx-1"
+          v-on="on"
+          @click="updateSchedule()"
+          ><v-icon left>mdi-content-save</v-icon> SIMPAN</v-btn
+        >
+      </template>
+      <span>Save</span>
+    </v-tooltip>
+    <request-btn
+      v-if="
+        hadAkses(5) &&
+        schedulerequest.schedule !== null &&
+        schedulerequest.schedule !== undefined
+      "
+      :year="year"
+      :month="month"
+      :dept="dept"
+    ></request-btn>
+  </v-toolbar>
 </template>
 
 <script>

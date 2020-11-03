@@ -79,8 +79,8 @@ import FormTemplate from '@/components/pendapatan/profil/form-template'
 import FormatTemplate from '@/components/pendapatan/profil/format-template'
 
 export default {
-  middleware({ redirect, $auth }) {
-    if (!$auth.user.akses.map((o) => parseInt(o)).includes(9)) {
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](9)) {
       return redirect('/404')
     }
   },

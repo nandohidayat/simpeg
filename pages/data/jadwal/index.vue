@@ -69,6 +69,11 @@ import ShiftForm from '@/components/shift/shift-form'
 import BaseConfirm from '@/components/base/base-confirm'
 
 export default {
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](3)) {
+      return redirect('/404')
+    }
+  },
   components: {
     ShiftForm,
     BaseConfirm,
@@ -182,6 +187,18 @@ export default {
         this.$alert('error', e)
       }
     },
+  },
+  head() {
+    return {
+      title: 'Daftar Shift',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Daftar Shift',
+        },
+      ],
+    }
   },
 }
 </script>

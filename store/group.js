@@ -25,8 +25,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchGroups({ commit }) {
-    const res = await this.$api.group.index()
+  async fetchGroups({ commit }, query) {
+    const res = await this.$api.group.index(query)
     commit('SET_GROUPS', res.data)
   },
   async fetchGroup({ commit }, id) {

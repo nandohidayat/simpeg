@@ -118,6 +118,11 @@ import moment from 'moment'
 import { mapState } from 'vuex'
 
 export default {
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](11)) {
+      return redirect('/404')
+    }
+  },
   async fetch({ store }) {
     await store.dispatch('pendapatanprofil/fetchProfils', { select: 1 })
   },

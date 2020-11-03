@@ -47,6 +47,11 @@ import BaseConfirm from '@/components/base/base-confirm'
 import PendapatanForm from '@/components/pendapatan/pendapatan-harian-form'
 
 export default {
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](15)) {
+      return redirect('/404')
+    }
+  },
   components: {
     BaseConfirm,
     PendapatanForm,

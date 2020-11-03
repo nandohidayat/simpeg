@@ -85,6 +85,11 @@
 import { mapState } from 'vuex'
 
 export default {
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](1)) {
+      return redirect('/404')
+    }
+  },
   async fetch({ store }) {
     try {
       await Promise.all([

@@ -10,6 +10,11 @@ import AbsenOption from '@/components/absen/absen-option'
 import AbsenTable from '@/components/absen/absen-table'
 
 export default {
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](10)) {
+      return redirect('/404')
+    }
+  },
   components: {
     AbsenOption,
     AbsenTable,

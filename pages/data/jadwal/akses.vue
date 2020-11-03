@@ -43,6 +43,11 @@ import ScheduleForm from '@/components/schedule/schedule-access-form'
 import BaseConfirm from '@/components/base/base-confirm'
 
 export default {
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](14)) {
+      return redirect('/404')
+    }
+  },
   components: {
     ScheduleForm,
     BaseConfirm,

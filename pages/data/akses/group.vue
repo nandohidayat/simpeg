@@ -64,6 +64,7 @@
     >
     <group-dialog
       :dialog.sync="dialog"
+      :edit="edit"
       :id-group="submit.id_group"
       :label.sync="submit.label"
       :permission.sync="submit.permission"
@@ -77,6 +78,11 @@ import GroupDialog from '@/components/group/group-dialog'
 import GroupBc from '@/components/group/group-bc'
 
 export default {
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](13)) {
+      return redirect('/404')
+    }
+  },
   components: {
     GroupDialog,
     GroupBc,

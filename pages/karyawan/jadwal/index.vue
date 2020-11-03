@@ -17,7 +17,11 @@ import ScheduleTable from '@/components/schedule/schedule-table'
 import ScheduleOption from '@/components/schedule/schedule-option'
 
 export default {
-  middleware: 'access',
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](2)) {
+      return redirect('/404')
+    }
+  },
   components: {
     ScheduleTable,
     ScheduleOption,

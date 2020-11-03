@@ -179,16 +179,17 @@ header.main-layout > div.v-toolbar__content {
   background-color: #e6f7ff !important;
 }
 
-.v-application a {
-  color: #4ab0a7 !important;
-}
-
 .sim.ant-btn:hover {
   color: #4ab0a7;
   border-color: #4ab0a7;
 }
 
 .sim.ant-btn:active {
+  color: #4ab0a7;
+  border-color: #4ab0a7;
+}
+
+.sim.ant-btn:focus {
   color: #4ab0a7;
   border-color: #4ab0a7;
 }

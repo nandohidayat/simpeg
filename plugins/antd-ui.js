@@ -9,6 +9,7 @@ import {
   Button,
   Tree,
   Popconfirm,
+  Select,
 } from 'ant-design-vue'
 
 Vue.use(Menu)
@@ -20,3 +21,4 @@ Vue.use(Table)
 Vue.use(Button)
 Vue.use(Tree)
 Vue.use(Popconfirm)
+Vue.use(Select)
