@@ -1,5 +1,5 @@
 export default function ({ redirect, route }) {
-  const isMaintenance = true
+  const isMaintenance = false
   if (isMaintenance) {
     return redirect('/maintenance')
   }

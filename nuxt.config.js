@@ -127,7 +127,7 @@ export default {
   },
   router: {
     base: '/spp-testing/',
-    middleware: ['auth'],
+    middleware: ['auth', 'maintenance'],
   },
   server: {
     port: 3001, // default: 3000

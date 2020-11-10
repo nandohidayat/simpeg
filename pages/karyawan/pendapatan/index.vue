@@ -81,6 +81,9 @@ export default {
       return redirect('/404')
     }
   },
+  async fetch({ store }) {
+    await store.dispatch('pendapatanprofil/fetchProfils', { select: 1 })
+  },
   data() {
     return {
       profil: undefined,
