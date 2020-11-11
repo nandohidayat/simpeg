@@ -25,7 +25,7 @@
         outlined
         class="ml-3"
         depressed
-        :to="{ name: 'karyawan' }"
+        :to="{ name: 'karyawan-karyawan' }"
         >Cancel</v-btn
       >
     </v-card-actions>
@@ -43,6 +43,11 @@ import KaryawanInformation from '@/components/karyawan/karyawan-information'
 import BaseConfirm from '@/components/base/base-confirm'
 
 export default {
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](1)) {
+      return redirect('/404')
+    }
+  },
   components: {
     KaryawanAccount,
     KaryawanInformation,

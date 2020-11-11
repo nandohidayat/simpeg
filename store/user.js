@@ -24,9 +24,19 @@ export const actions = {
 }
 
 export const getters = {
-  hadOption(state) {
-    return function (id) {
-      return this.$auth.user.option.map((i) => parseInt(i)).includes(id)
-    }
+  hadAkses: (state, getters, rootState) => (id) => {
+    return rootState.auth.user
+      ? rootState.auth.user.akses.map((i) => parseInt(i)).includes(id)
+      : false
+  },
+  hadMenu: (state, getters, rootState) => (id) => {
+    return rootState.auth.user
+      ? rootState.auth.user.menu.map((i) => parseInt(i)).includes(id)
+      : false
+  },
+  hadSubmenu: (state, getters, rootState) => (id) => {
+    return rootState.auth.user
+      ? rootState.auth.user.submenu.map((i) => parseInt(i)).includes(id)
+      : false
   },
 }

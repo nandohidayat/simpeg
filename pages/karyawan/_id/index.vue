@@ -94,7 +94,7 @@
         </v-row>
         <div class="my-3"></div>
         <v-btn
-          v-if="hadOption(7)"
+          v-if="hadAkses(7)"
           color="teal"
           dark
           depressed
@@ -106,11 +106,11 @@
         >
       </v-card-text>
     </v-card>
-    <v-row class="mt-3">
-      <v-col cols="6">
-        <v-card>
-          <v-card-title>Information</v-card-title>
-          <v-card-text>
+    <v-card class="mt-3 px-3">
+      <v-card-title>Information</v-card-title>
+      <v-card-text>
+        <v-row no-gutters>
+          <v-col cols="6">
             <v-row no-gutters>
               <v-col cols="4" class="body-1 font-weight-medium">
                 <p>Jenis Kelamin</p>
@@ -151,77 +151,24 @@
                 <p>{{ karyawan.karyawan.rekening }}</p>
               </v-col>
             </v-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col v-if="karyawan.karyawan.username" cols="6">
-        <v-card>
-          <v-card-title>Change Password</v-card-title>
-          <v-card-text>
-            <v-text-field
-              v-model="current"
-              label="Current Password"
-              outlined
-              type="password"
-              dense
-              :error-messages="currentMessage"
-              :error="currentError"
-            ></v-text-field>
-            <v-text-field
-              v-model="password"
-              label="New Password"
-              outlined
-              type="password"
-              :error="passwordError"
-              :error-messages="passwordMessage"
-              dense
-            ></v-text-field>
-            <v-text-field
-              v-model="repeat"
-              label="Confirm Password"
-              outlined
-              type="password"
-              :error="repeatError"
-              :error-messages="repeatMessage"
-              dense
-            ></v-text-field>
-            <div class="text-right">
-              <v-btn
-                depressed
-                color="teal"
-                dark
-                :disabled="confirmDisable"
-                @click="confirm = true"
-                >Change Password</v-btn
-              >
-            </div>
-            <base-confirm
-              v-model="confirm"
-              text="Change Password?"
-              @confirm="changePassword()"
-            ></base-confirm>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import BaseConfirm from '@/components/base/base-confirm'
 
 export default {
-  middleware({ route, $auth, redirect }) {
+  middleware({ store, route, $auth, redirect }) {
     if (
       parseInt(route.params.id) !== parseInt($auth.user.nik) &&
-      !$auth.user.akses.includes('/karyawan')
+      !store.getters['user/hadAkses'](1)
     ) {
       return redirect('/404')
     }
-  },
-  components: {
-    BaseConfirm,
   },
   async fetch({ params, store, redirect }) {
     try {
@@ -230,74 +177,9 @@ export default {
       redirect('/404')
     }
   },
-  data() {
-    return {
-      current: '',
-      currentError: false,
-      currentMessage: undefined,
-      password: '',
-      passwordError: false,
-      passwordMessage: undefined,
-      repeat: '',
-      repeatError: false,
-      repeatMessage: undefined,
-      confirm: false,
-      submited: false,
-    }
-  },
   computed: {
     ...mapState(['karyawan']),
-    ...mapGetters('user', ['hadOption']),
-    passError() {
-      return this.password + this.repeat
-    },
-    confirmDisable() {
-      return this.repeatError || this.password.length < 1
-    },
-  },
-  watch: {
-    passError(val) {
-      if (this.repeat !== this.password) {
-        this.repeatError = true
-        this.repeatMessage = 'Confirm is different with Password'
-      } else {
-        this.repeatError = false
-        this.repeatMessage = undefined
-      }
-    },
-    password(val) {
-      if (this.password.length < 1) {
-        this.passwordError = true
-        this.passwordMessage = 'Password could not be empty'
-      } else {
-        this.passwordError = false
-        this.passwordMessage = undefined
-      }
-    },
-  },
-  methods: {
-    async changePassword() {
-      try {
-        await this.$store.dispatch('user/password', {
-          id: this.karyawan.karyawan.id,
-          current: this.current,
-          password: this.password,
-        })
-
-        this.current = ''
-        this.password = ''
-        this.repeat = ''
-        this.currentError = false
-        this.currentMessage = undefined
-        this.$alert('success', 'Successfully Changed')
-      } catch (err) {
-        this.currentError = true
-        this.currentMessage = 'Password mismatch'
-        this.$alert('error', err)
-      } finally {
-        this.confirm = false
-      }
-    },
+    ...mapGetters('user', ['hadAkses']),
   },
   head() {
     return {

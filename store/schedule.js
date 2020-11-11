@@ -63,7 +63,7 @@ export const actions = {
   async fetchSchedules({ commit, rootState }, date = {}) {
     commit('TOOGLE_OVERLAY', true)
 
-    if (this.$auth.user.option.map((i) => parseInt(i)).includes(6)) {
+    if (this.$auth.user.akses.map((i) => parseInt(i)).includes(6)) {
       date.semua = 1
     }
 

@@ -88,11 +88,11 @@ export default {
   computed: {
     ...mapState(['schedule']),
     ...mapGetters('schedule', ['dayColor', 'active']),
-    ...mapGetters('user', ['hadOption']),
+    ...mapGetters('user', ['hadAkses']),
   },
   methods: {
     nameClick(event, staff) {
-      if (!this.hadOption(5) || this.order) return
+      if (!this.hadAkses(5) || this.order) return
       if (this.schedule.selectedStaff === staff) {
         this.$store.commit('schedule/updateSelected', {
           day: [],
@@ -107,7 +107,7 @@ export default {
       this.$emit('menu', event)
     },
     ranged(event, day, staff) {
-      if (!this.hadOption(5) || this.order) return
+      if (!this.hadAkses(5) || this.order) return
       if (
         this.schedule.selectedDay.length === 0 ||
         this.schedule.selectedDay.length === 2 ||

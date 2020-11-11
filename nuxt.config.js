@@ -126,7 +126,7 @@ export default {
   },
   router: {
     base: '/spp/',
-    middleware: ['auth'],
+    middleware: ['auth', 'maintenance'],
   },
   server: {
     port: 3000, // default: 3000

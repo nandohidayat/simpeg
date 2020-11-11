@@ -76,6 +76,14 @@ import moment from 'moment'
 import { mapState } from 'vuex'
 
 export default {
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](8)) {
+      return redirect('/404')
+    }
+  },
+  async fetch({ store }) {
+    await store.dispatch('pendapatanprofil/fetchProfils', { select: 1 })
+  },
   data() {
     return {
       profil: undefined,
@@ -123,6 +131,18 @@ export default {
         this.$alert('error', err)
       }
     },
+  },
+  head() {
+    return {
+      title: 'Pendapatan Karyawan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Pendapatan Karyawan',
+        },
+      ],
+    }
   },
 }
 </script>
