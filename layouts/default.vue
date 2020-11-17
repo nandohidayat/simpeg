@@ -208,4 +208,8 @@ header.main-layout > div.v-toolbar__content {
   background-color: #00897b;
   border-color: #00897b;
 }
+
+.v-breadcrumbs a {
+  color: #4ab0a7 !important;
+}
 </style>
