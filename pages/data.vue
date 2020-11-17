@@ -22,7 +22,6 @@
             </nuxt-link>
           </a-menu-item>
         </a-sub-menu>
-        <a-divider type="vertical" />
         <a-sub-menu v-if="hadSubmenu(5)">
           <span slot="title"><a-icon type="schedule" />Jadwal</span>
           <a-menu-item v-if="hadAkses(3)" key="data-jadwal">

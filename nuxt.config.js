@@ -126,7 +126,7 @@ export default {
     color: 'white',
   },
   router: {
-    base: '/spp-testing/',
+    base: '/simpeg-testing/',
     middleware: ['auth', 'maintenance'],
   },
   server: {
