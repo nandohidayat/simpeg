@@ -8,6 +8,7 @@
         <tr v-for="s in fShift(true)" :key="s.id_shift">
           <td class="px-3">{{ s.kode }}</td>
           <td>({{ s.mulai | timeFormat }} - {{ s.selesai | timeFormat }})</td>
+          <td class="px-3">{{ s.keterangan }}</td>
         </tr>
       </table>
     </v-col>

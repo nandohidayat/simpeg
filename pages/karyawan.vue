@@ -17,7 +17,6 @@
             </nuxt-link>
           </a-menu-item>
         </a-sub-menu>
-        <a-divider type="vertical" />
         <a-sub-menu v-if="hadSubmenu(2)">
           <span slot="title"><a-icon type="schedule" />Jadwal</span>
           <a-menu-item v-if="hadAkses(2)" key="karyawan-jadwal">
@@ -31,7 +30,6 @@
             </nuxt-link>
           </a-menu-item>
         </a-sub-menu>
-        <a-divider type="vertical" />
         <a-sub-menu v-if="hadSubmenu(3)">
           <span slot="title"><a-icon type="dollar" />Pendapatan</span>
           <a-menu-item v-if="hadAkses(8)" key="karyawan-pendapatan">
