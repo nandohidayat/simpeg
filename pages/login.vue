@@ -7,7 +7,7 @@
             md="6"
             class="d-none d-md-flex align-center justify-center teal lighten-5"
           >
-            <v-img src="/spp/roemani.png" contain width="400"></v-img>
+            <v-img src="/simpeg/roemani.png" contain width="400"></v-img>
           </v-col>
           <v-col cols="12" md="6" class="pt-12 pb-12 pl-8 pr-8">
             <h2 class="h2 font-weight-regular">Login</h2>
