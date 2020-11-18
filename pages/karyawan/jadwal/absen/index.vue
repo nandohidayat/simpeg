@@ -19,6 +19,12 @@ export default {
     AbsenOption,
     AbsenTable,
   },
+  async fetch({ store }) {
+    await store.dispatch('departemen/fetchDepartemens', {
+      select: 1,
+      schedule: 1,
+    })
+  },
   head() {
     return {
       title: 'Absen Karyawan',
