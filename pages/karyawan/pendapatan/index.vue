@@ -3,59 +3,32 @@
     <v-card outlined class="mb-3">
       <v-card-text>
         <v-row align="center">
-          <v-col cols="3">
-            <v-select
-              v-model="profil"
-              label="Profil"
-              dense
-              outlined
-              hide-details
-              :items="pendapatanprofil.profils"
-            ></v-select>
+          <v-col cols="5">
+            <a-select
+              v-model="pendapatanprofil.profil"
+              style="width: 100%;"
+              show-search
+              placeholder="Profil"
+              option-filter-prop="label"
+              :options="pendapatanprofil.profils"
+              :filter-option="filterOption"
+              disabled
+            ></a-select>
           </v-col>
-          <v-col cols="3">
-            <v-select
+          <v-col cols="5">
+            <a-select
               v-model="tipe"
-              label="Tipe"
-              dense
-              outlined
-              hide-details
-              :items="pendapatanprofil.tipe"
-            ></v-select>
+              style="width: 100%;"
+              show-search
+              placeholder="Tipe"
+              option-filter-prop="label"
+              :options="pendapatanprofil.tipes"
+              :filter-option="filterOption"
+            ></a-select>
           </v-col>
-          <v-col cols="3">
-            <v-menu v-model="menu" :close-on-content-click="false" offset-y>
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  :value="dateMoment"
-                  label="Bulan"
-                  outlined
-                  dense
-                  readonly
-                  hide-details
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="date"
-                color="teal"
-                type="month"
-                no-title
-                locale="id-id"
-                @input="menu = false"
-              ></v-date-picker>
-            </v-menu>
-          </v-col>
-          <v-col cols="3">
-            <v-btn
-              :disabled="disBtn"
-              color="teal"
-              dark
-              depressed
-              block
-              @click="exPen"
-              ><v-icon left>mdi-download</v-icon> Download</v-btn
+          <v-col cols="2">
+            <a-button type="primary" block @click="dialog = true"
+              >Upload</a-button
             >
           </v-col>
         </v-row>
@@ -68,6 +41,66 @@
         :items="pendapatanpeg.pendapatans"
       ></v-data-table>
     </v-card>
+    <a-modal v-model="dialog" :closable="false">
+      <v-card outlined flat>
+        <v-simple-table>
+          <tbody>
+            <tr>
+              <td>Profil</td>
+              <td>
+                <a-select
+                  v-model="upProfil"
+                  style="width: 100%;"
+                  show-search
+                  placeholder="Profil"
+                  option-filter-prop="label"
+                  :options="pendapatanprofil.profils"
+                  :filter-option="filterOption"
+                  :disabled="!personalia"
+                ></a-select>
+              </td>
+            </tr>
+            <tr>
+              <td>Tipe</td>
+              <td>
+                <a-select
+                  v-model="upload.tipe"
+                  style="width: 100%;"
+                  show-search
+                  placeholder="Tipe"
+                  option-filter-prop="label"
+                  :options="pendapatanprofil.tipes"
+                  :filter-option="filterOption"
+                ></a-select>
+              </td>
+            </tr>
+            <tr>
+              <td>File</td>
+              <td>
+                <a-upload
+                  :file-list="upload.file"
+                  :before-upload="beforeUpload"
+                  :show-upload-list="false"
+                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                >
+                  <a-button>
+                    <a-icon type="upload" /> {{ fileLabel }}
+                  </a-button>
+                </a-upload>
+              </td>
+            </tr>
+          </tbody>
+        </v-simple-table>
+      </v-card>
+      <template slot="footer">
+        <a-button key="back" @click="dialog = false">
+          Cancel
+        </a-button>
+        <a-button key="submit" type="primary" :disabled="!personalia">
+          Upload
+        </a-button>
+      </template>
+    </a-modal>
   </div>
 </template>
 
@@ -88,8 +121,15 @@ export default {
     return {
       profil: undefined,
       tipe: undefined,
+      fileLabel: 'Upload',
       date: new Date().toISOString().substr(0, 7),
       menu: false,
+      dialog: false,
+      upload: {
+        profil: undefined,
+        tipe: undefined,
+        file: [],
+      },
     }
   },
   computed: {
@@ -102,6 +142,24 @@ export default {
     },
     updater() {
       return this.tipe + this.profil + this.date
+    },
+    disableUp() {
+      return (
+        this.upload.profil === undefined ||
+        this.upload.tipe === undefined ||
+        this.upload.file.length === 0
+      )
+    },
+    upProfil: {
+      get() {
+        return this.pendapatanprofil.profil
+      },
+      set(value) {
+        this.upload.profil = value
+      },
+    },
+    personalia() {
+      return this.$auth.user.dept && this.$auth.user.dept.includes('d-44')
     },
   },
   watch: {
@@ -130,6 +188,37 @@ export default {
       } catch (err) {
         this.$alert('error', err)
       }
+    },
+    filterOption(input, option) {
+      return option.componentOptions.children[0].text
+        .toLowerCase()
+        .includes(input.toLowerCase())
+    },
+    beforeUpload(file) {
+      this.upload.file = [file]
+      if (file.name.length > 40) {
+        this.fileLabel = file.name.substring(0, 37) + '...'
+      } else {
+        this.fileLabel = file.name
+      }
+      return false
+    },
+    async importPendapatan() {
+      const { profil, tipe, file } = this.upload
+      const formData = new FormData()
+      formData.append('id_profilp', profil)
+      formData.append('tipe_form', tipe)
+      formData.append('file', file)
+
+      await this.$axios.$post(
+        `${this.$axios.defaults.baseURL}pendapatanpeg/pendapatan`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
     },
   },
   head() {

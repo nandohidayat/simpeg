@@ -70,7 +70,7 @@
                     <a-select
                       v-model="submit.id_pegawai"
                       :disabled="edit"
-                      style="min-width: 300px;"
+                      style="width: 100%;"
                       show-search
                       placeholder="Nama Karyawan"
                       option-filter-prop="label"
@@ -119,7 +119,7 @@
                   <td>
                     <a-select
                       v-model="submit.id_group"
-                      style="min-width: 300px;"
+                      style="width: 100%;"
                       show-search
                       placeholder="Group"
                       option-filter-prop="label"

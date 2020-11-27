@@ -1,19 +1,21 @@
 import moment from 'moment'
 
 export const state = () => ({
+  profil: undefined,
   profils: [],
   id: 0,
   personalia: [],
   keuangan: [],
-  tipe: [
-    { value: 'format_personalia', text: 'Format Personalia' },
-    { value: 'format_keuangan', text: 'Format Keuangan' },
+  tipes: [
+    { value: 'format_personalia', label: 'Format Personalia' },
+    { value: 'format_keuangan', label: 'Format Keuangan' },
   ],
 })
 
 export const mutations = {
   SET_PROFILS(state, profils) {
-    state.profils = profils
+    state.profil = profils.profil
+    state.profils = profils.profils
   },
   SET_PROFIL(state, { personalia, keuangan, id }) {
     state.personalia = personalia
