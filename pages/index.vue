@@ -10,7 +10,16 @@
     >
     </v-app-bar>
 
-    <v-container fluid class="px-10 pb-5"> </v-container>
+    <v-container fluid class="px-10 pb-5" fill-height>
+      <v-row no-gutters align="center" justify="center">
+        <v-col class="text-center"
+          ><img
+            :src="`${baseUrl}/roemani-long.png`"
+            alt="ROEMANI"
+            style="opacity: 0.1;"
+        /></v-col>
+      </v-row>
+    </v-container>
   </v-main>
 </template>
 
@@ -20,6 +29,9 @@ import { mapState } from 'vuex'
 export default {
   computed: {
     ...mapState(['user']),
+    baseUrl() {
+      return process.env.baseUrl
+    },
   },
   head() {
     return {

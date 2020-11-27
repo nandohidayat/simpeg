@@ -27,7 +27,7 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/simpeg/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/simpeg/roemani.ico' }],
   },
   /*
    ** Global CSS
@@ -162,5 +162,8 @@ export default {
       callback: '/login',
       home: '/',
     },
+  },
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000/simpeg',
   },
 }
