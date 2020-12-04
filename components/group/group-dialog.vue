@@ -176,6 +176,16 @@ export default {
                 },
               ],
             },
+            {
+              name: 'Setup',
+              id: 'D3',
+              children: [
+                {
+                  name: 'Kelola Departemen',
+                  id: 16,
+                },
+              ],
+            },
           ],
         },
       ],

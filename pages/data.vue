@@ -40,6 +40,14 @@
             </nuxt-link>
           </a-menu-item>
         </a-sub-menu>
+        <a-sub-menu v-if="hadSubmenu(6)">
+          <span slot="title"><a-icon type="control" />Setup</span>
+          <a-menu-item v-if="hadAkses(16)" key="data-setup-departemen">
+            <nuxt-link :to="{ name: 'data-setup-departemen' }">
+              Kelola Departemen
+            </nuxt-link>
+          </a-menu-item>
+        </a-sub-menu>
       </a-menu>
     </v-app-bar>
 
