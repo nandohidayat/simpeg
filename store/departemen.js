@@ -13,15 +13,12 @@ export const mutations = {
     state.departemens.push(departemen)
   },
   EDT_DEPARTEMEN(state, departemen) {
-    const idx = state.departemens.findIndex(
-      (b) => b.id_departemen === departemen.id_departemen
+    state.departemens = state.departemens.map((g) =>
+      g.id_dept !== departemen.id_dept ? g : departemen
     )
-    state.departemens[idx].departemen = departemen.departemen
-    state.departemens[idx].tingkat = departemen.tingkat
-    state.departemens[idx].id_bagian = departemen.id_bagian
   },
   DEL_DEPARTEMEN(state, id) {
-    state.departemens = state.departemens.filter((d) => d.id_departemen !== id)
+    state.departemens = state.departemens.filter((d) => d.id_dept !== id)
   },
 }
 
@@ -35,8 +32,11 @@ export const actions = {
     commit('ADD_DEPARTEMEN', res.data)
   },
   async updateDepartemen({ commit }, departemen) {
-    await this.$api.departemen.update(departemen.id_departemen, departemen)
-    commit('EDT_DEPARTEMEN', departemen)
+    const res = await this.$api.departemen.update(
+      departemen.id_dept,
+      departemen
+    )
+    commit('EDT_DEPARTEMEN', res.data)
   },
   async deleteDepartemen({ commit }, id) {
     await this.$api.departemen.delete(id)

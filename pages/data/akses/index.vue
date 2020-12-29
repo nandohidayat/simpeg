@@ -224,6 +224,7 @@ export default {
         this.$store.dispatch('group/fetchGroups', {
           select: 1,
           for: 'ant',
+          user: 1,
         }),
       ]
 
