@@ -46,6 +46,16 @@
         <v-simple-table>
           <tbody>
             <tr>
+              <td>Bulan</td>
+              <td>
+                <a-month-picker
+                  v-model="upload.bulan"
+                  placeholder="Bulan"
+                  style="width: 100%;"
+                />
+              </td>
+            </tr>
+            <tr>
               <td>Profil</td>
               <td>
                 <a-select
@@ -106,7 +116,7 @@
 
 <script>
 import moment from 'moment'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   middleware({ store, redirect }) {
@@ -126,6 +136,7 @@ export default {
       menu: false,
       dialog: false,
       upload: {
+        bulan: undefined,
         profil: undefined,
         tipe: undefined,
         file: [],
@@ -134,6 +145,7 @@ export default {
   },
   computed: {
     ...mapState(['pendapatanprofil', 'pendapatanpeg']),
+    ...mapGetters('user', ['isAdmin']),
     dateMoment() {
       return this.date ? moment(this.date).locale('id').format('MMMM YYYY') : ''
     },
@@ -159,7 +171,10 @@ export default {
       },
     },
     personalia() {
-      return this.$auth.user.dept && this.$auth.user.dept.includes('d-44')
+      return (
+        (this.$auth.user.dept && this.$auth.user.dept.includes('d-44')) ||
+        this.isAdmin
+      )
     },
   },
   watch: {

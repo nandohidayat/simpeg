@@ -2,6 +2,7 @@ import Vue from 'vue'
 import {
   Button,
   Card,
+  DatePicker,
   Divider,
   Icon,
   Input,
@@ -16,6 +17,7 @@ import {
 
 Vue.use(Button)
 Vue.use(Card)
+Vue.use(DatePicker)
 Vue.use(Divider)
 Vue.use(Icon)
 Vue.use(Input)
