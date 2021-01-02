@@ -27,7 +27,7 @@
             ></a-select>
           </v-col>
           <v-col cols="2">
-            <a-button type="primary" block @click="dialog = true"
+            <a-button type="primary" block @click="openUpload()"
               >Upload</a-button
             >
           </v-col>
@@ -59,7 +59,7 @@
               <td>Profil</td>
               <td>
                 <a-select
-                  v-model="upProfil"
+                  v-model="upload.profil"
                   style="width: 100%;"
                   show-search
                   placeholder="Profil"
@@ -106,7 +106,12 @@
         <a-button key="back" @click="dialog = false">
           Cancel
         </a-button>
-        <a-button key="submit" type="primary" :disabled="!personalia">
+        <a-button
+          key="submit"
+          type="primary"
+          :disabled="!personalia"
+          @click="importPendapatan()"
+        >
           Upload
         </a-button>
       </template>
@@ -162,14 +167,6 @@ export default {
         this.upload.file.length === 0
       )
     },
-    upProfil: {
-      get() {
-        return this.pendapatanprofil.profil
-      },
-      set(value) {
-        this.upload.profil = value
-      },
-    },
     personalia() {
       return (
         (this.$auth.user.dept && this.$auth.user.dept.includes('d-44')) ||
@@ -219,21 +216,33 @@ export default {
       return false
     },
     async importPendapatan() {
-      const { profil, tipe, file } = this.upload
+      const { bulan, profil, tipe, file } = this.upload
       const formData = new FormData()
-      formData.append('id_profilp', profil)
-      formData.append('tipe_form', tipe)
-      formData.append('file', file)
+      formData.append('bulan', bulan)
+      formData.append('profil', profil)
+      formData.append('tipe', tipe)
+      formData.append('file', file[0])
+      try {
+        await this.$axios.$post(
+          `${this.$axios.defaults.baseURL}pendapatanpeg/pendapatan`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        )
 
-      await this.$axios.$post(
-        `${this.$axios.defaults.baseURL}pendapatanpeg/pendapatan`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      )
+        this.$alert('success', 'Successfully Imported')
+        this.dialog = false
+      } catch (e) {
+        this.$alert('error', e)
+      }
+    },
+    openUpload() {
+      this.upload.profil = this.pendapatanprofil.profil
+      this.upload.bulan = moment()
+      this.dialog = true
     },
   },
   head() {
