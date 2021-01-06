@@ -17,10 +17,8 @@ export const mutations = {
     state.profil = profils.profil
     state.profils = profils.profils
   },
-  SET_PROFIL(state, { personalia, keuangan, id }) {
-    state.personalia = personalia
-    state.keuangan = keuangan
-    state.id = id
+  SET_PROFIL(state, profil) {
+    state.profil = profil
   },
   ADD_PROFIL(state, profil) {
     state.profils.push(profil)

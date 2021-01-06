@@ -233,6 +233,7 @@ export default {
           }
         )
 
+        this.$store.commit('pendapatanprofil/SET_PROFIL', profil)
         this.$alert('success', 'Successfully Imported')
         this.dialog = false
       } catch (e) {
