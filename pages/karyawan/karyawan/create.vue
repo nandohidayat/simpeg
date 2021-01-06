@@ -75,7 +75,7 @@ export default {
         await this.$store.dispatch('karyawan/createKaryawan', this.karyawan)
 
         this.$alert('success', 'Successfully Saved')
-        this.$router.push({ name: 'karyawan' })
+        this.$router.push({ name: 'karyawan-karyawan' })
       } catch (err) {
         this.$alert('error', err)
       } finally {
