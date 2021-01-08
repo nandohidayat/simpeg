@@ -3,64 +3,40 @@
     <v-card outlined class="mb-3">
       <v-card-text>
         <v-row align="center">
-          <v-col cols="3">
-            <v-autocomplete
-              v-model="data.profil"
-              label="Profil"
-              outlined
-              dense
-              hide-details
-              :items="pendapatanprofil.profils"
-            ></v-autocomplete>
+          <v-col cols="4">
+            <a-select
+              :value="pendapatanprofil.profil"
+              style="width: 100%;"
+              show-search
+              placeholder="Profil"
+              option-filter-prop="label"
+              :options="pendapatanprofil.profils"
+              :filter-option="filterOption"
+              disabled
+            ></a-select>
           </v-col>
-          <v-col cols="3">
-            <v-menu v-model="menu" :close-on-content-click="false" offset-y>
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  :value="dateMoment"
-                  label="Bulan"
-                  outlined
-                  dense
-                  readonly
-                  hide-details
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="data.date"
-                color="teal"
-                type="month"
-                no-title
-                locale="id-id"
-                @input="menu = false"
-              ></v-date-picker>
-            </v-menu>
-          </v-col>
-          <v-col cols="3">
-            <v-autocomplete
+          <v-col cols="4">
+            <a-select
               v-model="data.karyawan"
-              :items="karyawan.karyawans"
-              item-value="id_pegawai"
-              item-text="nm_pegawai"
-              label="Karyawan"
-              dense
-              outlined
-              hide-details
-              clearable
-            ></v-autocomplete>
+              style="width: 100%;"
+              show-search
+              placeholder="Karyawan"
+              option-filter-prop="label"
+              :options="karyawan.karyawans"
+              :filter-option="filterOption"
+              allow-clear
+            ></a-select>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="4">
             <v-row no-gutters>
               <v-col cols="8" class="pr-2">
-                <v-btn block color="teal" dark depressed @click="openConfirm"
-                  ><v-icon left>mdi-email-send</v-icon> kirim email</v-btn
-                >
+                <a-button icon="mail" block @click="openConfirm()">
+                  Kirim Email
+                </a-button>
               </v-col>
               <v-col cols="4" class="pl-2">
-                <v-btn block color="teal" dark depressed @click="getEmail(true)"
-                  ><v-icon>mdi-refresh</v-icon></v-btn
-                >
+                <a-button icon="reload" block @click="getEmail(true)">
+                </a-button>
               </v-col>
             </v-row>
           </v-col>
@@ -94,14 +70,12 @@ export default {
   async fetch({ store }) {
     await Promise.all([
       store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
-      store.dispatch('karyawan/fetchKaryawans', { select: 1 }),
+      store.dispatch('karyawan/fetchKaryawans', { select: 1, for: 'ant' }),
     ])
   },
   data() {
     return {
       data: {
-        profil: undefined,
-        date: new Date().toISOString().substr(0, 7),
         karyawan: undefined,
       },
       menu: false,
@@ -133,6 +107,11 @@ export default {
     },
   },
   methods: {
+    filterOption(input, option) {
+      return option.componentOptions.children[0].text
+        .toLowerCase()
+        .includes(input.toLowerCase())
+    },
     async getEmail(refresh = false) {
       try {
         await this.$store.dispatch('pendapatanemail/fetchEmails', this.data)
@@ -156,8 +135,6 @@ export default {
     async sendEmail() {
       try {
         await this.$store.dispatch('pendapatanemail/sendEmails', {
-          id_profilp: this.data.profil,
-          bulan_kirim: moment(this.data.date).format('MM-YYYY'),
           id_pegawai: this.data.karyawan,
         })
 

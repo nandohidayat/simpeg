@@ -5,7 +5,7 @@
         <v-row align="center">
           <v-col cols="5">
             <a-select
-              v-model="pendapatanprofil.profil"
+              :value="pendapatanprofil.profil"
               style="width: 100%;"
               show-search
               placeholder="Profil"
@@ -32,6 +32,15 @@
             >
           </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="10">
+            <a-input-search
+              v-model="search"
+              placeholder="NIK / NAMA"
+              allow-clear
+            />
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
     <v-card outlined>
@@ -39,6 +48,7 @@
         dense
         :headers="pendapatanpeg.header"
         :items="pendapatanpeg.pendapatans"
+        :search="search"
       ></v-data-table>
     </v-card>
     <a-modal v-model="dialog" :closable="false">
@@ -134,12 +144,10 @@ export default {
   },
   data() {
     return {
-      profil: undefined,
       tipe: undefined,
       fileLabel: 'Upload',
-      date: new Date().toISOString().substr(0, 7),
-      menu: false,
       dialog: false,
+      search: undefined,
       upload: {
         bulan: undefined,
         profil: undefined,
@@ -151,15 +159,6 @@ export default {
   computed: {
     ...mapState(['pendapatanprofil', 'pendapatanpeg']),
     ...mapGetters('user', ['isAdmin']),
-    dateMoment() {
-      return this.date ? moment(this.date).locale('id').format('MMMM YYYY') : ''
-    },
-    disBtn() {
-      return !(this.tipe && this.profil)
-    },
-    updater() {
-      return this.tipe + this.profil + this.date
-    },
     disableUp() {
       return (
         this.upload.profil === undefined ||
@@ -175,36 +174,25 @@ export default {
     },
   },
   watch: {
-    updater(val) {
-      if (this.tipe && this.profil) {
-        this.getPen()
-      }
+    tipe(val) {
+      this.getPen()
     },
   },
   methods: {
-    // export pendapatan
-    exPen() {
-      this.$store.dispatch('pendapatanpeg/exportPendapatan', {
-        profil: this.profil,
-        tipe: this.tipe,
-        date: moment(this.date).format('MM-YYYY'),
-      })
-    },
-    async getPen() {
-      try {
-        await this.$store.dispatch('pendapatanpeg/fetchPendapatans', {
-          profil: this.profil,
-          tipe: this.tipe,
-          date: this.date,
-        })
-      } catch (err) {
-        this.$alert('error', err)
-      }
-    },
     filterOption(input, option) {
       return option.componentOptions.children[0].text
         .toLowerCase()
         .includes(input.toLowerCase())
+    },
+    async getPen() {
+      try {
+        await this.$store.dispatch('pendapatanpeg/fetchPendapatans', {
+          profil: this.pendapatanprofil.profil,
+          tipe: this.tipe,
+        })
+      } catch (err) {
+        this.$alert('error', err)
+      }
     },
     beforeUpload(file) {
       this.upload.file = [file]
