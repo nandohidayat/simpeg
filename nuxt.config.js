@@ -47,6 +47,7 @@ export default {
     '@/plugins/alert',
     '@/plugins/baseurl',
     '@/plugins/antd-ui',
+    '@/plugins/syncfusion',
   ],
   /*
    ** Auto import components
