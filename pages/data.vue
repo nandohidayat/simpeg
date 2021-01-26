@@ -44,7 +44,12 @@
           <span slot="title"><a-icon type="control" />Setup</span>
           <a-menu-item v-if="hadAkses(16)" key="data-setup-departemen">
             <nuxt-link :to="{ name: 'data-setup-departemen' }">
-              Kelola Departemen
+              Departemen
+            </nuxt-link>
+          </a-menu-item>
+          <a-menu-item v-if="hadAkses(17)" key="data-setup-pendapatan">
+            <nuxt-link :to="{ name: 'data-setup-pendapatan' }">
+              Pendapatan
             </nuxt-link>
           </a-menu-item>
         </a-sub-menu>

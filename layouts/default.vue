@@ -233,4 +233,19 @@ header.main-layout > div.v-toolbar__content {
   color: #00897b;
   border-color: #00897b;
 }
+
+.ant-btn.ant-btn-danger:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
+.ant-btn.ant-btn-danger:focus {
+  color: #fff;
+  border-color: #fff;
+}
+
+.ant-btn.ant-btn-danger:active {
+  color: #fff;
+  border-color: #fff;
+}
 </style>

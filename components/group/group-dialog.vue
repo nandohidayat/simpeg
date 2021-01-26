@@ -181,8 +181,12 @@ export default {
               id: 'D3',
               children: [
                 {
-                  name: 'Kelola Departemen',
+                  name: 'Departemen',
                   id: 16,
+                },
+                {
+                  name: 'Pendapatan',
+                  id: 17,
                 },
               ],
             },

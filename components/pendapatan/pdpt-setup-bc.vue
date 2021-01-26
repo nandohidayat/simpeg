@@ -21,7 +21,7 @@ export default {
           disabled: true,
         },
         {
-          text: 'Departemen',
+          text: 'Pendapatan',
           disabled: true,
         },
       ],
