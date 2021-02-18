@@ -2,6 +2,8 @@ import Vue from 'vue'
 import {
   Button,
   Card,
+  Checkbox,
+  ConfigProvider,
   DatePicker,
   Divider,
   Icon,
@@ -17,6 +19,8 @@ import {
 
 Vue.use(Button)
 Vue.use(Card)
+Vue.use(Checkbox)
+Vue.use(ConfigProvider)
 Vue.use(DatePicker)
 Vue.use(Divider)
 Vue.use(Icon)

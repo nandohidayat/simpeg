@@ -179,21 +179,6 @@ header.main-layout > div.v-toolbar__content {
   background-color: #e6f7ff !important;
 }
 
-.sim.ant-btn:hover {
-  color: #4ab0a7;
-  border-color: #4ab0a7;
-}
-
-.sim.ant-btn:active {
-  color: #4ab0a7;
-  border-color: #4ab0a7;
-}
-
-.sim.ant-btn:focus {
-  color: #4ab0a7;
-  border-color: #4ab0a7;
-}
-
 .ant-btn-primary {
   background-color: #009688;
   border-color: #009b8b;
@@ -247,5 +232,44 @@ header.main-layout > div.v-toolbar__content {
 .ant-btn.ant-btn-danger:active {
   color: #fff;
   border-color: #fff;
+}
+
+a:active {
+  color: #00897b;
+}
+
+.ant-pagination-jump-prev
+  .ant-pagination-item-container
+  .ant-pagination-item-link-icon,
+.ant-pagination-jump-next
+  .ant-pagination-item-container
+  .ant-pagination-item-link-icon {
+  color: #4db6ac;
+}
+
+.ant-pagination-item-active {
+  border-color: #00897b;
+}
+
+.ant-pagination-item-active a {
+  color: #00897b;
+}
+
+.ant-pagination-item-active:focus,
+.ant-pagination-item-active:hover {
+  border-color: #4db6ac;
+}
+
+.ant-pagination-item:focus a,
+.ant-pagination-item:hover a {
+  color: #4db6ac;
+}
+
+.ant-pagination-prev:focus .ant-pagination-item-link,
+.ant-pagination-next:focus .ant-pagination-item-link,
+.ant-pagination-prev:hover .ant-pagination-item-link,
+.ant-pagination-next:hover .ant-pagination-item-link {
+  border-color: #4db6ac;
+  color: #4db6ac;
 }
 </style>

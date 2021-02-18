@@ -29,6 +29,46 @@
                   <a-input v-model="realView" placeholder="View"></a-input>
                 </td>
               </tr>
+              <tr>
+                <td>
+                  View
+                </td>
+                <td>
+                  <a-input v-model="realView" placeholder="View"></a-input>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Personalia
+                </td>
+                <td>
+                  <a-textarea
+                    v-model="realPersonalia"
+                    placeholder="Personalia"
+                    auto-size
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Keuangan
+                </td>
+                <td>
+                  <a-textarea
+                    v-model="realKeuangan"
+                    placeholder="Keuangan"
+                    auto-size
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Active
+                </td>
+                <td>
+                  <a-checkbox v-model="realActive"></a-checkbox>
+                </td>
+              </tr>
             </tbody>
           </v-simple-table>
         </v-card>
@@ -67,6 +107,18 @@ export default {
       type: String,
       default: '',
     },
+    personalia: {
+      type: String,
+      default: '',
+    },
+    keuangan: {
+      type: String,
+      default: '',
+    },
+    active: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {}
@@ -89,14 +141,41 @@ export default {
         this.$emit('update:view', val)
       },
     },
+    realPersonalia: {
+      get() {
+        return this.personalia
+      },
+      set(val) {
+        this.$emit('update:personalia', val)
+      },
+    },
+    realKeuangan: {
+      get() {
+        return this.keuangan
+      },
+      set(val) {
+        this.$emit('update:personalia', val)
+      },
+    },
+    realActive: {
+      get() {
+        return this.active
+      },
+      set(val) {
+        this.$emit('update:active', val)
+      },
+    },
   },
   methods: {
     async savePermission() {
-      const { idPdpt, title, view } = this
+      const { idPdpt, title, view, personalia, keuangan, active } = this
       const submit = {
         id_pendapatan_profil: idPdpt,
         title,
         view,
+        personalia,
+        keuangan,
+        active,
       }
 
       try {

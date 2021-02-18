@@ -24,6 +24,11 @@
             calculate-widths
             :items="pendapatanprofil.profils"
           >
+            <template #item.personalia="{item}">
+              <pre>
+              {{ JSON.stringify(JSON.parse(item.personalia), null, 2).trim() }}
+              </pre>
+            </template>
             <template v-slot:item.action="{ item }">
               <a-button
                 size="small"
@@ -52,7 +57,7 @@
       rounded
       style="bottom: 46px;"
       @click="openDialog()"
-      ><v-icon small class="mr-1">mdi-plus</v-icon>tambah departemen</v-btn
+      ><v-icon small class="mr-1">mdi-plus</v-icon>tambah pendapatan</v-btn
     >
     <pdpt-setup-dialog
       :dialog.sync="dialog"
@@ -60,6 +65,9 @@
       :id-pdpt="submit.id_pendapatan_profil"
       :title.sync="submit.title"
       :view.sync="submit.view"
+      :personalia.sync="submit.personalia"
+      :keuangan.sync="submit.keuangan"
+      :active.sync="submit.active"
     ></pdpt-setup-dialog>
   </div>
 </template>
@@ -90,10 +98,26 @@ export default {
           text: 'Nama Pendapatan',
           value: 'title',
           align: 'start',
+          cellClass: 'high-table',
         },
         {
           text: 'View',
           value: 'view',
+          filterable: false,
+        },
+        {
+          text: 'Personalia',
+          value: 'personalia',
+          filterable: false,
+        },
+        {
+          text: 'Keuangan',
+          value: 'keuangan',
+          filterable: false,
+        },
+        {
+          text: 'Active',
+          value: 'active',
           filterable: false,
         },
         {
@@ -109,6 +133,9 @@ export default {
         id_pendapatan_profil: undefined,
         title: '',
         view: '',
+        personalia: '',
+        keuangan: '',
+        active: false,
       },
     }
   },
@@ -126,6 +153,9 @@ export default {
           id_pendapatan_profil: undefined,
           title: '',
           view: '',
+          personalia: '',
+          keuangan: '',
+          active: false,
         }
       }
       this.dialog = true
@@ -154,3 +184,10 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.high-table td,
+.high-table td * {
+  vertical-align: top;
+}
+</style>

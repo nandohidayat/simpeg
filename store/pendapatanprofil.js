@@ -1,5 +1,9 @@
 export const state = () => ({
   profils: [],
+  tipe: [
+    { label: 'Personalia', value: 'personalia' },
+    { label: 'Keuangan', value: 'keuangan' },
+  ],
 })
 
 export const mutations = {
