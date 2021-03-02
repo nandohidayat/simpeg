@@ -36,6 +36,7 @@ export default {
     'ant-design-vue/dist/antd.css',
     'typeface-roboto/index.css',
     '@mdi/font/css/materialdesignicons.css',
+    '@/assets/css/index.css',
   ],
   /*
    ** Plugins to load before mounting the App

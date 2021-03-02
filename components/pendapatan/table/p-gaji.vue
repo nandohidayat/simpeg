@@ -11,8 +11,23 @@
     <template slot="actionTitle">
       <a-icon type="form"></a-icon>
     </template>
-    <template slot="action">
-      <a href="javascript:;"><a-icon type="form"></a-icon></a>
+    <template slot="action" slot-scope="text, record">
+      <div>
+        <a-popconfirm
+          v-if="record.editable"
+          title="Sure to save?"
+          @cancel="() => cancel(record.nik_pegawai)"
+        >
+          <a href="javascript:;"><a-icon type="save"></a-icon></a>
+        </a-popconfirm>
+        <a
+          v-else
+          href="javascript:;"
+          :disabled="editingKey !== ''"
+          @click="() => edit(record.nik_pegawai)"
+          ><a-icon type="form"></a-icon
+        ></a>
+      </div>
     </template>
     <template slot="nm_dept" slot-scope="nm_dept">
       <div v-for="(d, i) in nm_dept" :key="i">- {{ d }}</div>
@@ -31,6 +46,9 @@ export default {
     },
   },
   data() {
+    this.cacheData = this.$store.state.pendapatan.items.map((item) => ({
+      ...item,
+    }))
     return {
       columns: [
         {
@@ -240,14 +258,47 @@ export default {
           width: 150,
         },
       ],
+      editingKey: '',
     }
   },
   computed: {
     ...mapState(['pendapatan']),
   },
   methods: {
-    change(pagination, filters, sorter, data) {
-      this.$emit('pagination', pagination)
+    edit(key) {
+      const newData = [...this.pendapatan.items]
+      const target = newData.filter((item) => key === item.nik_pegawai)[0]
+      this.editingKey = key
+      if (target) {
+        this.$set(target, 'editable', true)
+        this.$store.commit('pendapatan/SET_ITEMS', newData)
+      }
+    },
+    save(key) {
+      const newData = [...this.pendapatan.items]
+      const newCacheData = [...this.pendapatan.cache]
+      const target = newData.filter((item) => key === item.key)[0]
+      const targetCache = newCacheData.filter((item) => key === item.key)[0]
+      if (target && targetCache) {
+        delete target.editable
+        this.$store.commit('pendapatan/SET_ITEMS', newData)
+        Object.assign(targetCache, target)
+        this.cacheData = newCacheData
+      }
+      this.editingKey = ''
+    },
+    cancel(key) {
+      const newData = [...this.pendapatan.items]
+      const target = newData.filter((item) => key === item.nik_pegawai)[0]
+      this.editingKey = ''
+      if (target) {
+        Object.assign(
+          target,
+          this.cacheData.filter((item) => key === item.nik_pegawai)[0]
+        )
+        this.$set(target, 'editable', false)
+        this.$store.commit('pendapatan/SET_ITEMS', newData)
+      }
     },
   },
 }

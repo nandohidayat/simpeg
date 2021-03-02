@@ -57,7 +57,11 @@
     </v-row>
     <v-card>
       <v-card-text class="pa-1">
-        <component :is="tablePendapatan" :data="data"></component>
+        <component
+          :is="tablePendapatan"
+          :data="data"
+          @update="fetchPendapatan()"
+        ></component>
       </v-card-text>
     </v-card>
   </div>
@@ -134,9 +138,6 @@ export default {
         this.fetchPendapatan()
       }
     },
-  },
-  created() {
-    this.data = this.pendapatan.items
   },
   methods: {
     filterOption(input, option) {
