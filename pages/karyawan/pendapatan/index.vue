@@ -4,12 +4,12 @@
       <v-col cols="8">
         <v-card outlined>
           <a-config-provider :locale="locale">
-            <div>
+            <v-card-text>
               <v-row align="center" class="mx-3">
                 <v-col cols="3">
                   <a-select
                     v-model="tipe"
-                    style="width: 100%;"
+                    style="width: 100%"
                     show-search
                     placeholder="Tipe"
                     option-filter-prop="label"
@@ -20,7 +20,7 @@
                 <v-col cols="3">
                   <a-select
                     v-model="profil"
-                    style="width: 100%;"
+                    style="width: 100%"
                     show-search
                     placeholder="Profil"
                     option-filter-prop="label"
@@ -32,43 +32,28 @@
                   <a-month-picker
                     v-model="month"
                     placeholder="Bulan"
-                    style="width: 100%;"
+                    style="width: 100%"
                     :format="'MMMM YYYY'"
                   />
                 </v-col>
                 <v-col cols="3"
-                  ><a-button block type="primary">Simpan</a-button></v-col
+                  ><a-button block type="primary" @click="updatePendapatan"
+                    >Simpan</a-button
+                  ></v-col
                 >
               </v-row>
-              <v-row class="mx-3">
-                <v-col class="pt-0">
-                  <a-input-search
-                    v-model="search"
-                    placeholder="Cari"
-                    style="width: 100%;"
-                    @change="fetchPendapatan"
-                  ></a-input-search>
-                </v-col>
-              </v-row>
-            </div>
+            </v-card-text>
           </a-config-provider>
         </v-card>
       </v-col>
     </v-row>
     <v-card>
-      <v-card-text class="pa-1">
-        <component
-          :is="tablePendapatan"
-          :data="data"
-          @update="fetchPendapatan()"
-        ></component>
-      </v-card-text>
+      <component :is="tablePendapatan"></component>
     </v-card>
   </div>
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
 import { mapState } from 'vuex'
 import locale from 'ant-design-vue/lib/locale/id_ID'
 import moment from 'moment'
@@ -85,25 +70,34 @@ export default {
       return redirect('/404')
     }
   },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
-    ])
-  },
   data() {
-    this.lastFetchId = 0
-    this.fetchPendapatan = debounce(this.fetchPendapatan, 500)
     return {
       EmptyTable,
       PGaji,
       locale,
-      data: [],
       tipe: undefined,
       profil: undefined,
       month: undefined,
       search: '',
       personalia: ['Pendapatan', 'Pengeluaran', 'Pajak'],
       keuangan: ['Bank', 'Koperasi', 'Rumah Sakit', 'Organisasi', 'Lain-lain'],
+    }
+  },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+    ])
+  },
+  head() {
+    return {
+      title: 'Pendapatan Karyawan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Pendapatan Karyawan',
+        },
+      ],
     }
   },
   computed: {
@@ -135,7 +129,7 @@ export default {
           profil,
           month,
         })
-        this.fetchPendapatan()
+        this.$alert('success', 'Loaded')
       }
     },
   },
@@ -145,53 +139,22 @@ export default {
         .toLowerCase()
         .includes(input.toLowerCase())
     },
-    fetchPendapatan() {
-      this.lastFetchId += 1
-      const fetchId = this.lastFetchId
+    async updatePendapatan() {
+      const { tipe, profil } = this
+      let { month } = this
+      month = moment(month).format('MM-YYYY')
 
-      if (fetchId !== this.lastFetchId) {
-        return
+      try {
+        await this.$store.dispatch('pendapatan/updateItem', {
+          month,
+          tipe,
+          profil,
+        })
+        this.$alert('success', 'Successfully Saved')
+      } catch (e) {
+        this.$alert('error', e)
       }
-
-      const escapeRegExp = (
-        str // or better use 'escape-string-regexp' package
-      ) => str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&')
-
-      const filterBy = (term) => {
-        const column = ['nik_pegawai', 'nm_pegawai']
-        const re = new RegExp(escapeRegExp(term), 'i')
-        return (person) => {
-          for (const prop in person) {
-            if (
-              !column.includes(prop) ||
-              !Object.prototype.hasOwnProperty.call(person, prop)
-            ) {
-              continue
-            }
-            if (re.test(person[prop])) {
-              return true
-            }
-          }
-          return false
-        }
-      }
-
-      const data = this.pendapatan.items.filter(filterBy(this.search))
-
-      this.data = data
     },
-  },
-  head() {
-    return {
-      title: 'Pendapatan Karyawan',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Pendapatan Karyawan',
-        },
-      ],
-    }
   },
 }
 </script>

@@ -1,261 +1,377 @@
 <template>
-  <a-table
-    :columns="columns"
-    :data-source="data"
-    size="small"
-    row-key="nik_pegawai"
-    bordered
-    :scroll="{ x: 1500, y: 400 }"
-    :pagination="{ pageSize: 25 }"
-  >
-    <template slot="actionTitle">
-      <a-icon type="form"></a-icon>
-    </template>
-    <template slot="action" slot-scope="text, record">
-      <div>
-        <a-popconfirm
-          v-if="record.editable"
-          title="Sure to save?"
-          @cancel="() => cancel(record.nik_pegawai)"
-        >
-          <a href="javascript:;"><a-icon type="save"></a-icon></a>
-        </a-popconfirm>
-        <a
-          v-else
-          href="javascript:;"
-          :disabled="editingKey !== ''"
-          @click="() => edit(record.nik_pegawai)"
-          ><a-icon type="form"></a-icon
-        ></a>
-      </div>
-    </template>
-    <template slot="nm_dept" slot-scope="nm_dept">
-      <div v-for="(d, i) in nm_dept" :key="i">- {{ d }}</div>
-    </template>
-  </a-table>
+  <v-card-text class="pa-0">
+    <vue-excel-editor v-model="pendapatan.items" filter-row>
+      <vue-excel-column
+        v-for="(c, i) in columns"
+        :key="i"
+        :change="c.change"
+        :field="c.dataIndex"
+        :init-style="c.initStyle"
+        :label="c.title"
+        :options="c.options"
+        :readonly="c.readonly"
+        :sticky="c.sticky"
+        :type="c.type"
+        :width="c.width"
+        :to-text="c.toText"
+        :to-value="c.toValue"
+      />
+    </vue-excel-editor>
+  </v-card-text>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 
 export default {
-  props: {
-    data: {
-      type: Array,
-      default: () => [],
-    },
-  },
   data() {
-    this.cacheData = this.$store.state.pendapatan.items.map((item) => ({
-      ...item,
-    }))
     return {
       columns: [
         {
-          dataIndex: 'action',
-          width: 35,
-          fixed: 'left',
-          slots: { title: 'actionTitle' },
-          scopedSlots: { customRender: 'action' },
-        },
-        {
           title: 'NIK',
           dataIndex: 'nik_pegawai',
-          width: 70,
-          fixed: 'left',
-          sorter: (a, b) =>
-            a.nik_pegawai < b.nik_pegawai
-              ? -1
-              : +(a.nik_pegawai > b.nik_pegawai),
+          sticky: true,
+          width: '70px',
+          readonly: true,
         },
         {
           title: 'Nama',
           dataIndex: 'nm_pegawai',
-          width: 250,
-          fixed: 'left',
-          sorter: (a, b) =>
-            a.nm_pegawai < b.nm_pegawai ? -1 : +(a.nm_pegawai > b.nm_pegawai),
+          sticky: true,
+          width: '170px',
+          readonly: true,
         },
         {
           title: 'Bagian',
           dataIndex: 'nm_dept',
-          scopedSlots: { customRender: 'nm_dept' },
-          width: 250,
+          width: '170px',
+          initStyle: { 'white-space': 'pre' },
+          readonly: true,
+          toText: this.depToLis,
         },
         {
           title: 'Golongan',
           dataIndex: 'golongan',
-          width: 150,
+          type: 'select',
+          options: [
+            'IA',
+            'IB',
+            'IC',
+            'IIA',
+            'IIB',
+            'IIC',
+            'IID',
+            'IIIA',
+            'IIIB',
+            'IIIC',
+            'IIID',
+            'IVA',
+          ],
         },
         {
           title: 'Ket. PTKP',
           dataIndex: 'ketptkp',
-          width: 150,
+          type: 'select',
+          options: ['K/0', 'K/1', 'K/2', 'K/3', 'K/4', 'K/5', 'TK/0'],
         },
         {
-          title: 'PTKP',
+          title: 'PTKP (Rp)',
           dataIndex: 'ptkp',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
         },
         {
           title: 'Masa Kerja',
           dataIndex: 'masaker',
-          width: 150,
+          toText: this.numToDig,
         },
         {
-          title: '01. Gaji Pokok',
+          title: '01. Gaji Pokok (Rp)',
           dataIndex: 'pdpt1',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt1,
         },
         {
           title: '02. Tunj. Trans (%)',
           dataIndex: 'pdpt2p',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt2p,
         },
         {
-          title: '02. Tunj. Trans',
+          title: '02. Tunj. Trans (Rp)',
           dataIndex: 'pdpt2',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          readonly: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt2,
         },
         {
           title: '03. Tunj. HT (%)',
           dataIndex: 'pdpt3p',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt3p,
         },
         {
-          title: '03. Tunj. HT',
+          title: '03. Tunj. HT (Rp)',
           dataIndex: 'pdpt3',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          readonly: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt3,
         },
         {
-          title: '04. Tunj. Fungsional',
+          title: '04. Tunj. Fungsional (Rp)',
           dataIndex: 'pdpt4',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt4,
         },
         {
-          title: '05. Tunj. Jabatan',
+          title: '05. Tunj. Jabatan (Rp)',
           dataIndex: 'pdpt5',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt5,
         },
         {
-          title: '06.',
+          title: '06. (Rp)',
           dataIndex: 'pdpt6',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt6,
         },
         {
-          title: '07.',
+          title: '07. (Rp)',
           dataIndex: 'pdpt7',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt7,
         },
         {
-          title: '08. TPP',
+          title: '08. TPP (Rp)',
           dataIndex: 'pdpt8',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt8,
         },
         {
-          title: '09.',
+          title: '09. (Rp)',
           dataIndex: 'pdpt9',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt9,
         },
         {
-          title: '10.',
+          title: '10. (Rp)',
           dataIndex: 'pdpt10',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt10,
         },
         {
-          title: '11.',
+          title: '11. (Rp)',
           dataIndex: 'pdpt11',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt11,
         },
         {
-          title: '12. Lain-lain',
+          title: '12. Lain-lain (Rp)',
           dataIndex: 'pdpt12',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePdpt12,
         },
         {
-          title: 'Jum. Penerimaan',
+          title: 'Jum. Penerimaan (Rp)',
           dataIndex: 'penerimaan',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          readonly: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePenerimaan,
         },
         {
           title: '01. PPH 21 (%)',
           dataIndex: 'pot1p',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot1p,
         },
         {
-          title: '01. PPH 21',
+          title: '01. PPH 21 (Rp)',
           dataIndex: 'pot1',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          readonly: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot1,
         },
         {
           title: '02. (%)',
           dataIndex: 'pot2p',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot2p,
         },
         {
-          title: '02.',
+          title: '02. (Rp)',
           dataIndex: 'pot2',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          readonly: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot2,
         },
         {
           title: '03. Tab. HT (%)',
           dataIndex: 'pot3p',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot3p,
         },
         {
-          title: '03. Tab. HT',
+          title: '03. Tab. HT (Rp)',
           dataIndex: 'pot3',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          readonly: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot3,
         },
         {
-          title: '04. Sosial',
+          title: '04. Sosial (Rp)',
           dataIndex: 'pot4',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot4,
         },
         {
-          title: '05. Obat-obatan',
+          title: '05. Obat-obatan (Rp)',
           dataIndex: 'pot5',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot5,
         },
         {
-          title: '06. PPNI',
+          title: '06. PPNI (Rp)',
           dataIndex: 'pot6',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot6,
         },
         {
-          title: '07. BPJS Kesehatan',
+          title: '07. BPJS Kesehatan (Rp)',
           dataIndex: 'pot7',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot7,
         },
         {
-          title: '08. BPJS T. Kerja',
+          title: '08. BPJS T. Kerja (Rp)',
           dataIndex: 'pot8',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot8,
         },
         {
-          title: '09. IBI',
+          title: '09. IBI (Rp)',
           dataIndex: 'pot9',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot9,
         },
         {
-          title: '10. Subsidi Pajak',
+          title: '10. Subsidi Pajak (Rp)',
           dataIndex: 'pot10',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot10,
         },
         {
-          title: '11. Zakat (2.5%)',
-          dataIndex: 'pot11',
-          width: 150,
-        },
-        {
-          title: 'Jum. Pengeluaran',
+          title: 'Jum. Pengeluaran (Rp)',
           dataIndex: 'pengeluaran',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePengeluaran,
         },
         {
-          title: 'Diterima Bersih',
+          title: '11. Zakat (2.5%) (Rp)',
+          dataIndex: 'pot11',
+          type: 'number',
+          width: '120px',
+          readonly: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          change: this.onChangePot11,
+        },
+        {
+          title: 'Diterima Bersih (Rp)',
           dataIndex: 'diterima',
-          width: 150,
+          type: 'number',
+          width: '120px',
+          readonly: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
         },
       ],
       editingKey: '',
@@ -265,40 +381,427 @@ export default {
     ...mapState(['pendapatan']),
   },
   methods: {
-    edit(key) {
-      const newData = [...this.pendapatan.items]
-      const target = newData.filter((item) => key === item.nik_pegawai)[0]
-      this.editingKey = key
-      if (target) {
-        this.$set(target, 'editable', true)
-        this.$store.commit('pendapatan/SET_ITEMS', newData)
-      }
+    numToCur(val) {
+      return parseFloat(val || 0)
+        .toFixed(2)
+        .replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
     },
-    save(key) {
-      const newData = [...this.pendapatan.items]
-      const newCacheData = [...this.pendapatan.cache]
-      const target = newData.filter((item) => key === item.key)[0]
-      const targetCache = newCacheData.filter((item) => key === item.key)[0]
-      if (target && targetCache) {
-        delete target.editable
-        this.$store.commit('pendapatan/SET_ITEMS', newData)
-        Object.assign(targetCache, target)
-        this.cacheData = newCacheData
+    numToDig(val) {
+      if (val) {
+        return val.replace(/^(..)(..)$/, '$1:$2')
       }
-      this.editingKey = ''
+      return '00:00'
     },
-    cancel(key) {
-      const newData = [...this.pendapatan.items]
-      const target = newData.filter((item) => key === item.nik_pegawai)[0]
-      this.editingKey = ''
-      if (target) {
-        Object.assign(
-          target,
-          this.cacheData.filter((item) => key === item.nik_pegawai)[0]
-        )
-        this.$set(target, 'editable', false)
-        this.$store.commit('pendapatan/SET_ITEMS', newData)
-      }
+    numToVal(text) {
+      return Number(text.replace(/[^0-9.-]+/g, ''))
+    },
+    depToLis(val) {
+      return val.join('\n')
+    },
+    onChangePdpt1(nVal, oVal, row) {
+      row.pdpt2 = (nVal * row.pdpt2p) / 100
+      row.pdpt3 = (nVal * row.pdpt3p) / 100
+
+      row.penerimaan =
+        nVal +
+        row.pdpt2 +
+        row.pdpt3 +
+        row.pdpt4 +
+        row.pdpt5 +
+        row.pdpt6 +
+        row.pdpt7 +
+        row.pdpt8 +
+        row.pdpt9 +
+        row.pdpt10 +
+        row.pdpt11 +
+        row.pdpt12
+
+      row.pot1 = -(nVal * row.pot1p) / 100
+      row.pot2 = -(nVal * row.pot2p) / 100
+      row.pot3 = -(nVal * row.pot3p) / 100
+
+      row.pengeluaran =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePdpt2p(nVal, oVal, row) {
+      row.pdpt2 = (row.pdpt1 * nVal) / 100
+
+      row.penerimaan =
+        row.pdpt1 +
+        row.pdpt2 +
+        row.pdpt3 +
+        row.pdpt4 +
+        row.pdpt5 +
+        row.pdpt6 +
+        row.pdpt7 +
+        row.pdpt8 +
+        row.pdpt9 +
+        row.pdpt10 +
+        row.pdpt11 +
+        row.pdpt12
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePdpt3p(nVal, oVal, row) {
+      row.pdpt3 = (row.pdpt1 * nVal) / 100
+
+      row.penerimaan =
+        row.pdpt1 +
+        row.pdpt2 +
+        row.pdpt3 +
+        row.pdpt4 +
+        row.pdpt5 +
+        row.pdpt6 +
+        row.pdpt7 +
+        row.pdpt8 +
+        row.pdpt9 +
+        row.pdpt10 +
+        row.pdpt11 +
+        row.pdpt12
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePdpt4(nVal, oVal, row) {
+      row.penerimaan =
+        row.pdpt1 +
+        row.pdpt2 +
+        row.pdpt3 +
+        nVal +
+        row.pdpt5 +
+        row.pdpt6 +
+        row.pdpt7 +
+        row.pdpt8 +
+        row.pdpt9 +
+        row.pdpt10 +
+        row.pdpt11 +
+        row.pdpt12
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePdpt5(nVal, oVal, row) {
+      row.penerimaan =
+        row.pdpt1 +
+        row.pdpt2 +
+        row.pdpt3 +
+        row.pdpt4 +
+        nVal +
+        row.pdpt6 +
+        row.pdpt7 +
+        row.pdpt8 +
+        row.pdpt9 +
+        row.pdpt10 +
+        row.pdpt11 +
+        row.pdpt12
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePdpt6(nVal, oVal, row) {
+      row.penerimaan =
+        row.pdpt1 +
+        row.pdpt2 +
+        row.pdpt3 +
+        row.pdpt4 +
+        row.pdpt5 +
+        nVal +
+        row.pdpt7 +
+        row.pdpt8 +
+        row.pdpt9 +
+        row.pdpt10 +
+        row.pdpt11 +
+        row.pdpt12
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePdpt7(nVal, oVal, row) {
+      row.penerimaan =
+        row.pdpt1 +
+        row.pdpt2 +
+        row.pdpt3 +
+        row.pdpt4 +
+        row.pdpt5 +
+        row.pdpt6 +
+        nVal +
+        row.pdpt8 +
+        row.pdpt9 +
+        row.pdpt10 +
+        row.pdpt11 +
+        row.pdpt12
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePdpt8(nVal, oVal, row) {
+      row.penerimaan =
+        row.pdpt1 +
+        row.pdpt2 +
+        row.pdpt3 +
+        row.pdpt4 +
+        row.pdpt5 +
+        row.pdpt6 +
+        row.pdpt7 +
+        nVal +
+        row.pdpt9 +
+        row.pdpt10 +
+        row.pdpt11 +
+        row.pdpt12
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePdpt9(nVal, oVal, row) {
+      row.penerimaan =
+        row.pdpt1 +
+        row.pdpt2 +
+        row.pdpt3 +
+        row.pdpt4 +
+        row.pdpt5 +
+        row.pdpt6 +
+        row.pdpt7 +
+        row.pdpt8 +
+        nVal +
+        row.pdpt10 +
+        row.pdpt11 +
+        row.pdpt12
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePdpt10(nVal, oVal, row) {
+      row.penerimaan =
+        row.pdpt1 +
+        row.pdpt2 +
+        row.pdpt3 +
+        row.pdpt4 +
+        row.pdpt5 +
+        row.pdpt6 +
+        row.pdpt7 +
+        row.pdpt8 +
+        row.pdpt9 +
+        nVal +
+        row.pdpt11 +
+        row.pdpt12
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePdpt11(nVal, oVal, row) {
+      row.penerimaan =
+        row.pdpt1 +
+        row.pdpt2 +
+        row.pdpt3 +
+        row.pdpt4 +
+        row.pdpt5 +
+        row.pdpt6 +
+        row.pdpt7 +
+        row.pdpt8 +
+        row.pdpt9 +
+        row.pdpt10 +
+        nVal +
+        row.pdpt12
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePdpt12(nVal, oVal, row) {
+      row.penerimaan =
+        row.pdpt1 +
+        row.pdpt2 +
+        row.pdpt3 +
+        row.pdpt4 +
+        row.pdpt5 +
+        row.pdpt6 +
+        row.pdpt7 +
+        row.pdpt8 +
+        row.pdpt9 +
+        row.pdpt10 +
+        row.pdpt11 +
+        nVal
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePot1p(nVal, oVal, row) {
+      row.pot1 = -(row.pdpt1 * nVal) / 100
+
+      row.pengeluaran =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePot2p(nVal, oVal, row) {
+      row.pot2 = -(row.pdpt1 * nVal) / 100
+
+      row.pengeluaran =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePot3p(nVal, oVal, row) {
+      row.pot3 = -(row.pdpt1 * nVal) / 100
+
+      row.pengeluaran =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePot4(nVal, oVal, row) {
+      row.pengeluaran =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        nVal +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePot5(nVal, oVal, row) {
+      row.pengeluaran =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        nVal +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePot6(nVal, oVal, row) {
+      row.pengeluaran =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        nVal +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePot7(nVal, oVal, row) {
+      row.pengeluaran =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        nVal +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePot8(nVal, oVal, row) {
+      row.pengeluaran =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        nVal +
+        row.pot9 +
+        row.pot10
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePot9(nVal, oVal, row) {
+      row.pengeluaran =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        nVal +
+        row.pot10
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+    },
+    onChangePot10(nVal, oVal, row) {
+      row.pengeluaran =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        nVal
+
+      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
+      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
     },
   },
 }
