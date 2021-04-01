@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pdpt-setup-bc></pdpt-setup-bc>
+    <pdpt-setup-profil-bc></pdpt-setup-profil-bc>
     <v-card>
       <v-card-text>
         <v-row no-gutters justify="center" class="mb-4">
@@ -23,13 +23,14 @@
             :search="search"
             calculate-widths
             :items="pendapatanprofil.profils"
+            dense
           >
-            <template #item.personalia="{item}">
+            <template #item.personalia="{ item }">
               <pre>
-              {{ JSON.stringify(JSON.parse(item.personalia), null, 2).trim() }}
+              {{ parseJson(item) }}
               </pre>
             </template>
-            <template v-slot:item.action="{ item }">
+            <template #item.action="{ item }">
               <a-button
                 size="small"
                 class="mr-1 sim"
@@ -55,11 +56,11 @@
       bottom
       right
       rounded
-      style="bottom: 46px;"
+      style="bottom: 46px"
       @click="openDialog()"
-      ><v-icon small class="mr-1">mdi-plus</v-icon>tambah pendapatan</v-btn
+      ><v-icon small class="mr-1">mdi-plus</v-icon>tambah profil</v-btn
     >
-    <pdpt-setup-dialog
+    <pdpt-setup-profil-dialog
       :dialog.sync="dialog"
       :edit="edit"
       :id-pdpt="submit.id_pendapatan_profil"
@@ -68,28 +69,25 @@
       :personalia.sync="submit.personalia"
       :keuangan.sync="submit.keuangan"
       :active.sync="submit.active"
-    ></pdpt-setup-dialog>
+    ></pdpt-setup-profil-dialog>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 
-import PdptSetupBc from '@/components/pendapatan/pdpt-setup-bc'
-import PdptSetupDialog from '@/components/pendapatan/pdpt-setup-dialog'
+import PdptSetupProfilBc from '@/components/pendapatan/pdpt-setup-profil-bc'
+import PdptSetupProfilDialog from '@/components/pendapatan/pdpt-setup-profil-dialog'
 
 export default {
+  components: {
+    PdptSetupProfilBc,
+    PdptSetupProfilDialog,
+  },
   middleware({ store, redirect }) {
     if (!store.getters['user/hadAkses'](17)) {
       return redirect('/404')
     }
-  },
-  components: {
-    PdptSetupBc,
-    PdptSetupDialog,
-  },
-  async fetch({ store }) {
-    await store.dispatch('pendapatanprofil/fetchProfils')
   },
   data() {
     return {
@@ -139,10 +137,32 @@ export default {
       },
     }
   },
+  async fetch({ store }) {
+    await store.dispatch('pendapatanprofil/fetchProfils')
+  },
+  head() {
+    return {
+      title: 'Profil Pendapatan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Profil Pendapatan',
+        },
+      ],
+    }
+  },
   computed: {
     ...mapState(['pendapatanprofil']),
   },
   methods: {
+    parseJson(item) {
+      try {
+        return JSON.stringify(JSON.parse(item.personalia), null, 2).trim()
+      } catch (e) {
+        return `${e.name} : ${e.message}`
+      }
+    },
     openDialog(edit = false, data = {}) {
       if (edit) {
         this.edit = true
@@ -170,24 +190,13 @@ export default {
       }
     },
   },
-  head() {
-    return {
-      title: 'Kelola Pendapatan',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Kelola Pendapatan',
-        },
-      ],
-    }
-  },
 }
 </script>
 
 <style scoped>
-.high-table td,
-.high-table td * {
+.high-table {
   vertical-align: top;
+  text-align: left;
+  padding-top: 15px;
 }
 </style>

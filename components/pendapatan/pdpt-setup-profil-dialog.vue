@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    v-model="dialog"
+    :value="dialog"
     width="700"
     @click:outside="$emit('update:dialog', false)"
   >
@@ -11,9 +11,7 @@
           <v-simple-table>
             <tbody>
               <tr>
-                <td>
-                  Nama Pendapatan
-                </td>
+                <td>Nama Pendapatan</td>
                 <td>
                   <a-input
                     v-model="realTitle"
@@ -22,25 +20,13 @@
                 </td>
               </tr>
               <tr>
-                <td>
-                  View
-                </td>
+                <td>View</td>
                 <td>
                   <a-input v-model="realView" placeholder="View"></a-input>
                 </td>
               </tr>
               <tr>
-                <td>
-                  View
-                </td>
-                <td>
-                  <a-input v-model="realView" placeholder="View"></a-input>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Personalia
-                </td>
+                <td>Personalia</td>
                 <td>
                   <a-textarea
                     v-model="realPersonalia"
@@ -50,9 +36,7 @@
                 </td>
               </tr>
               <tr>
-                <td>
-                  Keuangan
-                </td>
+                <td>Keuangan</td>
                 <td>
                   <a-textarea
                     v-model="realKeuangan"
@@ -62,9 +46,7 @@
                 </td>
               </tr>
               <tr>
-                <td>
-                  Active
-                </td>
+                <td>Active</td>
                 <td>
                   <a-checkbox v-model="realActive"></a-checkbox>
                 </td>
@@ -154,7 +136,7 @@ export default {
         return this.keuangan
       },
       set(val) {
-        this.$emit('update:personalia', val)
+        this.$emit('update:keuangan', val)
       },
     },
     realActive: {

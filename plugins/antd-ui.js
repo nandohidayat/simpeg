@@ -13,6 +13,7 @@ import {
   Popconfirm,
   Select,
   Table,
+  Tabs,
   Tree,
   Upload,
 } from 'ant-design-vue'
@@ -30,5 +31,6 @@ Vue.use(Modal)
 Vue.use(Popconfirm)
 Vue.use(Select)
 Vue.use(Table)
+Vue.use(Tabs)
 Vue.use(Tree)
 Vue.use(Upload)

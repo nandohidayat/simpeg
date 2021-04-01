@@ -47,9 +47,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-card>
-      <component :is="tablePendapatan"></component>
-    </v-card>
+    <component :is="tablePendapatan"></component>
   </div>
 </template>
 
@@ -124,12 +122,16 @@ export default {
       let { month } = this
       if (tipe && profil && month) {
         month = moment(month).format('MM-YYYY')
-        await this.$store.dispatch('pendapatan/fetchItems', {
-          tipe,
-          profil,
-          month,
-        })
-        this.$alert('success', 'Loaded')
+        try {
+          await this.$store.dispatch('pendapatan/fetchItems', {
+            tipe,
+            profil,
+            month,
+          })
+          this.$alert('success', 'Loaded')
+        } catch (e) {
+          this.$alert('error', e)
+        }
       }
     },
   },

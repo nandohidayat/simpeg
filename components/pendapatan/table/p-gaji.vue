@@ -1,12 +1,22 @@
 <template>
-  <v-card-text class="pa-0">
-    <vue-excel-editor v-model="pendapatan.items" filter-row>
+  <div>
+    <a-tabs type="card" size="small" @change="onChangeTab">
+      <a-tab-pane key="1" tab="Pendapatan"> </a-tab-pane>
+      <a-tab-pane key="2" tab="Pajak"> </a-tab-pane>
+    </a-tabs>
+    <vue-excel-editor
+      ref="pendapatan"
+      v-model="pendapatan.items"
+      filter-row
+      no-header-edit
+    >
       <vue-excel-column
         v-for="(c, i) in columns"
         :key="i"
         :change="c.change"
         :field="c.dataIndex"
         :init-style="c.initStyle"
+        :invisible="c.invisible"
         :label="c.title"
         :options="c.options"
         :readonly="c.readonly"
@@ -15,9 +25,10 @@
         :width="c.width"
         :to-text="c.toText"
         :to-value="c.toValue"
+        :validate="c.validate"
       />
     </vue-excel-editor>
-  </v-card-text>
+  </div>
 </template>
 
 <script>
@@ -85,7 +96,7 @@ export default {
         {
           title: 'Masa Kerja',
           dataIndex: 'masaker',
-          toText: this.numToDig,
+          validate: this.validMasaKerja,
         },
         {
           title: '01. Gaji Pokok (Rp)',
@@ -217,13 +228,12 @@ export default {
         },
         {
           title: 'Jum. Penerimaan (Rp)',
-          dataIndex: 'penerimaan',
+          dataIndex: 'jmlhgaji',
           type: 'number',
           width: '120px',
           readonly: true,
           toText: this.numToCur,
           toValue: this.numToVal,
-          change: this.onChangePenerimaan,
         },
         {
           title: '01. PPH 21 (%)',
@@ -314,6 +324,7 @@ export default {
           dataIndex: 'pot7',
           type: 'number',
           width: '120px',
+          readonly: true,
           toText: this.numToCur,
           toValue: this.numToVal,
           change: this.onChangePot7,
@@ -323,6 +334,7 @@ export default {
           dataIndex: 'pot8',
           type: 'number',
           width: '120px',
+          readonly: true,
           toText: this.numToCur,
           toValue: this.numToVal,
           change: this.onChangePot8,
@@ -347,12 +359,20 @@ export default {
         },
         {
           title: 'Jum. Pengeluaran (Rp)',
-          dataIndex: 'pengeluaran',
+          dataIndex: 'jmlhpot',
           type: 'number',
           width: '120px',
           toText: this.numToCur,
           toValue: this.numToVal,
           change: this.onChangePengeluaran,
+        },
+        {
+          title: 'Sebelum Zakat (Rp)',
+          dataIndex: 'sebelumzakat',
+          type: 'number',
+          width: '120px',
+          toText: this.numToCur,
+          toValue: this.numToVal,
         },
         {
           title: '11. Zakat (2.5%) (Rp)',
@@ -362,7 +382,6 @@ export default {
           readonly: true,
           toText: this.numToCur,
           toValue: this.numToVal,
-          change: this.onChangePot11,
         },
         {
           title: 'Diterima Bersih (Rp)',
@@ -373,6 +392,159 @@ export default {
           toText: this.numToCur,
           toValue: this.numToVal,
         },
+        {
+          title: 'Penerimaan Lalu (Rp)',
+          dataIndex: 'pjk1',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'Premi/ Lbr/ Mkn/ Hdr (Rp)',
+          dataIndex: 'jmlhpremi',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'Gaji (Rp)',
+          dataIndex: 'jmlhgaji',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'Insentiv (Rp)',
+          dataIndex: 'jmlhinsentive',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'THR/ Gaji ke/ Jaspr (Rp)',
+          dataIndex: 'jmlhgajike',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'Makan (Rp)',
+          dataIndex: 'premi3',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'Penerimaan Netto (Rp)',
+          dataIndex: 'pjk2',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'Biaya THT (5%) (Rp)',
+          dataIndex: 'pjk3',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'Biaya Jabatan (5%) (Rp)',
+          dataIndex: 'pjk4',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'P. Tidak Kena Pajak (Rp)',
+          dataIndex: 'ptkp',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'P. Kena Pajak (Rp)',
+          dataIndex: 'pjk5',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'Pajak Terhutang (Rp)',
+          dataIndex: 'pot1',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'Pajak Sudah Dibayar (Rp)',
+          dataIndex: 'pjk6',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'Subsidi Pajak (Rp)',
+          dataIndex: 'pot10',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+        {
+          title: 'Pajak Kurang Bayar (Rp)',
+          dataIndex: 'pjk7',
+          type: 'number',
+          width: '120px',
+          invisible: true,
+          toText: this.numToCur,
+          toValue: this.numToVal,
+        },
+      ],
+      columnAll: ['NIK', 'Nama'],
+      columnPajak: [
+        'Penerimaan Lalu (Rp)',
+        'Premi/ Lbr/ Mkn/ Hdr (Rp)',
+        'Gaji (Rp)',
+        'Insentiv (Rp)',
+        'THR/ Gaji ke/ Jaspr (Rp)',
+        'Makan (Rp)',
+        'Penerimaan Netto (Rp)',
+        'Biaya THT (5%) (Rp)',
+        'Biaya Jabatan (5%) (Rp)',
+        'P. Tidak Kena Pajak (Rp)',
+        'P. Kena Pajak (Rp)',
+        'Pajak Terhutang (Rp)',
+        'Pajak Sudah Dibayar (Rp)',
+        'Subsidi Pajak (Rp)',
+        'Pajak Kurang Bayar (Rp)',
       ],
       editingKey: '',
     }
@@ -381,6 +553,18 @@ export default {
     ...mapState(['pendapatan']),
   },
   methods: {
+    onChangeTab(val) {
+      this.$refs.pendapatan.fields.forEach((field) => {
+        if (this.columnAll.includes(field.label)) return
+        if (parseInt(val) === 1 && !this.columnPajak.includes(field.label))
+          field.invisible = false
+        else if (parseInt(val) === 2 && this.columnPajak.includes(field.label))
+          field.invisible = false
+        else field.invisible = true
+      })
+
+      this.$forceUpdate()
+    },
     numToCur(val) {
       return parseFloat(val || 0)
         .toFixed(2)
@@ -398,11 +582,16 @@ export default {
     depToLis(val) {
       return val.join('\n')
     },
+    validMasaKerja(content, oldContent, record, field) {
+      if (content === '') return ''
+      if (!/^[0-9]{2}:[0-9]{2}$/.test(content)) return 'Invalid Format (XX:XX)'
+      return '' // return empty string if there is no error
+    },
     onChangePdpt1(nVal, oVal, row) {
       row.pdpt2 = (nVal * row.pdpt2p) / 100
       row.pdpt3 = (nVal * row.pdpt3p) / 100
 
-      row.penerimaan =
+      row.jmlhgaji =
         nVal +
         row.pdpt2 +
         row.pdpt3 +
@@ -419,8 +608,11 @@ export default {
       row.pot1 = -(nVal * row.pot1p) / 100
       row.pot2 = -(nVal * row.pot2p) / 100
       row.pot3 = -(nVal * row.pot3p) / 100
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
 
-      row.pengeluaran =
+      row.jmlhpot =
         row.pot1 +
         row.pot2 +
         row.pot3 +
@@ -432,13 +624,14 @@ export default {
         row.pot9 +
         row.pot10
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePdpt2p(nVal, oVal, row) {
       row.pdpt2 = (row.pdpt1 * nVal) / 100
 
-      row.penerimaan =
+      row.jmlhgaji =
         row.pdpt1 +
         row.pdpt2 +
         row.pdpt3 +
@@ -452,13 +645,30 @@ export default {
         row.pdpt11 +
         row.pdpt12
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePdpt3p(nVal, oVal, row) {
       row.pdpt3 = (row.pdpt1 * nVal) / 100
 
-      row.penerimaan =
+      row.jmlhgaji =
         row.pdpt1 +
         row.pdpt2 +
         row.pdpt3 +
@@ -472,11 +682,28 @@ export default {
         row.pdpt11 +
         row.pdpt12
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePdpt4(nVal, oVal, row) {
-      row.penerimaan =
+      row.jmlhgaji =
         row.pdpt1 +
         row.pdpt2 +
         row.pdpt3 +
@@ -490,11 +717,28 @@ export default {
         row.pdpt11 +
         row.pdpt12
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePdpt5(nVal, oVal, row) {
-      row.penerimaan =
+      row.jmlhgaji =
         row.pdpt1 +
         row.pdpt2 +
         row.pdpt3 +
@@ -508,11 +752,28 @@ export default {
         row.pdpt11 +
         row.pdpt12
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePdpt6(nVal, oVal, row) {
-      row.penerimaan =
+      row.jmlhgaji =
         row.pdpt1 +
         row.pdpt2 +
         row.pdpt3 +
@@ -526,11 +787,28 @@ export default {
         row.pdpt11 +
         row.pdpt12
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePdpt7(nVal, oVal, row) {
-      row.penerimaan =
+      row.jmlhgaji =
         row.pdpt1 +
         row.pdpt2 +
         row.pdpt3 +
@@ -544,11 +822,28 @@ export default {
         row.pdpt11 +
         row.pdpt12
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePdpt8(nVal, oVal, row) {
-      row.penerimaan =
+      row.jmlhgaji =
         row.pdpt1 +
         row.pdpt2 +
         row.pdpt3 +
@@ -562,11 +857,28 @@ export default {
         row.pdpt11 +
         row.pdpt12
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePdpt9(nVal, oVal, row) {
-      row.penerimaan =
+      row.jmlhgaji =
         row.pdpt1 +
         row.pdpt2 +
         row.pdpt3 +
@@ -580,11 +892,28 @@ export default {
         row.pdpt11 +
         row.pdpt12
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePdpt10(nVal, oVal, row) {
-      row.penerimaan =
+      row.jmlhgaji =
         row.pdpt1 +
         row.pdpt2 +
         row.pdpt3 +
@@ -598,11 +927,28 @@ export default {
         row.pdpt11 +
         row.pdpt12
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePdpt11(nVal, oVal, row) {
-      row.penerimaan =
+      row.jmlhgaji =
         row.pdpt1 +
         row.pdpt2 +
         row.pdpt3 +
@@ -616,11 +962,28 @@ export default {
         nVal +
         row.pdpt12
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePdpt12(nVal, oVal, row) {
-      row.penerimaan =
+      row.jmlhgaji =
         row.pdpt1 +
         row.pdpt2 +
         row.pdpt3 +
@@ -634,13 +997,30 @@ export default {
         row.pdpt11 +
         nVal
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
+      row.pot7 = bpjs
+      row.pot8 = bpjs
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePot1p(nVal, oVal, row) {
       row.pot1 = -(row.pdpt1 * nVal) / 100
 
-      row.pengeluaran =
+      row.jmlhpot =
         row.pot1 +
         row.pot2 +
         row.pot3 +
@@ -652,13 +1032,14 @@ export default {
         row.pot9 +
         row.pot10
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePot2p(nVal, oVal, row) {
       row.pot2 = -(row.pdpt1 * nVal) / 100
 
-      row.pengeluaran =
+      row.jmlhpot =
         row.pot1 +
         row.pot2 +
         row.pot3 +
@@ -670,13 +1051,14 @@ export default {
         row.pot9 +
         row.pot10
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePot3p(nVal, oVal, row) {
       row.pot3 = -(row.pdpt1 * nVal) / 100
 
-      row.pengeluaran =
+      row.jmlhpot =
         row.pot1 +
         row.pot2 +
         row.pot3 +
@@ -688,11 +1070,12 @@ export default {
         row.pot9 +
         row.pot10
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePot4(nVal, oVal, row) {
-      row.pengeluaran =
+      row.jmlhpot =
         row.pot1 +
         row.pot2 +
         row.pot3 +
@@ -704,11 +1087,12 @@ export default {
         row.pot9 +
         row.pot10
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePot5(nVal, oVal, row) {
-      row.pengeluaran =
+      row.jmlhpot =
         row.pot1 +
         row.pot2 +
         row.pot3 +
@@ -720,11 +1104,12 @@ export default {
         row.pot9 +
         row.pot10
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePot6(nVal, oVal, row) {
-      row.pengeluaran =
+      row.jmlhpot =
         row.pot1 +
         row.pot2 +
         row.pot3 +
@@ -736,43 +1121,12 @@ export default {
         row.pot9 +
         row.pot10
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
-    },
-    onChangePot7(nVal, oVal, row) {
-      row.pengeluaran =
-        row.pot1 +
-        row.pot2 +
-        row.pot3 +
-        row.pot4 +
-        row.pot5 +
-        row.pot6 +
-        nVal +
-        row.pot8 +
-        row.pot9 +
-        row.pot10
-
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
-    },
-    onChangePot8(nVal, oVal, row) {
-      row.pengeluaran =
-        row.pot1 +
-        row.pot2 +
-        row.pot3 +
-        row.pot4 +
-        row.pot5 +
-        row.pot6 +
-        row.pot7 +
-        nVal +
-        row.pot9 +
-        row.pot10
-
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePot9(nVal, oVal, row) {
-      row.pengeluaran =
+      row.jmlhpot =
         row.pot1 +
         row.pot2 +
         row.pot3 +
@@ -784,11 +1138,12 @@ export default {
         nVal +
         row.pot10
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
     onChangePot10(nVal, oVal, row) {
-      row.pengeluaran =
+      row.jmlhpot =
         row.pot1 +
         row.pot2 +
         row.pot3 +
@@ -800,8 +1155,9 @@ export default {
         row.pot9 +
         nVal
 
-      row.pot11 = -((row.penerimaan + row.pengeluaran) * 2.5) / 100
-      row.diterima = row.penerimaan + row.pengeluaran + row.pot11
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
     },
   },
 }

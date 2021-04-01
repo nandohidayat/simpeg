@@ -138,3 +138,16 @@ a:active {
 .ant-table {
   line-height: 1;
 }
+
+.ant-tabs-bar {
+  margin: 0;
+  border-bottom: none;
+}
+
+.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
+  color: #009b8b;
+}
+
+.ant-tabs-nav .ant-tabs-tab:hover {
+  color: #4ab0a7;
+}

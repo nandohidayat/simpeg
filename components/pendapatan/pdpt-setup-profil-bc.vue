@@ -22,6 +22,11 @@ export default {
         },
         {
           text: 'Pendapatan',
+          to: '/data/setup/pendapatan',
+          exact: true,
+        },
+        {
+          text: 'Profil',
           disabled: true,
         },
       ],
