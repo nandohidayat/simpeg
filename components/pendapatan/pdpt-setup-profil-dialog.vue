@@ -26,21 +26,11 @@
                 </td>
               </tr>
               <tr>
-                <td>Personalia</td>
+                <td>Column</td>
                 <td>
                   <a-textarea
-                    v-model="realPersonalia"
-                    placeholder="Personalia"
-                    auto-size
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Keuangan</td>
-                <td>
-                  <a-textarea
-                    v-model="realKeuangan"
-                    placeholder="Keuangan"
+                    v-model="realColumn"
+                    placeholder="Column"
                     auto-size
                   />
                 </td>
@@ -89,11 +79,7 @@ export default {
       type: String,
       default: '',
     },
-    personalia: {
-      type: String,
-      default: '',
-    },
-    keuangan: {
+    column: {
       type: String,
       default: '',
     },
@@ -123,20 +109,12 @@ export default {
         this.$emit('update:view', val)
       },
     },
-    realPersonalia: {
+    realColumn: {
       get() {
-        return this.personalia
+        return this.column
       },
       set(val) {
-        this.$emit('update:personalia', val)
-      },
-    },
-    realKeuangan: {
-      get() {
-        return this.keuangan
-      },
-      set(val) {
-        this.$emit('update:keuangan', val)
+        this.$emit('update:column', val)
       },
     },
     realActive: {
@@ -150,13 +128,12 @@ export default {
   },
   methods: {
     async savePermission() {
-      const { idPdpt, title, view, personalia, keuangan, active } = this
+      const { idPdpt, title, view, column, active } = this
       const submit = {
         id_pendapatan_profil: idPdpt,
         title,
         view,
-        personalia,
-        keuangan,
+        column,
         active,
       }
 

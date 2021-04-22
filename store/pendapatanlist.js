@@ -32,10 +32,19 @@ export const actions = {
     await this.$api.pendapatanlist.create(submit)
   },
   async updateItem({ commit }, submit) {
-    const res = await this.$api.pendapatanlist.update(
-      submit.id_pendapatan_list,
-      submit
-    )
+    let res
+    if (submit.param) {
+      res = await this.$api.pendapatanlist.update(
+        submit.submit.id_pendapatan_list,
+        submit.submit,
+        submit.param
+      )
+    } else {
+      res = await this.$api.pendapatanlist.update(
+        submit.id_pendapatan_list,
+        submit
+      )
+    }
 
     commit('EDT_ITEM', res.data)
   },

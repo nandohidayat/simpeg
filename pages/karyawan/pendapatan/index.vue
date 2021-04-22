@@ -7,6 +7,32 @@
             <v-card-text>
               <v-row align="center" class="mx-3">
                 <v-col cols="3">
+                  <a-date-picker
+                    :open="isOpen"
+                    :value="year"
+                    mode="year"
+                    placeholder="Pilih tahun"
+                    style="width: 100%"
+                    format="YYYY"
+                    @change="onChange"
+                    @openChange="onOpenChange"
+                    @panelChange="onPanelChange"
+                  />
+                </v-col>
+                <v-col cols="4">
+                  <a-select
+                    v-model="list"
+                    style="width: 100%"
+                    show-search
+                    placeholder="Pendapatan"
+                    option-filter-prop="label"
+                    :disabled="disList"
+                    :options="pendapatanlist.items"
+                    :filter-option="filterOption"
+                    @change="onChangeList"
+                  ></a-select>
+                </v-col>
+                <v-col cols="3">
                   <a-select
                     v-model="tipe"
                     style="width: 100%"
@@ -15,28 +41,10 @@
                     option-filter-prop="label"
                     :options="pendapatanprofil.tipe"
                     :filter-option="filterOption"
+                    @change="onChangeTipe"
                   ></a-select>
                 </v-col>
-                <v-col cols="3">
-                  <a-select
-                    v-model="profil"
-                    style="width: 100%"
-                    show-search
-                    placeholder="Profil"
-                    option-filter-prop="label"
-                    :options="pendapatanprofil.profils"
-                    :filter-option="filterOption"
-                  ></a-select>
-                </v-col>
-                <v-col cols="3">
-                  <a-month-picker
-                    v-model="month"
-                    placeholder="Bulan"
-                    style="width: 100%"
-                    :format="'MMMM YYYY'"
-                  />
-                </v-col>
-                <v-col cols="3"
+                <v-col cols="2"
                   ><a-button block type="primary" @click="updatePendapatan"
                     >Simpan</a-button
                   ></v-col
@@ -47,7 +55,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <component :is="tablePendapatan"></component>
+    <component :is="tablePendapatan" ref="pendapatan" :tipe="tipe"></component>
   </div>
 </template>
 
@@ -57,7 +65,7 @@ import locale from 'ant-design-vue/lib/locale/id_ID'
 import moment from 'moment'
 import 'moment/locale/id'
 
-import PGaji from '@/components/pendapatan/table/p-gaji'
+import Gaji from '@/components/pendapatan/table/gaji'
 import EmptyTable from '@/components/base/empty-table'
 
 moment.locale('id')
@@ -71,19 +79,21 @@ export default {
   data() {
     return {
       EmptyTable,
-      PGaji,
+      Gaji,
       locale,
-      tipe: undefined,
-      profil: undefined,
-      month: undefined,
-      search: '',
-      personalia: ['Pendapatan', 'Pengeluaran', 'Pajak'],
-      keuangan: ['Bank', 'Koperasi', 'Rumah Sakit', 'Organisasi', 'Lain-lain'],
+      tipe: 'personalia',
+      year: moment(),
+      list: undefined,
+      disList: false,
+      isOpen: false,
     }
   },
   async fetch({ store }) {
     await Promise.all([
-      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+      store.dispatch('pendapatanlist/fetchItems', {
+        select: 1,
+        year: moment().year(),
+      }),
     ])
   },
   head() {
@@ -99,17 +109,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(['pendapatanprofil', 'pendapatan']),
+    ...mapState(['pendapatanprofil', 'pendapatan', 'pendapatanlist']),
     updater() {
-      return this.tipe + this.profil + this.month
+      return this.tipe + this.list
     },
     tablePendapatan() {
-      if (this.month) {
-        if (this.tipe === 'personalia') {
-          if (parseInt(this.profil) === 1) {
-            return this.PGaji
-          }
-          return this.EmptyTable
+      if (this.list) {
+        if (parseInt(this.pendapatan.profil) === 1) {
+          return this.Gaji
         }
         return this.EmptyTable
       }
@@ -117,22 +124,17 @@ export default {
     },
   },
   watch: {
-    async updater(val) {
-      const { tipe, profil } = this
-      let { month } = this
-      if (tipe && profil && month) {
-        month = moment(month).format('MM-YYYY')
-        try {
-          await this.$store.dispatch('pendapatan/fetchItems', {
-            tipe,
-            profil,
-            month,
-          })
-          this.$alert('success', 'Loaded')
-        } catch (e) {
-          this.$alert('error', e)
-        }
+    async year(val) {
+      this.disList = true
+      try {
+        await this.$store.dispatch('pendapatanlist/fetchItems', {
+          select: 1,
+          year: moment(val).year(),
+        })
+      } catch (e) {
+        this.$alert('error', e)
       }
+      this.disList = false
     },
   },
   methods: {
@@ -142,20 +144,43 @@ export default {
         .includes(input.toLowerCase())
     },
     async updatePendapatan() {
-      const { tipe, profil } = this
-      let { month } = this
-      month = moment(month).format('MM-YYYY')
+      const { list } = this
 
       try {
         await this.$store.dispatch('pendapatan/updateItem', {
-          month,
-          tipe,
-          profil,
+          list,
         })
         this.$alert('success', 'Successfully Saved')
       } catch (e) {
         this.$alert('error', e)
       }
+    },
+    async onChangeList() {
+      try {
+        await this.$store.dispatch('pendapatan/fetchItems', {
+          list: this.list,
+        })
+        this.$alert('success', 'Loaded')
+      } catch (e) {
+        this.$alert('error', e)
+      }
+    },
+    onChangeTipe(val) {
+      this.$refs.pendapatan.onChangeTab(1, val)
+    },
+    onOpenChange(status) {
+      if (status) {
+        this.isOpen = true
+      } else {
+        this.isOpen = false
+      }
+    },
+    onPanelChange(v) {
+      this.year = v
+      this.isOpen = false
+    },
+    onChange() {
+      this.year = undefined
     },
   },
 }

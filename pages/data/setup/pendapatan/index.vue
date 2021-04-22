@@ -40,6 +40,17 @@
               {{ showDate(item.distribution) }}
             </template>
             <template #item.action="{ item }">
+              <a-popconfirm
+                :title="`Anda yakin akan me-${
+                  item.locked ? 'unlock' : 'lock'
+                } data ini?`"
+                @confirm="lockItem(item.id_pendapatan_list, item.locked)"
+                ><a-button
+                  size="small"
+                  :type="item.locked ? 'primary' : 'danger'"
+                  >{{ item.locked ? 'Unlock' : 'Lock' }}</a-button
+                ></a-popconfirm
+              >
               <a-button
                 size="small"
                 class="mr-1"
@@ -261,6 +272,16 @@ export default {
         await this.$store.dispatch('pendapatanlist/deleteItem', id)
 
         this.$alert('success', 'Sukses menghapus data')
+      } catch (e) {
+        this.$alert('error', e)
+      }
+    },
+    async lockItem(id, locked) {
+      try {
+        await this.$store.dispatch('pendapatanlist/updateItem', {
+          param: { lock: 1 },
+          submit: { id_pendapatan_list: id, locked: !locked },
+        })
       } catch (e) {
         this.$alert('error', e)
       }

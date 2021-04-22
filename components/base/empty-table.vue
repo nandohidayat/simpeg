@@ -1,5 +1,5 @@
 <template>
-  <v-sheet height="100"></v-sheet>
+  <div></div>
 </template>
 
 <script>

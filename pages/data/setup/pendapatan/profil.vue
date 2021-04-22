@@ -25,10 +25,13 @@
             :items="pendapatanprofil.profils"
             dense
           >
-            <template #item.personalia="{ item }">
-              <pre>
-              {{ parseJson(item) }}
-              </pre>
+            <template #item.column="{ item }">
+              <span
+                class="d-inline-block text-truncate"
+                style="max-width: 150px"
+              >
+                {{ item.column }}
+              </span>
             </template>
             <template #item.action="{ item }">
               <a-button
@@ -66,8 +69,7 @@
       :id-pdpt="submit.id_pendapatan_profil"
       :title.sync="submit.title"
       :view.sync="submit.view"
-      :personalia.sync="submit.personalia"
-      :keuangan.sync="submit.keuangan"
+      :column.sync="submit.column"
       :active.sync="submit.active"
     ></pdpt-setup-profil-dialog>
   </div>
@@ -104,13 +106,8 @@ export default {
           filterable: false,
         },
         {
-          text: 'Personalia',
-          value: 'personalia',
-          filterable: false,
-        },
-        {
-          text: 'Keuangan',
-          value: 'keuangan',
+          text: 'Column',
+          value: 'column',
           filterable: false,
         },
         {
@@ -131,8 +128,7 @@ export default {
         id_pendapatan_profil: undefined,
         title: '',
         view: '',
-        personalia: '',
-        keuangan: '',
+        column: '',
         active: false,
       },
     }
@@ -156,13 +152,6 @@ export default {
     ...mapState(['pendapatanprofil']),
   },
   methods: {
-    parseJson(item) {
-      try {
-        return JSON.stringify(JSON.parse(item.personalia), null, 2).trim()
-      } catch (e) {
-        return `${e.name} : ${e.message}`
-      }
-    },
     openDialog(edit = false, data = {}) {
       if (edit) {
         this.edit = true
@@ -173,8 +162,7 @@ export default {
           id_pendapatan_profil: undefined,
           title: '',
           view: '',
-          personalia: '',
-          keuangan: '',
+          column: '',
           active: false,
         }
       }

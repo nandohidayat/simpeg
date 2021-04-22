@@ -1,10 +1,12 @@
 export const state = () => ({
   items: [],
+  profil: undefined,
 })
 
 export const mutations = {
-  SET_ITEMS(state, items) {
-    state.items = items
+  SET_ITEMS(state, { pendapatan, profil }) {
+    state.profil = profil
+    state.items = pendapatan
   },
 }
 
@@ -13,11 +15,9 @@ export const actions = {
     const res = await this.$api.pendapatan.index(query)
     commit('SET_ITEMS', res.data)
   },
-  async updateItem({ state }, { month, tipe, profil }) {
+  async updateItem({ state }, { list }) {
     await this.$api.pendapatan.update('1', {
-      month,
-      tipe,
-      profil,
+      list,
       pendapatan: state.items,
     })
   },

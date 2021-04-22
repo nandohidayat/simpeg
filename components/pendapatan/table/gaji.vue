@@ -1,8 +1,16 @@
 <template>
   <div>
-    <a-tabs type="card" size="small" @change="onChangeTab">
+    <a-tabs
+      v-if="tipe === 'personalia'"
+      type="card"
+      size="small"
+      @change="onChangeTab"
+    >
       <a-tab-pane key="1" tab="Pendapatan"> </a-tab-pane>
       <a-tab-pane key="2" tab="Pajak"> </a-tab-pane>
+    </a-tabs>
+    <a-tabs v-if="tipe === 'keuangan'" type="card" size="small">
+      <a-tab-pane key="1" tab="Potongan"> </a-tab-pane>
     </a-tabs>
     <vue-excel-editor
       ref="pendapatan"
@@ -35,6 +43,12 @@
 import { mapState } from 'vuex'
 
 export default {
+  props: {
+    tipe: {
+      type: String,
+      default: 'personalia',
+    },
+  },
   data() {
     return {
       columns: [
@@ -43,6 +57,7 @@ export default {
           readonly: true,
           sticky: true,
           title: 'NIK',
+          type: 'string',
           width: '70px',
         },
         {
@@ -50,6 +65,7 @@ export default {
           readonly: true,
           sticky: true,
           title: 'Nama',
+          type: 'string',
           width: '170px',
         },
         {
@@ -58,6 +74,7 @@ export default {
           readonly: true,
           title: 'Bagian',
           toText: this.depToLis,
+          type: 'string',
           width: '170px',
         },
         {
@@ -96,6 +113,7 @@ export default {
         {
           field: 'masaker',
           title: 'Masa Kerja',
+          type: 'string',
           validate: this.validMasaKerja,
         },
         {
@@ -526,36 +544,174 @@ export default {
           type: 'number',
           width: '120px',
         },
+        {
+          change: this.onChangeBank,
+          field: 'bank',
+          invisible: true,
+          title: 'Bank (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          change: this.onChangeKoperasi,
+          field: 'koperasi',
+          invisible: true,
+          title: 'Koperasi (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          change: this.onChangeKantor,
+          field: 'kantor',
+          invisible: true,
+          title: 'Kantor (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          change: this.onChangeOrganisasi,
+          field: 'organisasi',
+          invisible: true,
+          title: 'Organisasi (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          change: this.onChangeLainlain,
+          field: 'lainlain',
+          invisible: true,
+          title: 'Lain-lain (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          field: 'jmlhpotg',
+          invisible: true,
+          title: 'Jumlah Potongan (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          readonly: true,
+          width: '120px',
+        },
+        {
+          field: 'penyerahan',
+          invisible: true,
+          title: 'Penyerahan Gaji (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          readonly: true,
+          width: '120px',
+        },
       ],
-      columnAll: ['NIK', 'Nama'],
+      personalia: [
+        'nik_pegawai',
+        'nm_pegawai',
+        'nm_dept',
+        'golongan',
+        'ketptkp',
+        'ptkp',
+        'masaker',
+        'pdpt1',
+        'pdpt2p',
+        'pdpt2',
+        'pdpt3p',
+        'pdpt3',
+        'pdpt4',
+        'pdpt5',
+        'pdpt6',
+        'pdpt7',
+        'pdpt8',
+        'pdpt9',
+        'pdpt10',
+        'pdpt11',
+        'pdpt12',
+        'jmlhgaji',
+        'pot1',
+        'pot2p',
+        'pot2',
+        'pot3p',
+        'pot3',
+        'pot4',
+        'pot5',
+        'pot6',
+        'pot7',
+        'pot8',
+        'pot9',
+        'pot10',
+        'sebelumzakat',
+        'pot11',
+        'diterima',
+      ],
+      pajak: [
+        'nik_pegawai',
+        'nm_pegawai',
+        'pjk1',
+        'pjk2',
+        'pjk3',
+        'pjk4',
+        'pjk5',
+        'pjk6',
+        'pjk7',
+        'pjk8',
+        'pjk9',
+        'pjk10',
+        'pjk11',
+        'pjk12',
+        'pjk13',
+        'pjk14',
+        'pjk15',
+      ],
+      keuangan: [
+        'nm_pegawai',
+        'nik_pegawai',
+        'diterima',
+        'bank',
+        'koperasi',
+        'kantor',
+        'organisasi',
+        'lainlain',
+        'totalpotg',
+        'penyerahan',
+      ],
+      columnAll: ['nik_pegawai', 'nm_pegawai'],
     }
   },
   computed: {
     ...mapState(['pendapatan']),
   },
   methods: {
-    onChangeTab(val) {
+    onChangeTab(val, tipe = this.tipe) {
       this.$refs.pendapatan.fields.forEach((field) => {
-        if (this.columnAll.includes(field.label)) return
-        if (parseInt(val) === 1 && !field.name.includes('pjk'))
-          field.invisible = false
-        else if (parseInt(val) === 2 && field.name.includes('pjk'))
-          field.invisible = false
-        else field.invisible = true
+        if (tipe === 'personalia') {
+          if (parseInt(val) === 1 && this.personalia.includes(field.name))
+            field.invisible = false
+          else if (parseInt(val) === 2 && this.pajak.includes(field.name))
+            field.invisible = false
+          else field.invisible = true
+        }
+        if (tipe === 'keuangan') {
+          if (parseInt(val) === 1 && this.keuangan.includes(field.name))
+            field.invisible = false
+          else field.invisible = true
+        }
       })
-
-      this.$forceUpdate()
     },
     numToCur(val) {
       return parseFloat(val || 0)
         .toFixed(2)
         .replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
-    },
-    numToDig(val) {
-      if (val) {
-        return val.replace(/^(..)(..)$/, '$1:$2')
-      }
-      return '00:00'
     },
     numToVal(text) {
       return Number(text.replace(/[^0-9.-]+/g, ''))
@@ -620,6 +776,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt2p(nVal, oVal, row) {
       row.pdpt2 = (nVal * row.pdpt1) / 100
@@ -670,6 +830,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt3p(nVal, oVal, row) {
       row.pdpt3 = (nVal * row.pdpt1) / 100
@@ -720,6 +884,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt4(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -768,6 +936,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt5(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -816,6 +988,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt6(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -864,6 +1040,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt7(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -912,6 +1092,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt8(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -960,6 +1144,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt9(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1008,6 +1196,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt10(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1056,6 +1248,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt11(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1104,6 +1300,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt12(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1152,6 +1352,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePot2p(nVal, oVal, row) {
       row.pot2 = -((nVal * row.pdpt1) / 100)
@@ -1171,6 +1375,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePot3p(nVal, oVal, row) {
       row.pot3 = -((nVal * row.pdpt1) / 100)
@@ -1190,6 +1398,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePot4(nVal, oVal, row) {
       row.jmlhpot =
@@ -1207,6 +1419,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePot5(nVal, oVal, row) {
       row.jmlhpot =
@@ -1224,6 +1440,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePot6(nVal, oVal, row) {
       row.jmlhpot =
@@ -1241,6 +1461,10 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePot9(nVal, oVal, row) {
       row.jmlhpot =
@@ -1258,6 +1482,34 @@ export default {
       row.sebelumzakat = row.jmlhgaji + row.jmlhpot
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
+    },
+    onChangeBank(nval, oval, row) {
+      row.totalpotg =
+        nval + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
+    },
+    onChangeKoperasi(nval, oval, row) {
+      row.totalpotg =
+        row.bank + nval + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
+    },
+    onChangeKantor(nval, oval, row) {
+      row.totalpotg =
+        row.bank + row.koperasi + nval + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
+    },
+    onChangeOrganisasi(nval, oval, row) {
+      row.totalpotg = row.bank + row.koperasi + row.kantor + nval + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
+    },
+    onChangeLainlain(nval, oval, row) {
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + nval
+      row.penyerahan = row.diterima + row.totalpotg
     },
   },
 }
