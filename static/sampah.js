@@ -1,150 +1,220 @@
 const sampah = [
   {
     field: 'nik_pegawai',
-    type: 'string',
+
+    type: 'number',
   },
   {
     field: 'nm_pegawai',
+
     type: 'string',
   },
   {
     field: 'nm_dept',
+
     type: 'string',
   },
   {
-    field: 'golongan',
-    type: 'select',
-  },
-  {
     field: 'ketptkp',
+
     type: 'select',
   },
   {
     field: 'ptkp',
+
     type: 'number',
   },
   {
-    field: 'masaker',
-    type: 'string',
-  },
-  {
-    field: 'pdpt1',
+    field: 'index1',
+
     type: 'number',
   },
   {
-    field: 'pdpt2p',
+    field: 'index2',
+
     type: 'number',
   },
   {
-    field: 'pdpt2',
+    field: 'index3',
+
     type: 'number',
   },
   {
-    field: 'pdpt3p',
+    field: 'index4',
+
     type: 'number',
   },
   {
-    field: 'pdpt3',
+    field: 'index5',
+
     type: 'number',
   },
   {
-    field: 'pdpt4',
+    field: 'index6',
+
     type: 'number',
   },
   {
-    field: 'pdpt5',
+    field: 'index7',
+
     type: 'number',
   },
   {
-    field: 'pdpt6',
+    field: 'index8',
+
     type: 'number',
   },
   {
-    field: 'pdpt7',
+    field: 'index9',
+
     type: 'number',
   },
   {
-    field: 'pdpt8',
+    field: 'index10',
+
     type: 'number',
   },
   {
-    field: 'pdpt9',
+    field: 'index11',
+
     type: 'number',
   },
   {
-    field: 'pdpt10',
+    field: 'index12',
+
     type: 'number',
   },
   {
-    field: 'pdpt11',
+    field: 'jmlhindex',
+
     type: 'number',
   },
   {
-    field: 'pdpt12',
+    field: 'index13',
+
     type: 'number',
   },
   {
-    field: 'jmlhgaji',
+    field: 'index14',
+
     type: 'number',
   },
   {
-    field: 'pot1',
+    field: 'bruto1',
+
     type: 'number',
   },
   {
-    field: 'pot2p',
+    field: 'bruto2v1',
+
     type: 'number',
   },
   {
-    field: 'pot2',
+    field: 'bruto2v2',
+
     type: 'number',
   },
   {
-    field: 'pot3p',
+    field: 'bruto2p',
+
     type: 'number',
   },
   {
-    field: 'pot3',
+    field: 'bruto2',
+
     type: 'number',
   },
   {
-    field: 'pot4',
+    field: 'bruto3v',
+
     type: 'number',
   },
   {
-    field: 'pot5',
+    field: 'bruto3p',
+
     type: 'number',
   },
   {
-    field: 'pot6',
+    field: 'bruto3',
+
     type: 'number',
   },
   {
-    field: 'pot7',
+    field: 'bruto4v',
+
     type: 'number',
   },
   {
-    field: 'pot8',
+    field: 'bruto4p',
+
     type: 'number',
   },
   {
-    field: 'pot9',
+    field: 'bruto4',
+
     type: 'number',
   },
   {
-    field: 'pot10',
+    field: 'bruto5',
+
     type: 'number',
   },
   {
-    field: 'jmlhpot',
+    field: 'premi1',
+
     type: 'number',
   },
   {
-    field: 'sebelumzakat',
+    field: 'premi2p',
+
     type: 'number',
   },
   {
-    field: 'pot11',
+    field: 'premi2',
+
+    type: 'number',
+  },
+  {
+    field: 'premi3v',
+
+    type: 'number',
+  },
+  {
+    field: 'premi3p',
+
+    type: 'number',
+  },
+  {
+    field: 'premi3',
+
+    type: 'number',
+  },
+  {
+    field: 'premi4v1',
+
+    type: 'number',
+  },
+  {
+    field: 'premi4v2',
+
+    type: 'number',
+  },
+  {
+    field: 'premi4p',
+
+    type: 'number',
+  },
+  {
+    field: 'premi4',
+
+    type: 'number',
+  },
+  {
+    field: 'jmlhpremi',
+    type: 'number',
+  },
+  {
+    field: 'premi5',
     type: 'number',
   },
   {
@@ -153,90 +223,112 @@ const sampah = [
   },
   {
     field: 'pjk1',
+
     type: 'number',
   },
   {
     field: 'pjk2',
+
     type: 'number',
   },
   {
     field: 'pjk3',
+
     type: 'number',
   },
   {
     field: 'pjk4',
+
     type: 'number',
   },
   {
     field: 'pjk5',
+
     type: 'number',
   },
   {
     field: 'pjk6',
+
     type: 'number',
   },
   {
     field: 'pjk7',
+
     type: 'number',
   },
   {
     field: 'pjk8',
+
     type: 'number',
   },
   {
     field: 'pjk9',
+
     type: 'number',
   },
   {
     field: 'pjk10',
+
     type: 'number',
   },
   {
     field: 'pjk11',
+
     type: 'number',
   },
   {
     field: 'pjk12',
+
     type: 'number',
   },
   {
     field: 'pjk13',
+
     type: 'number',
   },
   {
     field: 'pjk14',
+
     type: 'number',
   },
   {
     field: 'pjk15',
+
     type: 'number',
   },
   {
-    field: 'bank',
+    field: 'remunerasi',
+
+    type: 'number',
+  },
+  {
+    field: 'panti',
+
     type: 'number',
   },
   {
     field: 'koperasi',
+
     type: 'number',
   },
   {
     field: 'kantor',
-    type: 'number',
-  },
-  {
-    field: 'organisasi',
+
     type: 'number',
   },
   {
     field: 'lainlain',
+
     type: 'number',
   },
   {
     field: 'jmlhpotg',
+
     type: 'number',
   },
   {
     field: 'penyerahan',
+
     type: 'number',
   },
 ]

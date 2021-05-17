@@ -41,6 +41,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import moment from 'moment'
 
 export default {
   props: {
@@ -57,7 +58,7 @@ export default {
           readonly: true,
           sticky: true,
           title: 'NIK',
-          type: 'string',
+          type: 'number',
           width: '70px',
         },
         {
@@ -103,6 +104,7 @@ export default {
           type: 'select',
         },
         {
+          change: this.onChangePtkp,
           field: 'ptkp',
           title: 'PTKP (Rp)',
           toText: this.numToCur,
@@ -324,13 +326,33 @@ export default {
           change: this.onChangePot6,
         },
         {
-          title: '07. BPJS Kesehatan (Rp)',
-          field: 'pot7',
+          title: '07. BPJS Kesehatan (%)',
+          field: 'pot7p',
           type: 'number',
           width: '120px',
           readonly: true,
           toText: this.numToCur,
           toValue: this.numToVal,
+        },
+        {
+          change: this.onChangePot7p,
+          field: 'pot7',
+          readonly: true,
+          title: '07. BPJS Kesehatan (Rp)',
+          type: 'number',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          width: '120px',
+        },
+        {
+          change: this.onChangePot8p,
+          field: 'pot8p',
+          readonly: true,
+          title: '08. BPJS T. Kerja (%)',
+          type: 'number',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          width: '120px',
         },
         {
           title: '08. BPJS T. Kerja (Rp)',
@@ -646,7 +668,9 @@ export default {
         'pot4',
         'pot5',
         'pot6',
+        'pot7p',
         'pot7',
+        'pot8p',
         'pot8',
         'pot9',
         'pot10',
@@ -707,6 +731,7 @@ export default {
           else field.invisible = true
         }
       })
+      this.$forceUpdate()
     },
     numToCur(val) {
       return parseFloat(val || 0)
@@ -723,6 +748,36 @@ export default {
       if (content === '') return ''
       if (!/^[0-9]{2}:[0-9]{2}$/.test(content)) return 'Invalid Format (XX:XX)'
       return '' // return empty string if there is no error
+    },
+    onChangePtkp(nVal, oVal, row) {
+      row.pjk10 = -(nVal * moment(this.pendapatan.date).format('M'))
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
+      row.pjk12 = row.pjk11 * 0.05
+      row.pjk14 = -row.pjk12
+      row.pjk15 = row.pjk12 + row.pjk13
+
+      row.pot1 = -row.pjk15
+      row.pot10 = row.pjk15
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
     },
     onChangePdpt1(nVal, oVal, row) {
       row.pdpt2 = (nVal * row.pdpt2p) / 100
@@ -748,7 +803,7 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
@@ -756,9 +811,8 @@ export default {
       row.pot1 = -row.pjk15
       row.pot2 = -(nVal * row.pot2p) / 100
       row.pot3 = -(nVal * row.pot3p) / 100
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -804,15 +858,14 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
 
       row.pot1 = -row.pjk15
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -858,15 +911,14 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
 
       row.pot1 = -row.pjk15
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -910,15 +962,14 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
 
       row.pot1 = -row.pjk15
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -962,15 +1013,14 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
 
       row.pot1 = -row.pjk15
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -1014,15 +1064,14 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
 
       row.pot1 = -row.pjk15
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -1066,15 +1115,14 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
 
       row.pot1 = -row.pjk15
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -1118,15 +1166,14 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
 
       row.pot1 = -row.pjk15
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -1170,15 +1217,14 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
 
       row.pot1 = -row.pjk15
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -1222,15 +1268,14 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
 
       row.pot1 = -row.pjk15
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -1274,15 +1319,14 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
 
       row.pot1 = -row.pjk15
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -1326,15 +1370,14 @@ export default {
       row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
       row.pjk8 = -(row.pjk3 * 0.05)
       row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10
+      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
       row.pjk12 = row.pjk11 * 0.05
       row.pjk14 = -row.pjk12
       row.pjk15 = row.pjk12 + row.pjk13
 
       row.pot1 = -row.pjk15
-      const bpjs = -((row.jmlhgaji - row.pdpt3) * 0.96) / 100
-      row.pot7 = bpjs
-      row.pot8 = bpjs
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
       row.pot10 = row.pjk15
 
       row.jmlhpot =
@@ -1453,6 +1496,52 @@ export default {
         row.pot4 +
         row.pot5 +
         nVal +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
+    },
+    onChangePot7p(nVal, oVal, row) {
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
+        row.pot7 +
+        row.pot8 +
+        row.pot9 +
+        row.pot10
+
+      row.sebelumzakat = row.jmlhgaji + row.jmlhpot
+      row.pot11 = -(row.sebelumzakat * 2.5) / 100
+      row.diterima = row.sebelumzakat + row.pot11
+
+      row.totalpotg =
+        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
+      row.penyerahan = row.diterima + row.totalpotg
+    },
+    onChangePot8p(nVal, oVal, row) {
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
+
+      row.jmlhpot =
+        row.pot1 +
+        row.pot2 +
+        row.pot3 +
+        row.pot4 +
+        row.pot5 +
+        row.pot6 +
         row.pot7 +
         row.pot8 +
         row.pot9 +

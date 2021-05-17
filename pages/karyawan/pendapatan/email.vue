@@ -1,48 +1,65 @@
 <template>
   <div>
-    <v-card outlined class="mb-3">
-      <v-card-text>
-        <v-row align="center">
-          <v-col cols="4">
-            <a-select
-              :value="pendapatanprofil.profil"
-              style="width: 100%;"
-              show-search
-              placeholder="Profil"
-              option-filter-prop="label"
-              :options="pendapatanprofil.profils"
-              :filter-option="filterOption"
-              disabled
-            ></a-select>
-          </v-col>
-          <v-col cols="4">
-            <a-select
-              v-model="data.karyawan"
-              style="width: 100%;"
-              show-search
-              placeholder="Karyawan"
-              option-filter-prop="label"
-              :options="karyawan.karyawans"
-              :filter-option="filterOption"
-              allow-clear
-            ></a-select>
-          </v-col>
-          <v-col cols="4">
-            <v-row no-gutters>
-              <v-col cols="8" class="pr-2">
-                <a-button icon="mail" block @click="openConfirm()">
-                  Kirim Email
-                </a-button>
-              </v-col>
-              <v-col cols="4" class="pl-2">
-                <a-button icon="reload" block @click="getEmail(true)">
-                </a-button>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
+    <v-row justify="center" class="mb-3" no-gutters>
+      <v-col cols="9">
+        <v-card outlined>
+          <a-config-provider :locale="locale">
+            <v-card-text>
+              <v-row align="center" class="mx-3">
+                <v-col cols="2">
+                  <a-date-picker
+                    :open="isOpen"
+                    :value="year"
+                    mode="year"
+                    placeholder="Pilih tahun"
+                    style="width: 100%"
+                    format="YYYY"
+                    @change="onChange"
+                    @openChange="onOpenChange"
+                    @panelChange="onPanelChange"
+                  />
+                </v-col>
+                <v-col cols="4">
+                  <a-select
+                    v-model="list"
+                    style="width: 100%"
+                    show-search
+                    placeholder="Pendapatan"
+                    option-filter-prop="label"
+                    :disabled="disList"
+                    :options="pendapatanlist.items"
+                    :filter-option="filterOption"
+                    @change="onChangeList"
+                  ></a-select>
+                </v-col>
+                <v-col cols="2">
+                  <a-select
+                    v-model="tipe"
+                    style="width: 100%"
+                    show-search
+                    placeholder="Tipe"
+                    option-filter-prop="label"
+                    :options="pendapatanprofil.tipe"
+                    :filter-option="filterOption"
+                    @change="onChangeTipe"
+                  ></a-select>
+                </v-col>
+                <v-col cols="2">
+                  <a-button
+                    block
+                    type="primary"
+                    :disabled="disabledSimpan"
+                    @click="updatePendapatan"
+                    >Simpan</a-button
+                  >
+                </v-col>
+                <v-col cols="2"> </v-col>
+              </v-row>
+            </v-card-text>
+          </a-config-provider>
+        </v-card>
+      </v-col>
+    </v-row>
     <v-card outlined>
       <v-data-table
         :items="pendapatanemail.emails"
@@ -58,8 +75,13 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import locale from 'ant-design-vue/lib/locale/id_ID'
 import moment from 'moment'
+import 'moment/locale/id'
+
+import { mapState, mapGetters } from 'vuex'
+
+moment.locale('id')
 
 export default {
   middleware({ store, redirect }) {
@@ -67,14 +89,9 @@ export default {
       return redirect('/404')
     }
   },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
-      store.dispatch('karyawan/fetchKaryawans', { select: 1, for: 'ant' }),
-    ])
-  },
   data() {
     return {
+      locale,
       data: {
         karyawan: undefined,
       },
@@ -89,10 +106,37 @@ export default {
       ],
       confirm: false,
       text: '',
+      year: moment(),
+      list: undefined,
+      disList: false,
+      isOpen: false,
+    }
+  },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+      store.dispatch('karyawan/fetchKaryawans', { select: 1, for: 'ant' }),
+    ])
+  },
+  head() {
+    return {
+      title: 'Email Pendapatan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Email Pendapatan',
+        },
+      ],
     }
   },
   computed: {
-    ...mapState(['pendapatanprofil', 'karyawan', 'pendapatanemail']),
+    ...mapState([
+      'pendapatanprofil',
+      'karyawan',
+      'pendapatanemail',
+      'pendapatanlist',
+    ]),
     ...mapGetters('karyawan', ['getKar']),
     dateMoment() {
       return moment(this.data.date).locale('id').format('MMMM YYYY')
@@ -145,18 +189,20 @@ export default {
         this.confirm = false
       }
     },
-  },
-  head() {
-    return {
-      title: 'Email Pendapatan',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Email Pendapatan',
-        },
-      ],
-    }
+    onOpenChange(status) {
+      if (status) {
+        this.isOpen = true
+      } else {
+        this.isOpen = false
+      }
+    },
+    onPanelChange(v) {
+      this.year = v
+      this.isOpen = false
+    },
+    onChange() {
+      this.year = undefined
+    },
   },
 }
 </script>

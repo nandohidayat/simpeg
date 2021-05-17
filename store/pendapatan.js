@@ -1,12 +1,21 @@
 export const state = () => ({
   items: [],
+  date: undefined,
   profil: undefined,
+  edit: undefined,
 })
 
 export const mutations = {
-  SET_ITEMS(state, { pendapatan, profil }) {
-    state.profil = profil
+  SET_ITEMS(state, { pendapatan, profil, date, edit }) {
     state.items = pendapatan
+    state.date = date
+    state.profil = profil
+    state.edit = edit
+  },
+  SET_EDIT(state, edit) {
+    // eslint-disable-next-line camelcase
+    const { id_pegawai, nm_pegawai } = this.$auth.user
+    state.edit = edit === 1 ? { id_pegawai, nm_pegawai } : undefined
   },
 }
 

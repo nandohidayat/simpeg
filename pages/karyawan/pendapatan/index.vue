@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-row justify="center" class="mb-3" no-gutters>
-      <v-col cols="8">
+      <v-col cols="9">
         <v-card outlined>
           <a-config-provider :locale="locale">
             <v-card-text>
               <v-row align="center" class="mx-3">
-                <v-col cols="3">
+                <v-col cols="2">
                   <a-date-picker
                     :open="isOpen"
                     :value="year"
@@ -32,7 +32,7 @@
                     @change="onChangeList"
                   ></a-select>
                 </v-col>
-                <v-col cols="3">
+                <v-col cols="2">
                   <a-select
                     v-model="tipe"
                     style="width: 100%"
@@ -44,11 +44,37 @@
                     @change="onChangeTipe"
                   ></a-select>
                 </v-col>
-                <v-col cols="2"
-                  ><a-button block type="primary" @click="updatePendapatan"
+                <v-col cols="2">
+                  <a-button
+                    block
+                    type="primary"
+                    :disabled="disabledSimpan"
+                    @click="updatePendapatan"
                     >Simpan</a-button
-                  ></v-col
-                >
+                  >
+                </v-col>
+                <v-col cols="2">
+                  <a-popconfirm
+                    v-if="showDone"
+                    title="Apakah anda yakin selesai mengedit?"
+                    @confirm="editPendapatan(2)"
+                  >
+                    <a-button block type="danger">Done</a-button>
+                  </a-popconfirm>
+                  <div v-else-if="showEdited" class="caption">
+                    <div style="line-height: 1.5">Currently edited by:</div>
+                    <div style="line-height: 1">
+                      {{ pendapatan.edit ? pendapatan.edit.nm_pegawai : '' }}
+                    </div>
+                  </div>
+                  <a-popconfirm
+                    v-else
+                    title="Apakah anda yakin akan mengedit?"
+                    @confirm="editPendapatan(1)"
+                  >
+                    <a-button block type="danger">Edit</a-button>
+                  </a-popconfirm>
+                </v-col>
               </v-row>
             </v-card-text>
           </a-config-provider>
@@ -66,6 +92,7 @@ import moment from 'moment'
 import 'moment/locale/id'
 
 import Gaji from '@/components/pendapatan/table/gaji'
+import Premi from '@/components/pendapatan/table/premi'
 import EmptyTable from '@/components/base/empty-table'
 
 moment.locale('id')
@@ -80,6 +107,7 @@ export default {
     return {
       EmptyTable,
       Gaji,
+      Premi,
       locale,
       tipe: 'personalia',
       year: moment(),
@@ -118,9 +146,30 @@ export default {
         if (parseInt(this.pendapatan.profil) === 1) {
           return this.Gaji
         }
+        if (parseInt(this.pendapatan.profil) === 5) {
+          return this.Premi
+        }
         return this.EmptyTable
       }
       return this.EmptyTable
+    },
+    disabledSimpan() {
+      return (
+        !this.pendapatan.edit ||
+        this.pendapatan.edit.id_pegawai !== this.$auth.user.id_pegawai
+      )
+    },
+    showDone() {
+      return (
+        this.pendapatan.edit &&
+        this.pendapatan.edit.id_pegawai === this.$auth.user.id_pegawai
+      )
+    },
+    showEdited() {
+      return (
+        this.pendapatan.edit &&
+        this.pendapatan.edit.id_pegawai !== this.$auth.user.id_pegawai
+      )
     },
   },
   watch: {
@@ -142,6 +191,23 @@ export default {
       return option.componentOptions.children[0].text
         .toLowerCase()
         .includes(input.toLowerCase())
+    },
+    async editPendapatan(edit) {
+      const { list } = this
+      try {
+        await this.$store.dispatch('pendapatanlist/updateItem', {
+          submit: { id_pendapatan_list: list },
+          param: { edit },
+        })
+
+        this.$store.commit('pendapatan/SET_EDIT', edit)
+        this.$alert(
+          'success',
+          edit === 1 ? 'Silahkan Mengedit' : 'Selesai Mengedit'
+        )
+      } catch (e) {
+        this.$alert('error', e)
+      }
     },
     async updatePendapatan() {
       const { list } = this
