@@ -15,7 +15,7 @@
                   :value="year"
                   mode="year"
                   placeholder="Pilih tahun"
-                  style="width: 100%"
+                  style="width: 100%;"
                   format="YYYY"
                   @change="onChange"
                   @openChange="onOpenChange"
@@ -76,7 +76,7 @@
       bottom
       right
       rounded
-      style="bottom: 46px"
+      style="bottom: 46px;"
       @click="openDialog()"
       ><v-icon small class="mr-1">mdi-plus</v-icon>tambah pendapatan</v-btn
     >
@@ -93,7 +93,7 @@
                     <td>
                       <a-select
                         v-model="submit.id_pendapatan_profil"
-                        style="width: 100%"
+                        style="width: 100%;"
                         show-search
                         placeholder="Profil"
                         option-filter-prop="label"
@@ -108,7 +108,7 @@
                       <a-month-picker
                         v-model="submit.month"
                         placeholder="Bulan"
-                        style="width: 100%"
+                        style="width: 100%;"
                         format="MMMM YYYY"
                       />
                     </td>
@@ -119,7 +119,7 @@
                       <a-date-picker
                         v-model="submit.distribution"
                         placeholder="Tanggal Distribusi"
-                        style="width: 100%"
+                        style="width: 100%;"
                         format="DD MMMM YYYY"
                       />
                     </td>
@@ -160,6 +160,14 @@ export default {
     if (!store.getters['user/hadAkses'](8)) {
       return redirect('/404')
     }
+  },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanlist/fetchItems', {
+        year: moment().year(),
+      }),
+      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+    ])
   },
   data() {
     return {
@@ -208,14 +216,6 @@ export default {
         },
       ],
     }
-  },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('pendapatanlist/fetchItems', {
-        year: moment().year(),
-      }),
-      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
-    ])
   },
   head() {
     return {

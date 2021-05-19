@@ -4,7 +4,7 @@
       v-model="drawer"
       temporary
       app
-      style="z-index: 1000"
+      style="z-index: 1000;"
       class="left-drawer"
     >
       <v-list dense nav>
@@ -62,7 +62,7 @@
       </template>
     </v-navigation-drawer>
     <nuxt></nuxt>
-    <v-footer fixed padless style="z-index: 999" width="100%">
+    <v-footer fixed padless style="z-index: 999;" width="100%">
       <v-card tile width="100%" color="#90D0CB">
         <v-row no-gutters align="center">
           <v-col cols="auto" class="mr-auto">

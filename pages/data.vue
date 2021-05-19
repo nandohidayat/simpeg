@@ -3,12 +3,12 @@
     <v-app-bar
       app
       color="white"
-      style="z-index: 999; padding: 0"
+      style="z-index: 999; padding: 0;"
       tile
       dense
       class="main-layout px-5"
     >
-      <a-menu v-model="current" mode="horizontal" style="width: 100%">
+      <a-menu v-model="current" mode="horizontal" style="width: 100%;">
         <a-sub-menu v-if="hadSubmenu(4)">
           <span slot="title"><a-icon type="user" />Akses</span>
           <a-menu-item v-if="hadAkses(4)" key="data-akses">

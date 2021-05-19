@@ -17,11 +17,6 @@ module.exports = {
   plugins: ['prettier'],
   // add your custom rules here
   rules: {
-    'vue/valid-v-slot': [
-      'error',
-      {
-        allowModifiers: true,
-      },
-    ],
+    'vue/valid-v-slot': 'off',
   },
 }

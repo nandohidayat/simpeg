@@ -12,7 +12,7 @@
                     :value="year"
                     mode="year"
                     placeholder="Pilih tahun"
-                    style="width: 100%"
+                    style="width: 100%;"
                     format="YYYY"
                     @change="onChange"
                     @openChange="onOpenChange"
@@ -22,7 +22,7 @@
                 <v-col cols="4">
                   <a-select
                     v-model="list"
-                    style="width: 100%"
+                    style="width: 100%;"
                     show-search
                     placeholder="Pendapatan"
                     option-filter-prop="label"
@@ -35,7 +35,7 @@
                 <v-col cols="2">
                   <a-select
                     v-model="tipe"
-                    style="width: 100%"
+                    style="width: 100%;"
                     show-search
                     placeholder="Tipe"
                     option-filter-prop="label"
@@ -89,6 +89,12 @@ export default {
       return redirect('/404')
     }
   },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+      store.dispatch('karyawan/fetchKaryawans', { select: 1, for: 'ant' }),
+    ])
+  },
   data() {
     return {
       locale,
@@ -111,12 +117,6 @@ export default {
       disList: false,
       isOpen: false,
     }
-  },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
-      store.dispatch('karyawan/fetchKaryawans', { select: 1, for: 'ant' }),
-    ])
   },
   head() {
     return {

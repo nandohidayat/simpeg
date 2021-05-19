@@ -12,7 +12,7 @@
                     :value="year"
                     mode="year"
                     placeholder="Pilih tahun"
-                    style="width: 100%"
+                    style="width: 100%;"
                     format="YYYY"
                     @change="onChange"
                     @openChange="onOpenChange"
@@ -22,7 +22,7 @@
                 <v-col cols="4">
                   <a-select
                     v-model="list"
-                    style="width: 100%"
+                    style="width: 100%;"
                     show-search
                     placeholder="Pendapatan"
                     option-filter-prop="label"
@@ -35,7 +35,7 @@
                 <v-col cols="2">
                   <a-select
                     v-model="tipe"
-                    style="width: 100%"
+                    style="width: 100%;"
                     show-search
                     placeholder="Tipe"
                     option-filter-prop="label"
@@ -62,8 +62,8 @@
                     <a-button block type="danger">Done</a-button>
                   </a-popconfirm>
                   <div v-else-if="showEdited" class="caption">
-                    <div style="line-height: 1.5">Currently edited by:</div>
-                    <div style="line-height: 1">
+                    <div style="line-height: 1.5;">Currently edited by:</div>
+                    <div style="line-height: 1;">
                       {{ pendapatan.edit ? pendapatan.edit.nm_pegawai : '' }}
                     </div>
                   </div>
@@ -103,6 +103,14 @@ export default {
       return redirect('/404')
     }
   },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanlist/fetchItems', {
+        select: 1,
+        year: moment().year(),
+      }),
+    ])
+  },
   data() {
     return {
       EmptyTable,
@@ -115,14 +123,6 @@ export default {
       disList: false,
       isOpen: false,
     }
-  },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('pendapatanlist/fetchItems', {
-        select: 1,
-        year: moment().year(),
-      }),
-    ])
   },
   head() {
     return {

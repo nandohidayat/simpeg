@@ -28,7 +28,7 @@
             <template #item.column="{ item }">
               <span
                 class="d-inline-block text-truncate"
-                style="max-width: 150px"
+                style="max-width: 150px;"
               >
                 {{ item.column }}
               </span>
@@ -59,7 +59,7 @@
       bottom
       right
       rounded
-      style="bottom: 46px"
+      style="bottom: 46px;"
       @click="openDialog()"
       ><v-icon small class="mr-1">mdi-plus</v-icon>tambah profil</v-btn
     >
@@ -90,6 +90,9 @@ export default {
     if (!store.getters['user/hadAkses'](17)) {
       return redirect('/404')
     }
+  },
+  async fetch({ store }) {
+    await store.dispatch('pendapatanprofil/fetchProfils')
   },
   data() {
     return {
@@ -132,9 +135,6 @@ export default {
         active: false,
       },
     }
-  },
-  async fetch({ store }) {
-    await store.dispatch('pendapatanprofil/fetchProfils')
   },
   head() {
     return {
