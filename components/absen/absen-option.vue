@@ -1,6 +1,6 @@
 <template>
   <v-card class="px-4" outlined>
-    <v-row>
+    <v-row class="py-2">
       <v-col cols="4">
         <v-menu
           ref="menu"

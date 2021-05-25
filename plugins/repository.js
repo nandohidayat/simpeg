@@ -45,6 +45,7 @@ export default (ctx, inject) => {
     pendapatanemail: repositoryWithAxios('pendapatan/email'),
     pendapatanharian: repositoryWithAxios('pendapatan/harian'),
     pendapatanlist: repositoryWithAxios('pendapatan/list'),
+    pendapatanmakan: repositoryWithAxios('pendapatan/makan'),
     pendapatanprofil: repositoryWithAxios('pendapatan/profil'),
     pendapatanpeg: repositoryWithAxios('pendapatanpeg'),
     logdepartemen: repositoryWithAxios('log/departemen'),

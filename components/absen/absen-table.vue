@@ -1,20 +1,24 @@
 <template>
   <v-card outlined>
     <v-data-table :headers="header" :items="absen.absens" multi-sort>
-      <template #item.masuk="{item}">
+      <template #item.masuk="{ item }">
         {{ item.masuk | time }}
       </template>
-      <template #item.keluar="{item}">
+      <template #item.keluar="{ item }">
         {{ item.keluar | time }}
       </template>
-      <template #item.pendapatan="{item}">
-        {{ item.pendapatan | rupiah }}
+      <template #item.harian="{ item }">
+        {{ item.harian | rupiah }}
+      </template>
+      <template #item.makan="{ item }">
+        {{ item.makan | rupiah }}
       </template>
       <template #body.append>
         <tr>
           <td colspan="5"></td>
           <td>Total :</td>
-          <td>{{ absen.pendapatan | rupiah }}</td>
+          <td>{{ absen.harian | rupiah }}</td>
+          <td>{{ absen.makan | rupiah }}</td>
         </tr>
       </template>
     </v-data-table>
@@ -45,7 +49,8 @@ export default {
         { text: 'Masuk', value: 'masuk' },
         { text: 'Keluar', value: 'keluar' },
         { text: 'Keterangan', value: 'keterangan' },
-        { text: 'Pendapatan', value: 'pendapatan' },
+        { text: 'Harian', value: 'harian' },
+        { text: 'Makan', value: 'makan' },
       ],
     }
   },

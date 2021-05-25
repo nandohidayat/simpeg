@@ -1,8 +1,8 @@
 <template>
   <base-form
     v-model="dialog"
-    title="Pendapatan Harian"
-    store="pendapatanharian"
+    title="Pendapatan Makan"
+    store="pendapatanmakan"
     action="Pendapatan"
     :data="newData"
     :edit="edit"
@@ -66,7 +66,7 @@ export default {
   data() {
     return {
       newData: {
-        id_pendapatan_harian: undefined,
+        id_pendapatan_makan: undefined,
         tgl: undefined,
         pendapatan: undefined,
       },
@@ -86,7 +86,7 @@ export default {
   watch: {
     value(val) {
       if (val) {
-        this.newData.id_pendapatan_harian = this.data.id_pendapatan_harian
+        this.newData.id_pendapatan_makan = this.data.id_pendapatan_makan
         this.newData.tgl = this.data.tgl
         this.newData.pendapatan = this.data.pendapatan
       }

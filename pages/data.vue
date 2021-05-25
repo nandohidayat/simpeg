@@ -3,12 +3,12 @@
     <v-app-bar
       app
       color="white"
-      style="z-index: 999; padding: 0;"
+      style="z-index: 999; padding: 0"
       tile
       dense
       class="main-layout px-5"
     >
-      <a-menu v-model="current" mode="horizontal" style="width: 100%;">
+      <a-menu v-model="current" mode="horizontal" style="width: 100%">
         <a-sub-menu v-if="hadSubmenu(4)">
           <span slot="title"><a-icon type="user" />Akses</span>
           <a-menu-item v-if="hadAkses(4)" key="data-akses">
@@ -28,11 +28,18 @@
               Akses Jadwal
             </nuxt-link>
           </a-menu-item>
-          <a-menu-item v-if="hadAkses(15)" key="data-jadwal-pendapatan">
-            <nuxt-link :to="{ name: 'data-jadwal-pendapatan' }">
-              Pendapatan Harian
-            </nuxt-link>
-          </a-menu-item>
+          <a-sub-menu v-if="hadAkses(15)" title="Pendapatan">
+            <a-menu-item key="data-jadwal-pendapatan-harian">
+              <nuxt-link :to="{ name: 'data-jadwal-pendapatan-harian' }">
+                Pendapatan Harian
+              </nuxt-link>
+            </a-menu-item>
+            <a-menu-item key="data-jadwal-pendapatan-makan">
+              <nuxt-link :to="{ name: 'data-jadwal-pendapatan-makan' }">
+                Pendapatan Makan
+              </nuxt-link>
+            </a-menu-item>
+          </a-sub-menu>
         </a-sub-menu>
         <a-sub-menu v-if="hadSubmenu(6)">
           <span slot="title"><a-icon type="control" />Setup</span>
