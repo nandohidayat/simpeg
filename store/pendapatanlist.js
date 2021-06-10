@@ -1,10 +1,15 @@
 export const state = () => ({
   items: [],
+  copy: [],
 })
 
 export const mutations = {
   SET_ITEMS(state, items) {
     state.items = items
+    state.copy = items
+  },
+  SET_COPYS(state, items) {
+    state.copy = items
   },
   ADD_ITEM(state, item) {
     state.items.push(item)
@@ -26,6 +31,9 @@ export const mutations = {
 export const actions = {
   async fetchItems({ commit }, query) {
     const res = await this.$api.pendapatanlist.index(query)
+    if (query.copy) {
+      commit('SET_COPYS', res.data)
+    }
     commit('SET_ITEMS', res.data)
   },
   async createItem({ commit }, submit) {

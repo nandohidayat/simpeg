@@ -6,10 +6,12 @@ import {
   ConfigProvider,
   DatePicker,
   Divider,
+  Dropdown,
   Icon,
   Input,
   Menu,
   Modal,
+  Notification,
   Popconfirm,
   Select,
   Table,
@@ -24,10 +26,12 @@ Vue.use(Checkbox)
 Vue.use(ConfigProvider)
 Vue.use(DatePicker)
 Vue.use(Divider)
+Vue.use(Dropdown)
 Vue.use(Icon)
 Vue.use(Input)
 Vue.use(Menu)
 Vue.use(Modal)
+Vue.use(Notification)
 Vue.use(Popconfirm)
 Vue.use(Select)
 Vue.use(Table)

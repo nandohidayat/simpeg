@@ -205,7 +205,7 @@ export default {
           field: 'jmlhindex',
           readonly: true,
           summary: 'sum',
-          title: 'Total Index ()',
+          title: 'Total Index Individu ()',
           toText: this.numToCur,
           toValue: this.numToVal,
           type: 'number',
@@ -214,7 +214,7 @@ export default {
         {
           change: this.onChangeIndex13,
           field: 'index13',
-          title: 'Skor Rumah Sakit ()',
+          title: 'Total Index Rumah Sakit ()',
           toText: this.numToCur,
           toValue: this.numToVal,
           type: 'number',
@@ -356,8 +356,8 @@ export default {
           width: '120px',
         },
         {
-          change: this.onChangePremi3v,
           field: 'premi3v',
+          readonly: true,
           title: '03. Makan (Hari)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -366,6 +366,7 @@ export default {
         },
         {
           field: 'premi3p',
+          readonly: true,
           title: '03. Makan (Tarif)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -374,6 +375,7 @@ export default {
         },
         {
           field: 'premi3',
+          readonly: true,
           title: '03. Makan (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -382,6 +384,7 @@ export default {
         },
         {
           field: 'premi4v1',
+          readonly: true,
           title: '04. Hadir (No)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -389,8 +392,8 @@ export default {
           width: '120px',
         },
         {
-          change: this.onChangePremi4v2,
           field: 'premi4v2',
+          readonly: true,
           title: '04. Hadir (Yes)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -399,6 +402,7 @@ export default {
         },
         {
           field: 'premi4p',
+          readonly: true,
           title: '04. Hadir (Tarif)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -407,6 +411,7 @@ export default {
         },
         {
           field: 'premi4',
+          readonly: true,
           title: '04. Hadir (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -1406,52 +1411,6 @@ export default {
     onChangePremi2(nVal, oVal, row) {
       const temp = row.jmlhpremi
       row.jmlhpremi = row.premi1 + nVal + row.premi3 + row.premi4
-      row.premi5 = (row.jmlhpremi - row.premi3) * (2.5 / 100)
-      row.diterima = row.jmlhpremi - row.premi5
-
-      row.pjk2 = row.pjk2 - temp + row.jmlhpremi
-
-      row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
-      row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
-      row.pjk12 = row.pjk11 * 0.05
-      row.pjk14 = -row.pjk12
-      row.pjk15 = row.pjk12 + row.pjk13
-
-      row.totalpotg =
-        row.remunerasi + row.panti + row.koperasi + row.kantor + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
-    },
-    onChangePremi3v(nVal, oVal, row) {
-      const temp = row.jmlhpremi
-      const temp1 = row.premi3
-
-      row.premi3 = nVal * row.premi3p
-
-      row.jmlhpremi = row.premi1 + row.premi2 + row.premi3 + row.premi4
-      row.premi5 = (row.jmlhpremi - row.premi3) * (2.5 / 100)
-      row.diterima = row.jmlhpremi - row.premi5
-
-      row.pjk2 = row.pjk2 - temp + row.jmlhpremi
-      row.pjk6 = row.pjk6 + temp1 - row.premi3
-
-      row.pjk7 = row.pjk1 + row.pjk2 + row.pjk3 + row.pjk4 + row.pjk5 + row.pjk6
-      row.pjk9 = -(row.pjk7 * 0.05)
-      row.pjk11 = Math.max(0, row.pjk7 + row.pjk8 + row.pjk9 + row.pjk10)
-      row.pjk12 = row.pjk11 * 0.05
-      row.pjk14 = -row.pjk12
-      row.pjk15 = row.pjk12 + row.pjk13
-
-      row.totalpotg =
-        row.remunerasi + row.panti + row.koperasi + row.kantor + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
-    },
-    onChangePremi4v2(nVal, oVal, row) {
-      const temp = row.jmlhpremi
-
-      row.premi4 = nVal * row.premi4p
-
-      row.jmlhpremi = row.premi1 + row.premi2 + row.premi3 + row.premi4
       row.premi5 = (row.jmlhpremi - row.premi3) * (2.5 / 100)
       row.diterima = row.jmlhpremi - row.premi5
 

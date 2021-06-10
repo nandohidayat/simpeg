@@ -4,7 +4,7 @@
       <v-col cols="9">
         <v-card outlined>
           <a-config-provider :locale="locale">
-            <v-card-text>
+            <v-card-text class="py-2">
               <v-row align="center" class="mx-3">
                 <v-col cols="2">
                   <a-date-picker
@@ -12,39 +12,27 @@
                     :value="year"
                     mode="year"
                     placeholder="Pilih tahun"
-                    style="width: 100%;"
+                    style="width: 100%"
                     format="YYYY"
                     @change="onChange"
                     @openChange="onOpenChange"
                     @panelChange="onPanelChange"
                   />
                 </v-col>
-                <v-col cols="4">
+                <v-col cols="7">
                   <a-select
                     v-model="list"
-                    style="width: 100%;"
+                    style="width: 100%"
                     show-search
                     placeholder="Pendapatan"
                     option-filter-prop="label"
                     :disabled="disList"
                     :options="pendapatanlist.items"
                     :filter-option="filterOption"
-                    @change="onChangeList"
+                    @change="onChangeList()"
                   ></a-select>
                 </v-col>
-                <v-col cols="2">
-                  <a-select
-                    v-model="tipe"
-                    style="width: 100%;"
-                    show-search
-                    placeholder="Tipe"
-                    option-filter-prop="label"
-                    :options="pendapatanprofil.tipe"
-                    :filter-option="filterOption"
-                    @change="onChangeTipe"
-                  ></a-select>
-                </v-col>
-                <v-col cols="2">
+                <v-col cols="3">
                   <a-button
                     block
                     type="primary"
@@ -53,7 +41,6 @@
                     >Simpan</a-button
                   >
                 </v-col>
-                <v-col cols="2"> </v-col>
               </v-row>
             </v-card-text>
           </a-config-provider>
@@ -89,12 +76,6 @@ export default {
       return redirect('/404')
     }
   },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
-      store.dispatch('karyawan/fetchKaryawans', { select: 1, for: 'ant' }),
-    ])
-  },
   data() {
     return {
       locale,
@@ -117,6 +98,12 @@ export default {
       disList: false,
       isOpen: false,
     }
+  },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+      store.dispatch('karyawan/fetchKaryawans', { select: 1, for: 'ant' }),
+    ])
   },
   head() {
     return {
