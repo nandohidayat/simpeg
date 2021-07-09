@@ -1,16 +1,15 @@
 <template>
   <div>
-    <a-tabs
-      v-if="tipe === 'personalia'"
-      type="card"
-      size="small"
-      @change="onChangeTab"
-    >
-      <a-tab-pane key="1" tab="Pendapatan"> </a-tab-pane>
+    <a-tabs v-if="tipe === 0" type="card" size="small" @change="onChangeTab">
+      <a-tab-pane key="0" tab="Pendapatan"> </a-tab-pane>
       <a-tab-pane key="2" tab="Pajak"> </a-tab-pane>
     </a-tabs>
-    <a-tabs v-if="tipe === 'keuangan'" type="card" size="small">
+    <a-tabs v-if="tipe === 1" type="card" size="small" @change="onChangeTab">
       <a-tab-pane key="1" tab="Potongan"> </a-tab-pane>
+      <a-tab-pane key="3" tab="Bank"> </a-tab-pane>
+      <a-tab-pane key="4" tab="Rumah Sakit"> </a-tab-pane>
+      <a-tab-pane key="5" tab="Organisasi"> </a-tab-pane>
+      <a-tab-pane key="6" tab="Lain-lain"> </a-tab-pane>
     </a-tabs>
     <vue-excel-editor
       ref="pendapatan"
@@ -46,39 +45,50 @@ import moment from 'moment'
 export default {
   props: {
     tipe: {
-      type: String,
-      default: 'personalia',
+      type: Number,
+      default: 0,
+    },
+    filter: {
+      type: Number,
+      default: 0,
     },
   },
   data() {
     return {
       columns: [
         {
+          author: 0,
           field: 'nik_pegawai',
           readonly: true,
+          section: [0, 1, 2, 3, 4, 5, 6],
           sticky: true,
           title: 'NIK',
           type: 'number',
           width: '70px',
         },
         {
+          author: 0,
           field: 'nm_pegawai',
           readonly: true,
+          section: [0, 1, 2, 3, 4, 5, 6],
           sticky: true,
           title: 'Nama',
           type: 'string',
           width: '170px',
         },
         {
+          author: 0,
           field: 'nm_dept',
           initStyle: { 'white-space': 'pre' },
           readonly: true,
+          section: [0, 1, 2, 3, 4, 5, 6],
           title: 'Bagian',
           toText: this.depToLis,
           type: 'string',
           width: '170px',
         },
         {
+          author: 0,
           field: 'golongan',
           options: [
             'IA',
@@ -94,18 +104,23 @@ export default {
             'IIID',
             'IVA',
           ],
+          section: [0],
           title: 'Golongan',
           type: 'select',
         },
         {
+          author: 0,
           field: 'ketptkp',
           options: ['K/0', 'K/1', 'K/2', 'K/3', 'K/4', 'K/5', 'TK/0'],
+          section: [0],
           title: 'Ket. PTKP',
           type: 'select',
         },
         {
+          author: 0,
           change: this.onChangePtkp,
           field: 'ptkp',
+          section: [0],
           title: 'PTKP (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -113,14 +128,18 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'masaker',
+          section: [0],
           title: 'Masa Kerja',
           type: 'string',
           validate: this.validMasaKerja,
         },
         {
+          author: 0,
           change: this.onChangePdpt1,
           field: 'pdpt1',
+          section: [0],
           title: '01. Gaji Pokok (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -128,298 +147,362 @@ export default {
           width: '120px',
         },
         {
-          title: '02. Tunj. Trans (%)',
-          field: 'pdpt2p',
-          type: 'number',
-          width: '120px',
-          toText: this.numToCur,
-          toValue: this.numToVal,
+          author: 0,
           change: this.onChangePdpt2p,
+          field: 'pdpt2p',
+          section: [0],
+          title: '02. Tunj. Trans (%)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: '02. Tunj. Trans (Rp)',
+          author: 0,
           field: 'pdpt2',
-          type: 'number',
-          width: '120px',
+          section: [0],
           readonly: true,
+          title: '02. Tunj. Trans (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: '03. Tunj. HT (%)',
-          field: 'pdpt3p',
-          type: 'number',
-          width: '120px',
-          toText: this.numToCur,
-          toValue: this.numToVal,
+          author: 0,
           change: this.onChangePdpt3p,
+          field: 'pdpt3p',
+          section: [0],
+          title: '03. Tunj. HT (%)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: '03. Tunj. HT (Rp)',
+          author: 0,
           field: 'pdpt3',
-          type: 'number',
-          width: '120px',
           readonly: true,
+          section: [0],
+          title: '03. Tunj. HT (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: '04. Tunj. Fungsional (Rp)',
-          field: 'pdpt4',
-          type: 'number',
-          width: '120px',
-          toText: this.numToCur,
-          toValue: this.numToVal,
+          author: 0,
           change: this.onChangePdpt4,
-        },
-        {
-          title: '05. Tunj. Jabatan (Rp)',
-          field: 'pdpt5',
-          type: 'number',
-          width: '120px',
+          field: 'pdpt4',
+          section: [0],
+          title: '04. Tunj. Fungsional (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           change: this.onChangePdpt5,
-        },
-        {
-          title: '06. (Rp)',
-          field: 'pdpt6',
-          type: 'number',
-          width: '120px',
+          field: 'pdpt5',
+          section: [0],
+          title: '05. Tunj. Jabatan (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           change: this.onChangePdpt6,
-        },
-        {
-          title: '07. (Rp)',
-          field: 'pdpt7',
-          type: 'number',
-          width: '120px',
+          field: 'pdpt6',
+          section: [0],
+          title: '06. (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           change: this.onChangePdpt7,
-        },
-        {
-          title: '08. TPP (Rp)',
-          field: 'pdpt8',
-          type: 'number',
-          width: '120px',
+          section: [0],
+          field: 'pdpt7',
+          title: '07. (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           change: this.onChangePdpt8,
-        },
-        {
-          title: '09. (Rp)',
-          field: 'pdpt9',
-          type: 'number',
-          width: '120px',
+          field: 'pdpt8',
+          section: [0],
+          title: '08. TPP (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           change: this.onChangePdpt9,
-        },
-        {
-          title: '10. (Rp)',
-          field: 'pdpt10',
-          type: 'number',
-          width: '120px',
+          field: 'pdpt9',
+          section: [0],
+          title: '09. (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           change: this.onChangePdpt10,
-        },
-        {
-          title: '11. (Rp)',
-          field: 'pdpt11',
-          type: 'number',
-          width: '120px',
+          field: 'pdpt10',
+          section: [0],
+          title: '10. (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           change: this.onChangePdpt11,
-        },
-        {
-          title: '12. Lain-lain (Rp)',
-          field: 'pdpt12',
-          type: 'number',
-          width: '120px',
+          field: 'pdpt11',
+          section: [0],
+          title: '11. (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           change: this.onChangePdpt12,
+          field: 'pdpt12',
+          section: [0],
+          title: '12. Lain-lain (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: 'Jum. Penerimaan (Rp)',
+          author: 0,
           field: 'jmlhgaji',
-          type: 'number',
-          width: '120px',
           readonly: true,
+          section: [0],
+          title: 'Jum. Penerimaan (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: '01. PPH 21 (5%)(Rp)',
+          author: 0,
           field: 'pot1',
-          type: 'number',
-          width: '120px',
           readonly: true,
+          section: [0],
+          title: '01. PPH 21 (5%)(Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: '02. (%)',
-          field: 'pot2p',
-          type: 'number',
-          width: '120px',
-          toText: this.numToCur,
-          toValue: this.numToVal,
+          author: 0,
           change: this.onChangePot2p,
+          field: 'pot2p',
+          section: [0],
+          title: '02. (%)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: '02. (Rp)',
+          author: 0,
           field: 'pot2',
-          type: 'number',
-          width: '120px',
           readonly: true,
+          section: [0],
+          title: '02. (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: '03. Tab. HT (%)',
-          field: 'pot3p',
-          type: 'number',
-          width: '120px',
-          toText: this.numToCur,
-          toValue: this.numToVal,
+          author: 0,
           change: this.onChangePot3p,
+          field: 'pot3p',
+          section: [0],
+          title: '03. Tab. HT (%)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: '03. Tab. HT (Rp)',
+          author: 0,
           field: 'pot3',
-          type: 'number',
-          width: '120px',
           readonly: true,
+          section: [0],
+          title: '03. Tab. HT (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: '04. Sosial (Rp)',
-          field: 'pot4',
-          type: 'number',
-          width: '120px',
-          toText: this.numToCur,
-          toValue: this.numToVal,
+          author: 0,
           change: this.onChangePot4,
-        },
-        {
-          title: '05. Obat-obatan (Rp)',
-          field: 'pot5',
-          type: 'number',
-          width: '120px',
+          field: 'pot4',
+          section: [0],
+          title: '04. Sosial (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           change: this.onChangePot5,
-        },
-        {
-          title: '06. PPNI (Rp)',
-          field: 'pot6',
-          type: 'number',
-          width: '120px',
+          field: 'pot5',
+          section: [0],
+          title: '05. Obat-obatan (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           change: this.onChangePot6,
-        },
-        {
-          title: '07. BPJS Kesehatan (%)',
-          field: 'pot7p',
-          type: 'number',
-          width: '120px',
-          readonly: true,
+          field: 'pot6',
+          section: [0],
+          title: '06. PPNI (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
+          author: 0,
           change: this.onChangePot7p,
+          field: 'pot7p',
+          section: [0],
+          title: '07. BPJS Kesehatan (%)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           field: 'pot7',
           readonly: true,
+          section: [0],
           title: '07. BPJS Kesehatan (Rp)',
-          type: 'number',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
           width: '120px',
         },
         {
+          author: 0,
           change: this.onChangePot8p,
           field: 'pot8p',
-          readonly: true,
+          section: [0],
           title: '08. BPJS T. Kerja (%)',
-          type: 'number',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
           width: '120px',
         },
         {
-          title: '08. BPJS T. Kerja (Rp)',
+          author: 0,
           field: 'pot8',
-          type: 'number',
-          width: '120px',
           readonly: true,
+          section: [0],
+          title: '08. BPJS T. Kerja (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
-        },
-        {
-          title: '09. IBI (Rp)',
-          field: 'pot9',
           type: 'number',
           width: '120px',
-          toText: this.numToCur,
-          toValue: this.numToVal,
-          change: this.onChangePot9,
         },
         {
+          author: 0,
+          change: this.onChangePot9,
+          field: 'pot9',
+          section: [0],
+          title: '09. IBI (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 0,
           field: 'pot10',
           readonly: true,
+          section: [0],
           title: '10. Subsidi Pajak (Rp)',
-          type: 'number',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
           width: '120px',
         },
         {
+          author: 0,
           field: 'jmlhpot',
           readonly: true,
+          section: [0],
           title: 'Jum. Pengeluaran (Rp)',
-          type: 'number',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
           width: '120px',
         },
         {
-          title: 'Sebelum Zakat (Rp)',
+          author: 0,
           field: 'sebelumzakat',
-          type: 'number',
-          width: '120px',
+          section: [0],
+          title: 'Sebelum Zakat (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: '11. Zakat (2.5%) (Rp)',
+          author: 0,
           field: 'pot11',
-          type: 'number',
-          width: '120px',
+          section: [0],
+          title: '11. Zakat (2.5%) (Rp)',
           readonly: true,
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
-          title: 'Diterima Bersih (Rp)',
+          author: 0,
           field: 'diterima',
-          type: 'number',
-          width: '120px',
           readonly: true,
+          section: [0],
+          title: 'Diterima Bersih (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
         },
         {
+          author: 0,
           field: 'pjk1',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'Penerimaan Lalu (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -427,9 +510,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk2',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'Premi/ Lbr/ Mkn/ Hdr (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -437,9 +522,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk3',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'Gaji (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -447,9 +534,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk4',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'Insentiv (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -457,9 +546,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk5',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'THR/ Gaji ke/ Jaspr (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -467,9 +558,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk6',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'Makan (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -477,9 +570,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk7',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'Penerimaan Netto (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -487,9 +582,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk8',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'Biaya THT (5%) (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -497,9 +594,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk9',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'Biaya Jabatan (5%) (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -507,9 +606,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk10',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'P. Tidak Kena Pajak (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -517,9 +618,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk11',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'P. Kena Pajak (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -527,9 +630,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk12',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'Pajak Terhutang (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -537,9 +642,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk13',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'Pajak Sudah Dibayar (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -547,9 +654,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk14',
           invisible: true,
           readonly: true,
+          section: [2],
           title: 'Subsidi Pajak (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -557,9 +666,11 @@ export default {
           width: '120px',
         },
         {
+          author: 0,
           field: 'pjk15',
           invisible: true,
           readonly: true,
+          section: [2],
           toText: this.numToCur,
           toValue: this.numToVal,
           title: 'Pajak Kurang Bayar (Rp)',
@@ -567,19 +678,11 @@ export default {
           width: '120px',
         },
         {
-          change: this.onChangeBank,
-          field: 'bank',
+          author: 1,
+          change: this.onChangeJmlhkoperasi,
+          field: 'jmlhkoperasi',
           invisible: true,
-          title: 'Bank (Rp)',
-          toText: this.numToCur,
-          toValue: this.numToVal,
-          type: 'number',
-          width: '120px',
-        },
-        {
-          change: this.onChangeKoperasi,
-          field: 'koperasi',
-          invisible: true,
+          section: [1],
           title: 'Koperasi (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -587,9 +690,215 @@ export default {
           width: '120px',
         },
         {
-          change: this.onChangeKantor,
-          field: 'kantor',
+          author: 1,
+          change: this.onChangeBank,
+          field: 'bank1',
           invisible: true,
+          section: [3],
+          title: 'Bank BPD (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeBank,
+          field: 'bank2',
+          invisible: true,
+          section: [3],
+          title: 'Bank BPD Syariah (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeBank,
+          field: 'bank3',
+          invisible: true,
+          section: [3],
+          title: 'Bank BRI (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeBank,
+          field: 'bank4',
+          invisible: true,
+          section: [3],
+          title: 'Bank BRI Syariah (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeBank,
+          field: 'bank5',
+          invisible: true,
+          section: [3],
+          title: 'Bank Mandiri (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeBank,
+          field: 'bank6',
+          invisible: true,
+          section: [3],
+          title: 'Bank Mandiri Syariah (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeBank,
+          field: 'bank7',
+          invisible: true,
+          section: [3],
+          title: 'Bank BNI (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeBank,
+          field: 'bank8',
+          invisible: true,
+          section: [3],
+          title: 'Bank BNI Syariah (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          field: 'jmlhbank',
+          invisible: true,
+          readonly: true,
+          section: [1, 3],
+          title: 'Bank (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeKantor,
+          field: 'kantor1',
+          invisible: true,
+          section: [4],
+          title: 'Opname (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeKantor,
+          field: 'kantor2',
+          invisible: true,
+          section: [4],
+          title: 'Obat (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeKantor,
+          field: 'kantor3',
+          invisible: true,
+          section: [4],
+          title: 'Laborat (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeKantor,
+          field: 'kantor4',
+          invisible: true,
+          section: [4],
+          title: 'Radiologi (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeKantor,
+          field: 'kantor5',
+          invisible: true,
+          section: [4],
+          title: 'Poli (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeKantor,
+          field: 'kantor6',
+          invisible: true,
+          section: [4],
+          title: 'BKIA (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeKantor,
+          field: 'kantor7',
+          invisible: true,
+          section: [4],
+          title: 'Seragam (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeKantor,
+          field: 'kantor8',
+          invisible: true,
+          section: [4],
+          title: 'Check Up (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          field: 'jmlhkantor',
+          invisible: true,
+          readonly: true,
+          section: [1, 4],
           title: 'Kantor (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -597,9 +906,71 @@ export default {
           width: '120px',
         },
         {
+          author: 1,
           change: this.onChangeOrganisasi,
-          field: 'organisasi',
+          field: 'organisasi1',
           invisible: true,
+          section: [5],
+          title: 'PPNI (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeOrganisasi,
+          field: 'organisasi2',
+          invisible: true,
+          section: [5],
+          title: 'IBI (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeOrganisasi,
+          field: 'organisasi3',
+          invisible: true,
+          section: [5],
+          title: 'IDI (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeOrganisasi,
+          field: 'organisasi4',
+          invisible: true,
+          section: [5],
+          title: 'AISYIYAH (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeOrganisasi,
+          field: 'organisasi5',
+          invisible: true,
+          section: [5],
+          title: 'MASJID (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          field: 'jmlhorganisasi',
+          invisible: true,
+          readonly: true,
+          section: [1, 5],
           title: 'Organisasi (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -607,9 +978,107 @@ export default {
           width: '120px',
         },
         {
+          author: 1,
           change: this.onChangeLainlain,
-          field: 'lainlain',
+          field: 'lainlain1',
           invisible: true,
+          section: [6],
+          title: 'Beasiswa (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeLainlain,
+          field: 'lainlain2',
+          invisible: true,
+          section: [6],
+          title: 'Arisan (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeLainlain,
+          field: 'lainlain3',
+          invisible: true,
+          section: [6],
+          title: 'BTCLS (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeLainlain,
+          field: 'lainlain4',
+          invisible: true,
+          section: [6],
+          title: 'Imun Servik (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeLainlain,
+          field: 'lainlain5',
+          invisible: true,
+          section: [6],
+          title: 'Thibun (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeLainlain,
+          field: 'lainlain6',
+          invisible: true,
+          section: [6],
+          title: 'Kecantikan (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeLainlain,
+          field: 'lainlain7',
+          invisible: true,
+          section: [6],
+          title: 'Wilya (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          change: this.onChangeLainlain,
+          field: 'lainlain8',
+          invisible: true,
+          section: [6],
+          title: 'Sosial (Rp)',
+          toText: this.numToCur,
+          toValue: this.numToVal,
+          type: 'number',
+          width: '120px',
+        },
+        {
+          author: 1,
+          field: 'jmlhlainlain',
+          invisible: true,
+          readonly: true,
+          section: [1, 6],
           title: 'Lain-lain (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
@@ -617,121 +1086,52 @@ export default {
           width: '120px',
         },
         {
+          author: 1,
           field: 'jmlhpotg',
           invisible: true,
+          readonly: true,
+          section: [1],
           title: 'Jumlah Potongan (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
           type: 'number',
-          readonly: true,
           width: '120px',
         },
         {
+          author: 1,
           field: 'penyerahan',
           invisible: true,
+          readonly: true,
+          section: [1],
           title: 'Penyerahan Gaji (Rp)',
           toText: this.numToCur,
           toValue: this.numToVal,
           type: 'number',
-          readonly: true,
           width: '120px',
         },
       ],
-      personalia: [
-        'nik_pegawai',
-        'nm_pegawai',
-        'nm_dept',
-        'golongan',
-        'ketptkp',
-        'ptkp',
-        'masaker',
-        'pdpt1',
-        'pdpt2p',
-        'pdpt2',
-        'pdpt3p',
-        'pdpt3',
-        'pdpt4',
-        'pdpt5',
-        'pdpt6',
-        'pdpt7',
-        'pdpt8',
-        'pdpt9',
-        'pdpt10',
-        'pdpt11',
-        'pdpt12',
-        'jmlhgaji',
-        'pot1',
-        'pot2p',
-        'pot2',
-        'pot3p',
-        'pot3',
-        'pot4',
-        'pot5',
-        'pot6',
-        'pot7p',
-        'pot7',
-        'pot8p',
-        'pot8',
-        'pot9',
-        'pot10',
-        'sebelumzakat',
-        'pot11',
-        'diterima',
-      ],
-      pajak: [
-        'nik_pegawai',
-        'nm_pegawai',
-        'pjk1',
-        'pjk2',
-        'pjk3',
-        'pjk4',
-        'pjk5',
-        'pjk6',
-        'pjk7',
-        'pjk8',
-        'pjk9',
-        'pjk10',
-        'pjk11',
-        'pjk12',
-        'pjk13',
-        'pjk14',
-        'pjk15',
-      ],
-      keuangan: [
-        'nm_pegawai',
-        'nik_pegawai',
-        'diterima',
-        'bank',
-        'koperasi',
-        'kantor',
-        'organisasi',
-        'lainlain',
-        'totalpotg',
-        'penyerahan',
-      ],
-      columnAll: ['nik_pegawai', 'nm_pegawai'],
     }
   },
   computed: {
     ...mapState(['pendapatan']),
   },
-  methods: {
-    onChangeTab(val, tipe = this.tipe) {
+  watch: {
+    filter(val) {
       this.$refs.pendapatan.fields.forEach((field) => {
-        if (tipe === 'personalia') {
-          if (parseInt(val) === 1 && this.personalia.includes(field.name))
-            field.invisible = false
-          else if (parseInt(val) === 2 && this.pajak.includes(field.name))
-            field.invisible = false
-          else field.invisible = true
-        }
-        if (tipe === 'keuangan') {
-          if (parseInt(val) === 1 && this.keuangan.includes(field.name))
-            field.invisible = false
-          else field.invisible = true
-        }
+        const find = this.columns.find((i) => i.field === field.name)
+        field.invisible = !find.section.includes(parseInt(val))
       })
       this.$forceUpdate()
+    },
+  },
+  created() {
+    this.columns.forEach(
+      (i) => (i.invisible = !i.section.includes(this.filter))
+    )
+  },
+  methods: {
+    onChangeTab(val) {
+      this.$emit('update:filter', parseInt(val))
     },
     numToCur(val) {
       return parseFloat(val || 0)
@@ -775,9 +1175,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt1(nVal, oVal, row) {
       row.pdpt2 = (nVal * row.pdpt2p) / 100
@@ -831,9 +1229,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt2p(nVal, oVal, row) {
       row.pdpt2 = (nVal * row.pdpt1) / 100
@@ -884,9 +1280,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt3p(nVal, oVal, row) {
       row.pdpt3 = (nVal * row.pdpt1) / 100
@@ -937,9 +1331,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt4(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -988,9 +1380,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt5(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1039,9 +1429,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt6(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1090,9 +1478,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt7(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1141,9 +1527,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt8(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1192,9 +1576,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt9(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1243,9 +1625,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt10(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1294,9 +1674,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt11(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1345,9 +1723,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePdpt12(nVal, oVal, row) {
       const temp = row.jmlhgaji
@@ -1396,9 +1772,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePot2p(nVal, oVal, row) {
       row.pot2 = -((nVal * row.pdpt1) / 100)
@@ -1419,9 +1793,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePot3p(nVal, oVal, row) {
       row.pot3 = -((nVal * row.pdpt1) / 100)
@@ -1442,9 +1814,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePot4(nVal, oVal, row) {
       row.jmlhpot =
@@ -1463,9 +1833,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePot5(nVal, oVal, row) {
       row.jmlhpot =
@@ -1484,9 +1852,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePot6(nVal, oVal, row) {
       row.jmlhpot =
@@ -1505,12 +1871,10 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePot7p(nVal, oVal, row) {
-      row.pot7 = -((row.jmlhgaji - row.pdpt3) * row.pot7p) / 100
+      row.pot7 = -((row.jmlhgaji - row.pdpt3) * nVal) / 100
 
       row.jmlhpot =
         row.pot1 +
@@ -1528,12 +1892,10 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePot8p(nVal, oVal, row) {
-      row.pot8 = -((row.jmlhgaji - row.pdpt3) * row.pot8p) / 100
+      row.pot8 = -((row.jmlhgaji - row.pdpt3) * nVal) / 100
 
       row.jmlhpot =
         row.pot1 +
@@ -1551,9 +1913,7 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangePot9(nVal, oVal, row) {
       row.jmlhpot =
@@ -1572,33 +1932,51 @@ export default {
       row.pot11 = -(row.sebelumzakat * 2.5) / 100
       row.diterima = row.sebelumzakat + row.pot11
 
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.penyerahan = row.diterima + row.jmlhpotg
+    },
+    onChangeJmlhkoperasi(nval, oval, row) {
+      row.jmlhpotg = row.jmlhpotg - oval + nval
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangeBank(nval, oval, row) {
-      row.totalpotg =
-        nval + row.koperasi + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
-    },
-    onChangeKoperasi(nval, oval, row) {
-      row.totalpotg =
-        row.bank + nval + row.kantor + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.jmlhbank = row.jmlhbank - oval + nval
+      row.jmlhpotg =
+        row.jmlhbank +
+        row.jmlhkoperasi +
+        row.jmlhkantor +
+        row.jmlhorganisasi +
+        row.jmlhlainlain
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangeKantor(nval, oval, row) {
-      row.totalpotg =
-        row.bank + row.koperasi + nval + row.organisasi + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.jmlhkantor = row.jmlhkantor - oval + nval
+      row.jmlhpotg =
+        row.jmlhbank +
+        row.jmlhkoperasi +
+        row.jmlhkantor +
+        row.jmlhorganisasi +
+        row.jmlhlainlain
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangeOrganisasi(nval, oval, row) {
-      row.totalpotg = row.bank + row.koperasi + row.kantor + nval + row.lainlain
-      row.penyerahan = row.diterima + row.totalpotg
+      row.jmlhorganisasi = row.jmlhorganisasi - oval + nval
+      row.jmlhpotg =
+        row.jmlhbank +
+        row.jmlhkoperasi +
+        row.jmlhkantor +
+        row.jmlhorganisasi +
+        row.jmlhlainlain
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
     onChangeLainlain(nval, oval, row) {
-      row.totalpotg =
-        row.bank + row.koperasi + row.kantor + row.organisasi + nval
-      row.penyerahan = row.diterima + row.totalpotg
+      row.jmlhlainlain = row.jmlhlainlain - oval + nval
+      row.jmlhpotg =
+        row.jmlhbank +
+        row.jmlhkoperasi +
+        row.jmlhkantor +
+        row.jmlhorganisasi +
+        row.jmlhlainlain
+      row.penyerahan = row.diterima + row.jmlhpotg
     },
   },
 }

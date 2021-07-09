@@ -45,11 +45,7 @@
                   ></a-select>
                 </v-col>
                 <v-col cols="2">
-                  <a-button
-                    block
-                    type="primary"
-                    :disabled="disabledSimpan"
-                    @click="updatePendapatan"
+                  <a-button block type="primary" @click="updatePendapatan"
                     >Simpan</a-button
                   >
                 </v-col>
@@ -57,21 +53,6 @@
                   <a-dropdown-button :disabled="!list" @click="onChangeList()">
                     Refresh
                     <a-menu slot="overlay">
-                      <a-menu-item
-                        v-if="showDone"
-                        key="done"
-                        @click="editPendapatan(2)"
-                      >
-                        <a-icon type="check" /> Done
-                      </a-menu-item>
-                      <a-menu-item
-                        v-else
-                        key="edit"
-                        :disabled="!list"
-                        @click="editPendapatan(1)"
-                      >
-                        <a-icon type="edit" /> Edit
-                      </a-menu-item>
                       <a-menu-item key="copy" @click="copy = true">
                         <a-icon type="copy" /> Copy
                       </a-menu-item>
@@ -84,7 +65,12 @@
         </v-card>
       </v-col>
     </v-row>
-    <component :is="tablePendapatan" ref="pendapatan" :tipe="tipe"></component>
+    <component
+      :is="tablePendapatan"
+      ref="pendapatan"
+      :tipe="tipe"
+      :filter.sync="filter"
+    ></component>
     <v-dialog v-model="copy" width="500">
       <v-card>
         <v-card-title> Copy Pendapatan </v-card-title>
@@ -181,6 +167,10 @@ import Gaji from '@/components/pendapatan/table/gaji'
 import Premi from '@/components/pendapatan/table/premi'
 import EmptyTable from '@/components/base/empty-table'
 
+// tipe :
+// 0 Personalia
+// 1 Keuangan
+
 moment.locale('id')
 
 export default {
@@ -203,7 +193,8 @@ export default {
       list: undefined,
       year: moment(),
       disList: false,
-      tipe: 'personalia',
+      tipe: 0,
+      filter: 0,
     }
   },
   async fetch({ store }) {
@@ -228,9 +219,6 @@ export default {
   },
   computed: {
     ...mapState(['pendapatanprofil', 'pendapatan', 'pendapatanlist']),
-    updater() {
-      return this.tipe + this.list
-    },
     tablePendapatan() {
       if (this.list) {
         if (parseInt(this.pendapatan.profil) === 1) {
@@ -242,24 +230,6 @@ export default {
         return this.EmptyTable
       }
       return this.EmptyTable
-    },
-    disabledSimpan() {
-      return (
-        !this.pendapatan.edit ||
-        this.pendapatan.edit.id_pegawai !== this.$auth.user.id_pegawai
-      )
-    },
-    showDone() {
-      return (
-        this.pendapatan.edit &&
-        this.pendapatan.edit.id_pegawai === this.$auth.user.id_pegawai
-      )
-    },
-    showEdited() {
-      return (
-        this.pendapatan.edit &&
-        this.pendapatan.edit.id_pegawai !== this.$auth.user.id_pegawai
-      )
     },
   },
   watch: {
@@ -295,29 +265,13 @@ export default {
         .toLowerCase()
         .includes(input.toLowerCase())
     },
-    async editPendapatan(edit) {
-      const { list } = this
-      try {
-        await this.$store.dispatch('pendapatanlist/updateItem', {
-          submit: { id_pendapatan_list: list },
-          param: { edit },
-        })
-
-        this.$store.commit('pendapatan/SET_EDIT', edit)
-        this.$alert(
-          'success',
-          edit === 1 ? 'Silahkan Mengedit' : 'Selesai Mengedit'
-        )
-      } catch (e) {
-        this.$alert('error', e)
-      }
-    },
     async updatePendapatan() {
-      const { list } = this
+      const { list, tipe } = this
 
       try {
         await this.$store.dispatch('pendapatan/updateItem', {
           list,
+          tipe,
         })
         this.$alert('success', 'Successfully Saved')
       } catch (e) {
@@ -337,7 +291,7 @@ export default {
       if (copy) this.copy = false
     },
     onChangeTipe(val) {
-      this.$refs.pendapatan.onChangeTab(1, val)
+      this.filter = val
     },
     onOpenChange(status, copy = false) {
       if (status) {

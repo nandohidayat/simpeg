@@ -1,8 +1,8 @@
 export const state = () => ({
   profils: [],
   tipe: [
-    { label: 'Personalia', value: 'personalia' },
-    { label: 'Keuangan', value: 'keuangan' },
+    { label: 'Personalia', value: 0 },
+    { label: 'Keuangan', value: 1 },
   ],
 })
 
