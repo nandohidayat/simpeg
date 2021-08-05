@@ -15,7 +15,7 @@
                   :value="year"
                   mode="year"
                   placeholder="Pilih tahun"
-                  style="width: 100%;"
+                  style="width: 100%"
                   format="YYYY"
                   @change="onChange"
                   @openChange="onOpenChange"
@@ -76,7 +76,7 @@
       bottom
       right
       rounded
-      style="bottom: 46px;"
+      style="bottom: 46px"
       @click="openDialog()"
       ><v-icon small class="mr-1">mdi-plus</v-icon>tambah pendapatan</v-btn
     >
@@ -89,11 +89,20 @@
               <v-simple-table>
                 <tbody>
                   <tr>
+                    <td>Title</td>
+                    <td>
+                      <a-input
+                        v-model="submit.title"
+                        placeholder="Nama Pendapatan"
+                      ></a-input>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>Profil Pendapatan</td>
                     <td>
                       <a-select
                         v-model="submit.id_pendapatan_profil"
-                        style="width: 100%;"
+                        style="width: 100%"
                         show-search
                         placeholder="Profil"
                         option-filter-prop="label"
@@ -108,7 +117,7 @@
                       <a-month-picker
                         v-model="submit.month"
                         placeholder="Bulan"
-                        style="width: 100%;"
+                        style="width: 100%"
                         format="MMMM YYYY"
                       />
                     </td>
@@ -119,7 +128,7 @@
                       <a-date-picker
                         v-model="submit.distribution"
                         placeholder="Tanggal Distribusi"
-                        style="width: 100%;"
+                        style="width: 100%"
                         format="DD MMMM YYYY"
                       />
                     </td>
@@ -153,6 +162,7 @@ const emptySubmit = {
   id_pendapatan_profil: undefined,
   month: null,
   distribution: null,
+  title: null,
 }
 
 export default {
@@ -160,14 +170,6 @@ export default {
     if (!store.getters['user/hadAkses'](8)) {
       return redirect('/404')
     }
-  },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('pendapatanlist/fetchItems', {
-        year: moment().year(),
-      }),
-      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
-    ])
   },
   data() {
     return {
@@ -198,12 +200,16 @@ export default {
       ],
       headers: [
         {
-          text: 'Bulan',
-          value: 'month',
+          text: 'Title',
+          value: 'title',
         },
         {
           text: 'Profil',
-          value: 'title',
+          value: 'profil',
+        },
+        {
+          text: 'Bulan',
+          value: 'month',
         },
         {
           text: 'Tanggal Distribusi',
@@ -217,9 +223,17 @@ export default {
       ],
     }
   },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanlist/fetchItems', {
+        year: moment().year(),
+      }),
+      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+    ])
+  },
   head() {
     return {
-      title: 'Pajak Pendapatan',
+      title: 'List Pendapatan',
       meta: [
         {
           hid: 'description',
@@ -289,7 +303,7 @@ export default {
     openDialog(edit = false, data = {}) {
       if (edit) {
         this.edit = true
-        this.submit = data
+        this.submit = { ...data }
       } else {
         this.edit = false
         this.submit = emptySubmit

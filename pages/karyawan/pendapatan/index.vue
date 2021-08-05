@@ -164,6 +164,7 @@ import moment from 'moment'
 import 'moment/locale/id'
 
 import Gaji from '@/components/pendapatan/table/gaji'
+import Gajike from '@/components/pendapatan/table/gajike'
 import Premi from '@/components/pendapatan/table/premi'
 import EmptyTable from '@/components/base/empty-table'
 
@@ -184,6 +185,7 @@ export default {
       EmptyTable,
       Gaji,
       Premi,
+      Gajike,
       locale,
       copy: false,
       copyIsOpen: false,
@@ -220,14 +222,14 @@ export default {
   computed: {
     ...mapState(['pendapatanprofil', 'pendapatan', 'pendapatanlist']),
     tablePendapatan() {
-      if (this.list) {
-        if (parseInt(this.pendapatan.profil) === 1) {
-          return this.Gaji
-        }
-        if (parseInt(this.pendapatan.profil) === 5) {
-          return this.Premi
-        }
-        return this.EmptyTable
+      if (parseInt(this.pendapatan.profil) === 1) {
+        return this.Gaji
+      }
+      if (parseInt(this.pendapatan.profil) === 5) {
+        return this.Premi
+      }
+      if (parseInt(this.pendapatan.profil) === 9) {
+        return this.Gajike
       }
       return this.EmptyTable
     },
