@@ -1,6 +1,12 @@
 <template>
   <v-card outlined>
-    <v-data-table :headers="header" :items="absen.absens" multi-sort>
+    <v-data-table
+      :headers="header"
+      :items="absen.absens"
+      multi-sort
+      dense
+      :items-per-page="31"
+    >
       <template #item.masuk="{item}">
         {{ item.masuk | time }}
       </template>
