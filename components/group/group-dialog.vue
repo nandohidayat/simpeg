@@ -114,6 +114,10 @@ export default {
                   name: 'Absen Karyawan',
                   id: 10,
                 },
+                {
+                  name: 'Absen Karyawan > Download',
+                  id: 18,
+                },
               ],
             },
             {

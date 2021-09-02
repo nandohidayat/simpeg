@@ -23,6 +23,7 @@ export default {
     await store.dispatch('departemen/fetchDepartemens', {
       select: 1,
       schedule: 1,
+      ant: 1,
     })
   },
   head() {

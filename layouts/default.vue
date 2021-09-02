@@ -199,7 +199,8 @@ header.main-layout > div.v-toolbar__content {
   border-color: #009b8b;
 }
 
-.ant-btn-primary:hover {
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
   background-color: #4db6ac;
   border-color: #4db6ac;
 }

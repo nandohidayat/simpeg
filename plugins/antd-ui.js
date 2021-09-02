@@ -1,24 +1,32 @@
 import Vue from 'vue'
 import {
-  Menu,
-  Icon,
-  Divider,
-  Card,
-  Input,
-  Table,
   Button,
-  Tree,
+  Card,
+  Checkbox,
+  ConfigProvider,
+  DatePicker,
+  Divider,
+  Icon,
+  Input,
+  LocaleProvider,
+  Menu,
   Popconfirm,
   Select,
+  Table,
+  Tree,
 } from 'ant-design-vue'
 
-Vue.use(Menu)
-Vue.use(Icon)
-Vue.use(Divider)
-Vue.use(Card)
-Vue.use(Input)
-Vue.use(Table)
 Vue.use(Button)
-Vue.use(Tree)
+Vue.use(Card)
+Vue.use(Checkbox)
+Vue.use(ConfigProvider)
+Vue.use(DatePicker)
+Vue.use(Divider)
+Vue.use(Icon)
+Vue.use(Input)
+Vue.use(LocaleProvider)
+Vue.use(Menu)
 Vue.use(Popconfirm)
 Vue.use(Select)
+Vue.use(Table)
+Vue.use(Tree)
