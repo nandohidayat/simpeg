@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    v-model="dialog"
+    :value="dialog"
     width="700"
     @click:outside="$emit('update:dialog', false)"
   >
@@ -11,9 +11,7 @@
           <v-simple-table>
             <tbody>
               <tr>
-                <td>
-                  Nama Group
-                </td>
+                <td>Nama Group</td>
                 <td>
                   <a-input
                     v-model="realLabel"
@@ -22,9 +20,7 @@
                 </td>
               </tr>
               <tr>
-                <td>
-                  Permission
-                </td>
+                <td>Permission</td>
                 <td>
                   <v-treeview
                     v-model="realPermission"
@@ -113,6 +109,10 @@ export default {
                 {
                   name: 'Absen Karyawan',
                   id: 10,
+                },
+                {
+                  name: 'Absen Karyawan > Download',
+                  id: 18,
                 },
               ],
             },

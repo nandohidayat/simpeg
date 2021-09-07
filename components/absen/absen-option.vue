@@ -1,95 +1,107 @@
 <template>
-  <v-card class="px-4" outlined>
-    <v-row class="py-2">
-      <v-col cols="4">
-        <v-menu
-          ref="menu"
-          v-model="menu"
-          :transition="false"
-          :close-on-content-click="false"
-          offset-y
-          max-width="290px"
-        >
-          <template #activator="{ on, attrs }">
-            <v-text-field
-              :value="dateMoment"
-              v-bind="attrs"
-              readonly
-              outlined
-              dense
-              label="Tanggal"
-              hide-details
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="selectedDate"
-            color="teal"
-            type="month"
-            no-title
-            locale="id-id"
-            @input="
-              menu = false
-              getAbsens()
-            "
-          >
-          </v-date-picker>
-        </v-menu>
-      </v-col>
-      <v-col cols="4">
-        <v-autocomplete
-          v-model="selectedDept"
-          :items="departemen.departemens"
-          :item-value="(obj) => obj.id_dept"
-          :item-text="(obj) => obj.nm_dept"
-          label="Departemen"
-          dense
-          outlined
-          hide-details
-          @change="getPegawais()"
-        ></v-autocomplete>
-      </v-col>
-      <v-col cols="4">
-        <v-autocomplete
-          v-model="selectedPegawai"
-          :items="pegawai.pegawais"
-          :item-value="(obj) => obj.id_pegawai"
-          :item-text="(obj) => obj.nm_pegawai"
-          label="Pegawai"
-          dense
-          outlined
-          hide-details
-          @change="getAbsens()"
-        ></v-autocomplete>
-      </v-col>
-    </v-row>
-  </v-card>
+  <v-row no-gutters justify="center">
+    <v-col cols="8">
+      <v-card class="px-4" outlined>
+        <v-row>
+          <v-col cols="4">
+            <a-config-provider :locale="id">
+              <a-month-picker
+                v-model="selectedDate"
+                format="MMMM YYYY"
+                style="width: 100%"
+                size="small"
+                @change="getAbsens()"
+              >
+              </a-month-picker>
+            </a-config-provider>
+          </v-col>
+          <v-col cols="4">
+            <a-select
+              v-model="selectedDept"
+              show-search
+              placeholder="Departemen"
+              style="width: 100%"
+              size="small"
+              allow-clear
+              :filter-option="filterOption"
+              :options="departemen.departemens"
+              @change="getPegawais()"
+            ></a-select>
+          </v-col>
+          <v-col cols="4">
+            <a-select
+              v-model="selectedPegawai"
+              show-search
+              placeholder="Pegawai"
+              style="width: 100%"
+              size="small"
+              allow-clear
+              :filter-option="filterOption"
+              :options="pegawai.pegawais"
+              @change="getAbsens()"
+            ></a-select>
+          </v-col>
+        </v-row>
+        <v-row v-if="hadAkses(18)">
+          <v-col cols="4" offset="4" class="pt-0">
+            <v-row no-gutters>
+              <v-col><a-checkbox v-model="detail"> Detail </a-checkbox></v-col>
+              <v-col
+                ><a-checkbox v-model="terlambat"> Terlambat </a-checkbox></v-col
+              >
+            </v-row>
+          </v-col>
+          <v-col cols="4" class="pt-0">
+            <a-button block type="primary" size="small" @click="exportAbsen()"
+              >Download</a-button
+            >
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 import moment from 'moment'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
+import id from 'ant-design-vue/lib/locale-provider/id_ID'
+import 'moment/locale/fr'
+
+moment.locale('id')
 
 export default {
+  filters: {
+    showDate(value) {
+      return moment(value).format('MMMM YYYY')
+    },
+  },
   data() {
     return {
-      selectedDate: new Date().toISOString().substr(0, 7),
+      id,
+      selectedDate: moment(),
       selectedDept: undefined,
       selectedPegawai: undefined,
       menu: false,
+      detail: false,
+      terlambat: false,
     }
   },
   computed: {
     ...mapState(['departemen', 'pegawai']),
+    ...mapGetters('user', ['hadAkses']),
     dateMoment() {
       return moment(this.selectedDate).locale('id').format('MMMM YYYY')
     },
     year() {
-      return parseInt(this.selectedDate.substr(0, 4))
+      return parseInt(this.selectedDate.format('YYYY'))
     },
     month() {
-      return parseInt(this.selectedDate.slice(-2))
+      return parseInt(this.selectedDate.format('MM'))
     },
+  },
+  errorCaptured() {
+    return false
   },
   methods: {
     async getPegawais() {
@@ -97,6 +109,7 @@ export default {
       await this.$store.dispatch('pegawai/fetchPegawais', {
         dept: this.selectedDept,
         select: 1,
+        ant: 1,
       })
     },
     async getAbsens() {
@@ -106,6 +119,24 @@ export default {
         year: this.year,
         month: this.month,
       })
+    },
+    exportAbsen() {
+      const win = window.open(
+        `${
+          this.$axios.defaults.baseURL
+        }absen/export?month=${this.selectedDate.format('YYYY-MM-DD')}&dept=${
+          this.selectedDept || ''
+        }&pegawai=${this.selectedPegawai || ''}&detail=${
+          this.detail
+        }&terlambat=${this.terlambat}`,
+        '_blank'
+      )
+      win.focus()
+    },
+    filterOption(input, option) {
+      return option.componentOptions.children[0].text
+        .toLowerCase()
+        .includes(input.toLowerCase())
     },
   },
 }

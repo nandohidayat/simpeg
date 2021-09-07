@@ -9,9 +9,9 @@ import {
   Dropdown,
   Icon,
   Input,
+  LocaleProvider,
   Menu,
   Modal,
-  Notification,
   Popconfirm,
   Select,
   Table,
@@ -29,9 +29,9 @@ Vue.use(Divider)
 Vue.use(Dropdown)
 Vue.use(Icon)
 Vue.use(Input)
+Vue.use(LocaleProvider)
 Vue.use(Menu)
 Vue.use(Modal)
-Vue.use(Notification)
 Vue.use(Popconfirm)
 Vue.use(Select)
 Vue.use(Table)

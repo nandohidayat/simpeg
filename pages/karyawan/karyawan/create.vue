@@ -43,15 +43,15 @@ import KaryawanInformation from '@/components/karyawan/karyawan-information'
 import BaseConfirm from '@/components/base/base-confirm'
 
 export default {
-  middleware({ store, redirect }) {
-    if (!store.getters['user/hadAkses'](1)) {
-      return redirect('/404')
-    }
-  },
   components: {
     KaryawanAccount,
     KaryawanInformation,
     BaseConfirm,
+  },
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](1)) {
+      return redirect('/404')
+    }
   },
   data() {
     return {
@@ -69,20 +69,6 @@ export default {
       },
     }
   },
-  methods: {
-    async createKaryawan() {
-      try {
-        await this.$store.dispatch('karyawan/createKaryawan', this.karyawan)
-
-        this.$alert('success', 'Successfully Saved')
-        this.$router.push({ name: 'karyawan' })
-      } catch (err) {
-        this.$alert('error', err)
-      } finally {
-        this.dialog = false
-      }
-    },
-  },
   head() {
     return {
       title: `Buat Data Karyawan`,
@@ -94,6 +80,20 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    async createKaryawan() {
+      try {
+        await this.$store.dispatch('karyawan/createKaryawan', this.karyawan)
+
+        this.$alert('success', 'Successfully Saved')
+        this.$router.push({ name: 'karyawan-karyawan' })
+      } catch (err) {
+        this.$alert('error', err)
+      } finally {
+        this.dialog = false
+      }
+    },
   },
 }
 </script>
