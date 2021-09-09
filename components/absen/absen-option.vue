@@ -1,8 +1,8 @@
 <template>
-  <v-row no-gutters justify="center">
+  <v-row justify="center" no-gutters>
     <v-col cols="8">
       <v-card class="px-4" outlined>
-        <v-row>
+        <v-row class="py-2">
           <v-col cols="4">
             <a-config-provider :locale="id">
               <a-month-picker
@@ -42,7 +42,7 @@
             ></a-select>
           </v-col>
         </v-row>
-        <v-row v-if="hadAkses(18)">
+        <v-row v-if="hadAkses(18)" class="pb-2 pt-0">
           <v-col cols="4" offset="4" class="pt-0">
             <v-row no-gutters>
               <v-col><a-checkbox v-model="detail"> Detail </a-checkbox></v-col>
