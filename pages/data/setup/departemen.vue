@@ -24,14 +24,6 @@
             calculate-widths
             :items="departemen.departemens"
           >
-            <template #item.akses="{item}">
-              <div v-for="(a, i) in item.akses" :key="i">
-                {{ a.menu }}
-                <div v-for="(aa, idx) in a.akses" :key="idx" class="ml-1">
-                  - {{ aa }}
-                </div>
-              </div>
-            </template>
             <template v-slot:item.action="{ item }">
               <a-button
                 size="small"

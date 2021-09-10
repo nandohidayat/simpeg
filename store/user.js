@@ -39,4 +39,7 @@ export const getters = {
       ? rootState.auth.user.submenu.map((i) => parseInt(i)).includes(id)
       : false
   },
+  isAdmin: (state, getters, rootState) => {
+    return rootState.auth.user.admin
+  },
 }

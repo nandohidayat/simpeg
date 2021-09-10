@@ -43,15 +43,15 @@ import KaryawanInformation from '@/components/karyawan/karyawan-information'
 import BaseConfirm from '@/components/base/base-confirm'
 
 export default {
-  middleware({ store, redirect }) {
-    if (!store.getters['user/hadAkses'](1)) {
-      return redirect('/404')
-    }
-  },
   components: {
     KaryawanAccount,
     KaryawanInformation,
     BaseConfirm,
+  },
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](1)) {
+      return redirect('/404')
+    }
   },
   data() {
     return {
@@ -69,6 +69,18 @@ export default {
       },
     }
   },
+  head() {
+    return {
+      title: `Buat Data Karyawan`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Buat Data Karyawan',
+        },
+      ],
+    }
+  },
   methods: {
     async createKaryawan() {
       try {
@@ -82,18 +94,6 @@ export default {
         this.dialog = false
       }
     },
-  },
-  head() {
-    return {
-      title: `Buat Data Karyawan`,
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Buat Data Karyawan',
-        },
-      ],
-    }
   },
 }
 </script>

@@ -21,7 +21,7 @@ export default {
           disabled: true,
         },
         {
-          text: 'Kelola Departemen',
+          text: 'Departemen',
           disabled: true,
         },
       ],

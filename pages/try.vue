@@ -11,9 +11,3 @@ export default {
   layout: 'blank-center',
 }
 </script>
-
-<style lang="scss" scoped>
-// .parent:hover .hover-color {
-//   background-color: #009688 !important;
-// }
-</style>
