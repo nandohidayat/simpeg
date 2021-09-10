@@ -1,72 +1,52 @@
 <template>
   <div>
-    <v-card outlined class="mb-3">
-      <v-card-text>
-        <v-row align="center">
-          <v-col cols="3">
-            <v-autocomplete
-              v-model="data.profil"
-              label="Profil"
-              outlined
-              dense
-              hide-details
-              :items="pendapatanprofil.profils"
-            ></v-autocomplete>
-          </v-col>
-          <v-col cols="3">
-            <v-menu v-model="menu" :close-on-content-click="false" offset-y>
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  :value="dateMoment"
-                  label="Bulan"
-                  outlined
-                  dense
-                  readonly
-                  hide-details
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="data.date"
-                color="teal"
-                type="month"
-                no-title
-                locale="id-id"
-                @input="menu = false"
-              ></v-date-picker>
-            </v-menu>
-          </v-col>
-          <v-col cols="3">
-            <v-autocomplete
-              v-model="data.karyawan"
-              :items="karyawan.karyawans"
-              item-value="id_pegawai"
-              item-text="nm_pegawai"
-              label="Karyawan"
-              dense
-              outlined
-              hide-details
-              clearable
-            ></v-autocomplete>
-          </v-col>
-          <v-col cols="3">
-            <v-row no-gutters>
-              <v-col cols="8" class="pr-2">
-                <v-btn block color="teal" dark depressed @click="openConfirm"
-                  ><v-icon left>mdi-email-send</v-icon> kirim email</v-btn
-                >
-              </v-col>
-              <v-col cols="4" class="pl-2">
-                <v-btn block color="teal" dark depressed @click="getEmail(true)"
-                  ><v-icon>mdi-refresh</v-icon></v-btn
-                >
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
+    <v-row justify="center" class="mb-3" no-gutters>
+      <v-col cols="9">
+        <v-card outlined>
+          <a-config-provider :locale="locale">
+            <v-card-text class="py-2">
+              <v-row align="center" class="mx-3">
+                <v-col cols="2">
+                  <a-date-picker
+                    :open="isOpen"
+                    :value="year"
+                    mode="year"
+                    placeholder="Pilih tahun"
+                    style="width: 100%"
+                    format="YYYY"
+                    @change="onChange"
+                    @openChange="onOpenChange"
+                    @panelChange="onPanelChange"
+                  />
+                </v-col>
+                <v-col cols="7">
+                  <a-select
+                    v-model="list"
+                    style="width: 100%"
+                    show-search
+                    placeholder="Pendapatan"
+                    option-filter-prop="label"
+                    :disabled="disList"
+                    :options="pendapatanlist.items"
+                    :filter-option="filterOption"
+                    @change="onChangeList()"
+                  ></a-select>
+                </v-col>
+                <v-col cols="3">
+                  <a-button
+                    block
+                    type="primary"
+                    :disabled="disabledSimpan"
+                    @click="updatePendapatan"
+                    >Simpan</a-button
+                  >
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </a-config-provider>
+        </v-card>
+      </v-col>
+    </v-row>
     <v-card outlined>
       <v-data-table
         :items="pendapatanemail.emails"
@@ -82,8 +62,13 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import locale from 'ant-design-vue/lib/locale/id_ID'
 import moment from 'moment'
+import 'moment/locale/id'
+
+import { mapState, mapGetters } from 'vuex'
+
+moment.locale('id')
 
 export default {
   middleware({ store, redirect }) {
@@ -91,17 +76,10 @@ export default {
       return redirect('/404')
     }
   },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
-      store.dispatch('karyawan/fetchKaryawans', { select: 1 }),
-    ])
-  },
   data() {
     return {
+      locale,
       data: {
-        profil: undefined,
-        date: new Date().toISOString().substr(0, 7),
         karyawan: undefined,
       },
       menu: false,
@@ -115,10 +93,37 @@ export default {
       ],
       confirm: false,
       text: '',
+      year: moment(),
+      list: undefined,
+      disList: false,
+      isOpen: false,
+    }
+  },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+      store.dispatch('karyawan/fetchKaryawans', { select: 1, for: 'ant' }),
+    ])
+  },
+  head() {
+    return {
+      title: 'Email Pendapatan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Email Pendapatan',
+        },
+      ],
     }
   },
   computed: {
-    ...mapState(['pendapatanprofil', 'karyawan', 'pendapatanemail']),
+    ...mapState([
+      'pendapatanprofil',
+      'karyawan',
+      'pendapatanemail',
+      'pendapatanlist',
+    ]),
     ...mapGetters('karyawan', ['getKar']),
     dateMoment() {
       return moment(this.data.date).locale('id').format('MMMM YYYY')
@@ -133,6 +138,11 @@ export default {
     },
   },
   methods: {
+    filterOption(input, option) {
+      return option.componentOptions.children[0].text
+        .toLowerCase()
+        .includes(input.toLowerCase())
+    },
     async getEmail(refresh = false) {
       try {
         await this.$store.dispatch('pendapatanemail/fetchEmails', this.data)
@@ -156,8 +166,6 @@ export default {
     async sendEmail() {
       try {
         await this.$store.dispatch('pendapatanemail/sendEmails', {
-          id_profilp: this.data.profil,
-          bulan_kirim: moment(this.data.date).format('MM-YYYY'),
           id_pegawai: this.data.karyawan,
         })
 
@@ -168,18 +176,20 @@ export default {
         this.confirm = false
       }
     },
-  },
-  head() {
-    return {
-      title: 'Email Pendapatan',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Email Pendapatan',
-        },
-      ],
-    }
+    onOpenChange(status) {
+      if (status) {
+        this.isOpen = true
+      } else {
+        this.isOpen = false
+      }
+    },
+    onPanelChange(v) {
+      this.year = v
+      this.isOpen = false
+    },
+    onChange() {
+      this.year = undefined
+    },
   },
 }
 </script>

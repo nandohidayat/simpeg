@@ -1,14 +1,14 @@
 <template>
-  <v-row no-gutters justify="center">
+  <v-row justify="center" no-gutters>
     <v-col cols="8">
       <v-card class="px-4" outlined>
-        <v-row>
+        <v-row class="py-2">
           <v-col cols="4">
             <a-config-provider :locale="id">
               <a-month-picker
                 v-model="selectedDate"
                 format="MMMM YYYY"
-                style="width: 100%;"
+                style="width: 100%"
                 size="small"
                 @change="getAbsens()"
               >
@@ -20,7 +20,7 @@
               v-model="selectedDept"
               show-search
               placeholder="Departemen"
-              style="width: 100%;"
+              style="width: 100%"
               size="small"
               allow-clear
               :filter-option="filterOption"
@@ -33,7 +33,7 @@
               v-model="selectedPegawai"
               show-search
               placeholder="Pegawai"
-              style="width: 100%;"
+              style="width: 100%"
               size="small"
               allow-clear
               :filter-option="filterOption"
@@ -42,18 +42,12 @@
             ></a-select>
           </v-col>
         </v-row>
-        <v-row v-if="hadAkses(18)">
+        <v-row v-if="hadAkses(18)" class="pb-2 pt-0">
           <v-col cols="4" offset="4" class="pt-0">
             <v-row no-gutters>
+              <v-col><a-checkbox v-model="detail"> Detail </a-checkbox></v-col>
               <v-col
-                ><a-checkbox v-model="detail">
-                  Detail
-                </a-checkbox></v-col
-              >
-              <v-col
-                ><a-checkbox v-model="terlambat">
-                  Terlambat
-                </a-checkbox></v-col
+                ><a-checkbox v-model="terlambat"> Terlambat </a-checkbox></v-col
               >
             </v-row>
           </v-col>
@@ -93,9 +87,6 @@ export default {
       terlambat: false,
     }
   },
-  errorCaptured() {
-    return false
-  },
   computed: {
     ...mapState(['departemen', 'pegawai']),
     ...mapGetters('user', ['hadAkses']),
@@ -108,6 +99,9 @@ export default {
     month() {
       return parseInt(this.selectedDate.format('MM'))
     },
+  },
+  errorCaptured() {
+    return false
   },
   methods: {
     async getPegawais() {

@@ -1,12 +1,14 @@
 export const state = () => ({
   absens: [],
-  pendapatan: 0,
+  harian: 0,
+  makan: 0,
 })
 
 export const mutations = {
   SET_ABSENS(state, absen) {
     state.absens = absen.absen
-    state.pendapatan = absen.pendapatan
+    state.harian = absen.harian
+    state.makan = absen.makan
   },
 }
 

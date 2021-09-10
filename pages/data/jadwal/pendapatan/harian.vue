@@ -17,13 +17,9 @@
             >
           </v-toolbar>
         </template>
-        <template #item.action="{item}">
-          <v-icon @click="openDialog(item)">
-            mdi-pencil
-          </v-icon>
-          <v-icon @click="deleteConfirm(item)">
-            mdi-delete
-          </v-icon>
+        <template #item.action="{ item }">
+          <v-icon @click="openDialog(item)"> mdi-pencil </v-icon>
+          <v-icon @click="deleteConfirm(item)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
       <base-confirm
@@ -47,17 +43,14 @@ import BaseConfirm from '@/components/base/base-confirm'
 import PendapatanForm from '@/components/pendapatan/pendapatan-harian-form'
 
 export default {
-  middleware({ store, redirect }) {
-    if (!store.getters['user/hadAkses'](15)) {
-      return redirect('/404')
-    }
-  },
   components: {
     BaseConfirm,
     PendapatanForm,
   },
-  async fetch({ store }) {
-    await store.dispatch('pendapatanharian/fetchPendapatans')
+  middleware({ store, redirect }) {
+    if (!store.getters['user/hadAkses'](15)) {
+      return redirect('/404')
+    }
   },
   data() {
     return {
@@ -85,6 +78,21 @@ export default {
         tgl: undefined,
         pendapatan: undefined,
       },
+    }
+  },
+  async fetch({ store }) {
+    await store.dispatch('pendapatanharian/fetchPendapatans')
+  },
+  head() {
+    return {
+      title: 'Pendapatan Harian',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Pendapatan Harian',
+        },
+      ],
     }
   },
   computed: {
@@ -119,18 +127,6 @@ export default {
         this.$alert('error', e)
       }
     },
-  },
-  head() {
-    return {
-      title: 'Pendapatan Harian',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Pendapatan Harian',
-        },
-      ],
-    }
   },
 }
 </script>

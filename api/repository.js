@@ -27,7 +27,7 @@ export default ($axios) => (resource) => ({
     return $axios.$put(`${resource}/${id}${queryGenerator(query)}`, payload)
   },
 
-  delete(id) {
-    return $axios.$delete(`${resource}/${id}`)
+  delete(id, query = {}) {
+    return $axios.$delete(`${resource}/${id}${queryGenerator(query)}`)
   },
 })

@@ -1,6 +1,6 @@
 <template>
   <v-menu
-    v-model="menu"
+    :value="menu"
     :position-x="x"
     :position-y="y"
     :close-on-click="false"
@@ -9,18 +9,17 @@
     absolute
     offset-y
     z-index="21"
+    @keydown.esc="reset()"
   >
     <v-list dense>
-      <div>
-        <v-list-item
-          v-for="(s, i) in fShift()"
-          :key="i"
-          dense
-          @click="updateSchedule(s.id_shift)"
-        >
-          <v-list-item-title>{{ s.kode }}</v-list-item-title>
-        </v-list-item>
-      </div>
+      <v-list-item
+        v-for="(s, i) in fShift()"
+        :key="i"
+        dense
+        @click="updateSchedule(s.id_shift)"
+      >
+        <v-list-item-title>{{ s.kode }}</v-list-item-title>
+      </v-list-item>
       <v-list-item dense @click="reset()"
         ><v-icon color="error">mdi-close</v-icon></v-list-item
       >

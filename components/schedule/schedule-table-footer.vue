@@ -1,7 +1,7 @@
 <template>
-  <v-row class="px-3">
+  <v-row class="pa-3">
     <v-col cols="6">
-      <table style="font-size: 10pt;">
+      <table style="font-size: 10pt">
         <tr>
           <td class="px-3" colspan="2">Keterangan:</td>
         </tr>
@@ -19,7 +19,7 @@
         inset
         color="teal"
         label="Order"
-        style="width: 100px;"
+        style="width: 100px"
         class="ml-auto"
         dense
       ></v-switch>

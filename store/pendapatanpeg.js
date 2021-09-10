@@ -10,7 +10,7 @@ export const state = () => ({
 export const mutations = {
   SET_PENDAPATAN(state, pendapatan) {
     state.header = pendapatan.header
-    state.pendapatans = pendapatan.data
+    state.pendapatans = pendapatan.pendapatan
   },
 }
 
