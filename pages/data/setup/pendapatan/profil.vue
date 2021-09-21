@@ -91,6 +91,9 @@ export default {
       return redirect('/404')
     }
   },
+  async fetch({ store }) {
+    await store.dispatch('pendapatanprofil/fetchProfils')
+  },
   data() {
     return {
       columns: [
@@ -133,21 +136,6 @@ export default {
       },
     }
   },
-  async fetch({ store }) {
-    await store.dispatch('pendapatanprofil/fetchProfils')
-  },
-  head() {
-    return {
-      title: 'Profil Pendapatan',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Profil Pendapatan',
-        },
-      ],
-    }
-  },
   computed: {
     ...mapState(['pendapatanprofil']),
   },
@@ -177,6 +165,18 @@ export default {
         this.$alert('error', e)
       }
     },
+  },
+  head() {
+    return {
+      title: 'Profil Pendapatan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Profil Pendapatan',
+        },
+      ],
+    }
   },
 }
 </script>

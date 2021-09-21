@@ -39,16 +39,12 @@
           >
         </v-toolbar>
       </template>
-      <template #item.color="{item}">
+      <template #item.color="{ item }">
         <v-chip :color="item.color || 'white'" dark>{{ item.color }}</v-chip>
       </template>
-      <template #item.action="{item}">
-        <v-icon @click="openDialog(item)">
-          mdi-pencil
-        </v-icon>
-        <v-icon @click="deleteConfirm(item)">
-          mdi-delete
-        </v-icon>
+      <template #item.action="{ item }">
+        <v-icon @click="openDialog(item)"> mdi-pencil </v-icon>
+        <v-icon @click="deleteConfirm(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
     <base-confirm

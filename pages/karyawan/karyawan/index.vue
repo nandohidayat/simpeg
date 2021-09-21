@@ -57,12 +57,12 @@
       class="elevation-5 mt-5"
       multi-sort
     >
-      <template #item.nama="{item}">
+      <template #item.nama="{ item }">
         <nuxt-link :to="`/karyawan/${parseInt(item.nik)}`">{{
           item.nama
         }}</nuxt-link>
       </template>
-      <template #item.dept="{item}">
+      <template #item.dept="{ item }">
         <div v-for="(d, i) in item.dept" :key="i">- {{ d }}</div>
       </template>
     </v-data-table>
@@ -74,7 +74,7 @@
       bottom
       right
       rounded
-      style="bottom: 46px;"
+      style="bottom: 46px"
       :to="{ name: 'karyawan-karyawan-create' }"
       ><v-icon small class="mr-1">mdi-plus</v-icon>tambah pegawai</v-btn
     >

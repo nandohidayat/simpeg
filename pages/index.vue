@@ -3,7 +3,7 @@
     <v-app-bar
       app
       color="white"
-      style="z-index: 999; padding: 0;"
+      style="z-index: 999; padding: 0"
       tile
       dense
       class="main-layout px-5"
@@ -16,7 +16,7 @@
           ><img
             :src="`${baseUrl}/roemani-long.png`"
             alt="ROEMANI"
-            style="opacity: 0.1;"
+            style="opacity: 0.1"
         /></v-col>
       </v-row>
     </v-container>

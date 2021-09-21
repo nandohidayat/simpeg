@@ -3,7 +3,7 @@
     <v-main>
       <v-container
         fluid
-        style="min-height: 100vh;"
+        style="min-height: 100vh"
         class="d-flex teal lighten-4"
       >
         <nuxt />

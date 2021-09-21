@@ -11,9 +11,7 @@
           <v-simple-table>
             <tbody>
               <tr>
-                <td>
-                  Nama Departemen
-                </td>
+                <td>Nama Departemen</td>
                 <td>
                   <a-input
                     v-model="realNama"
@@ -22,9 +20,7 @@
                 </td>
               </tr>
               <tr>
-                <td>
-                  Nama Jabatan
-                </td>
+                <td>Nama Jabatan</td>
                 <td>
                   <a-input
                     v-model="realJabatan"
@@ -33,13 +29,11 @@
                 </td>
               </tr>
               <tr>
-                <td>
-                  Kepala Bagian
-                </td>
+                <td>Kepala Bagian</td>
                 <td>
                   <a-select
                     v-model="realIdPegawai"
-                    style="min-width: 300px;"
+                    style="min-width: 300px"
                     show-search
                     placeholder="Kepala Bagian"
                     option-filter-prop="label"
@@ -49,9 +43,7 @@
                 </td>
               </tr>
               <tr v-if="edit">
-                <td>
-                  Nama Folder
-                </td>
+                <td>Nama Folder</td>
                 <td>
                   <a-input
                     v-model="realFolder"

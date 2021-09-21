@@ -76,6 +76,12 @@ export default {
       return redirect('/404')
     }
   },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+      store.dispatch('karyawan/fetchKaryawans', { select: 1, for: 'ant' }),
+    ])
+  },
   data() {
     return {
       locale,
@@ -97,24 +103,6 @@ export default {
       list: undefined,
       disList: false,
       isOpen: false,
-    }
-  },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
-      store.dispatch('karyawan/fetchKaryawans', { select: 1, for: 'ant' }),
-    ])
-  },
-  head() {
-    return {
-      title: 'Email Pendapatan',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Email Pendapatan',
-        },
-      ],
     }
   },
   computed: {
@@ -190,6 +178,18 @@ export default {
     onChange() {
       this.year = undefined
     },
+  },
+  head() {
+    return {
+      title: 'Email Pendapatan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Email Pendapatan',
+        },
+      ],
+    }
   },
 }
 </script>

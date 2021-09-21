@@ -1,9 +1,7 @@
 <template>
   <div>
     <v-row align="center">
-      <v-col cols="3">
-        Permintaan
-      </v-col>
+      <v-col cols="3"> Permintaan </v-col>
       <v-col cols="9">
         <v-radio-group v-model="newdata['type']" row>
           <v-radio value="1" label="Tukar Shift" color="teal"></v-radio>

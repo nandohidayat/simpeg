@@ -50,7 +50,7 @@
       bottom
       right
       rounded
-      style="bottom: 46px;"
+      style="bottom: 46px"
       @click="openDialog()"
       ><v-icon small class="mr-1">mdi-plus</v-icon>tambah departemen</v-btn
     >

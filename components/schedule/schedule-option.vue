@@ -1,13 +1,13 @@
 <template>
   <v-toolbar outlined flat>
-    <span style="width: 350px;">
+    <span style="width: 350px">
       <v-autocomplete
         outlined
         :value="dept"
         :items="departemen.departemens"
         :item-text="(obj) => obj.nm_dept"
         :item-value="(obj) => obj.id_dept"
-        style="z-index: 20;"
+        style="z-index: 20"
         label="Departemen"
         dense
         hide-details
