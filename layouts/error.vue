@@ -5,9 +5,7 @@
       <h1 class="text-uppercase font-weight-regular mb-5">{{ message }}</h1>
 
       <a v-if="statusCode === 404" href="/simpeg">
-        <v-btn rounded dark color="grey">
-          home page
-        </v-btn>
+        <v-btn rounded dark color="grey"> home page </v-btn>
       </a>
       <v-btn v-else rounded dark color="grey" @click="() => this.$router.go()">
         refresh

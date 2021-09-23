@@ -23,7 +23,7 @@
         </template>
       </base-form>
     </template>
-    <div style="max-height: 743px;" class="overflow-y-auto">
+    <div style="max-height: 743px" class="overflow-y-auto">
       <v-list>
         <template v-for="(i, index) in schedulechange.schedules">
           <v-list-item :key="index" class="body-2" @click.stop="openDialog(i)">
@@ -31,25 +31,25 @@
               <v-col v-if="single" cols="1"></v-col>
               <v-col cols="9">
                 <div class="mb-1">
-                  <span style="width: 80px;" class="d-inline-block"
+                  <span style="width: 80px" class="d-inline-block"
                     >Permintaan</span
                   >
                   : <span class="ml-1">{{ i.type | permintaan }}</span>
                 </div>
                 <div class="mb-1">
-                  <span style="width: 80px;" class="d-inline-block">Mulai</span>
+                  <span style="width: 80px" class="d-inline-block">Mulai</span>
                   :
                   <span class="ml-1">{{ i.mulai | date }}</span>
                 </div>
                 <div class="mb-1">
-                  <span style="width: 80px;" class="d-inline-block"
+                  <span style="width: 80px" class="d-inline-block"
                     >Selesai</span
                   >
                   :
                   <span class="ml-1">{{ i.selesai | date }}</span>
                 </div>
                 <div class="mb-1">
-                  <span style="width: 80px;" class="d-inline-block"
+                  <span style="width: 80px" class="d-inline-block"
                     >Pemohon</span
                   >
                   :
@@ -58,7 +58,7 @@
                   </span>
                 </div>
                 <div v-if="i.dengan !== null && i.dengan !== undefined">
-                  <span style="width: 80px;" class="d-inline-block">{{
+                  <span style="width: 80px" class="d-inline-block">{{
                     parseInt(detail.type) === 2 ? `Pengganti` : `Dengan`
                   }}</span>
                   :

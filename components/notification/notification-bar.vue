@@ -7,10 +7,8 @@
       :color="notif.type"
     >
       {{ notif.message }}
-      <template #action="{attrs}">
-        <v-btn color="white" v-bind="attrs" text @click="del">
-          Close
-        </v-btn>
+      <template #action="{ attrs }">
+        <v-btn color="white" v-bind="attrs" text @click="del"> Close </v-btn>
       </template>
     </v-snackbar>
   </div>

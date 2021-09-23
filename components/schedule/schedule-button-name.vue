@@ -12,7 +12,7 @@
       >
         <span
           class="d-inline-block text-truncate text-left"
-          style="width: 180px;"
+          style="width: 180px"
         >
           {{ value }}
         </span>

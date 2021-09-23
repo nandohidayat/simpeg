@@ -52,6 +52,9 @@ export default {
       return redirect('/404')
     }
   },
+  async fetch({ store }) {
+    await store.dispatch('pendapatanharian/fetchPendapatans')
+  },
   data() {
     return {
       header: [
@@ -78,21 +81,6 @@ export default {
         tgl: undefined,
         pendapatan: undefined,
       },
-    }
-  },
-  async fetch({ store }) {
-    await store.dispatch('pendapatanharian/fetchPendapatans')
-  },
-  head() {
-    return {
-      title: 'Pendapatan Harian',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Pendapatan Harian',
-        },
-      ],
     }
   },
   computed: {
@@ -127,6 +115,18 @@ export default {
         this.$alert('error', e)
       }
     },
+  },
+  head() {
+    return {
+      title: 'Pendapatan Harian',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Pendapatan Harian',
+        },
+      ],
+    }
   },
 }
 </script>

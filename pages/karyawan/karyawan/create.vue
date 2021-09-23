@@ -69,18 +69,6 @@ export default {
       },
     }
   },
-  head() {
-    return {
-      title: `Buat Data Karyawan`,
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Buat Data Karyawan',
-        },
-      ],
-    }
-  },
   methods: {
     async createKaryawan() {
       try {
@@ -94,6 +82,18 @@ export default {
         this.dialog = false
       }
     },
+  },
+  head() {
+    return {
+      title: `Buat Data Karyawan`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Buat Data Karyawan',
+        },
+      ],
+    }
   },
 }
 </script>

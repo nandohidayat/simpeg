@@ -39,6 +39,7 @@
                     show-search
                     placeholder="Tipe"
                     option-filter-prop="label"
+                    allow-clear
                     :options="pendapatanprofil.tipe"
                     :filter-option="filterOption"
                     @change="onChangeTipe"
@@ -195,7 +196,7 @@ export default {
       list: undefined,
       year: moment(),
       disList: false,
-      tipe: 0,
+      tipe: undefined,
       filter: 0,
     }
   },

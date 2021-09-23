@@ -51,7 +51,7 @@
       bottom
       right
       rounded
-      style="bottom: 46px;"
+      style="bottom: 46px"
       @click="openDialog()"
       ><v-icon small class="mr-1">mdi-plus</v-icon>tambah user</v-btn
     >
@@ -63,14 +63,12 @@
             <v-simple-table>
               <tbody>
                 <tr>
-                  <td>
-                    Karyawan
-                  </td>
+                  <td>Karyawan</td>
                   <td>
                     <a-select
                       v-model="submit.id_pegawai"
                       :disabled="edit"
-                      style="width: 100%;"
+                      style="width: 100%"
                       show-search
                       placeholder="Nama Karyawan"
                       option-filter-prop="label"
@@ -89,9 +87,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>
-                    Password
-                  </td>
+                  <td>Password</td>
                   <td>
                     <a-input
                       v-model="submit.password"
@@ -101,9 +97,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>
-                    Confirm Password
-                  </td>
+                  <td>Confirm Password</td>
                   <td>
                     <a-input
                       v-model="submit.confirm"
@@ -113,13 +107,11 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>
-                    Group
-                  </td>
+                  <td>Group</td>
                   <td>
                     <a-select
                       v-model="submit.id_group"
-                      style="width: 100%;"
+                      style="width: 100%"
                       show-search
                       placeholder="Group"
                       option-filter-prop="label"

@@ -1,9 +1,7 @@
 <template>
   <div>
     <v-card class="px-3">
-      <v-card-title>
-        Account
-      </v-card-title>
+      <v-card-title> Account </v-card-title>
       <v-card-text>
         <v-row no-gutters>
           <v-col cols="2">
@@ -48,9 +46,7 @@
           <v-col cols="5">
             <v-row no-gutters>
               <v-col cols="4" class="body-1 font-weight-medium">
-                <p>
-                  Departemen
-                </p>
+                <p>Departemen</p>
               </v-col>
               <v-col cols="8" class="body-1 font-weight-regular">
                 <p v-for="(d, i) in karyawan.karyawan.dept" :key="i">
@@ -60,9 +56,7 @@
             </v-row>
             <v-row no-gutters>
               <v-col cols="4" class="body-1 font-weight-medium">
-                <p>
-                  Sub Departemen
-                </p>
+                <p>Sub Departemen</p>
               </v-col>
               <v-col cols="8" class="body-1 font-weight-regular">
                 <p v-for="(d, i) in karyawan.karyawan.subdept" :key="i">
@@ -72,9 +66,7 @@
             </v-row>
             <v-row no-gutters>
               <v-col cols="4" class="body-1 font-weight-medium">
-                <p>
-                  Status
-                </p>
+                <p>Status</p>
               </v-col>
               <v-col cols="8" class="body-1 font-weight-regular">
                 <p>
