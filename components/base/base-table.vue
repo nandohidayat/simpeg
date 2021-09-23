@@ -28,9 +28,7 @@
       >
         <slot></slot>
       </base-form>
-      <v-icon small @click="deleteData(item)">
-        mdi-delete
-      </v-icon>
+      <v-icon small @click="deleteData(item)"> mdi-delete </v-icon>
     </template>
   </v-data-table>
 </template>

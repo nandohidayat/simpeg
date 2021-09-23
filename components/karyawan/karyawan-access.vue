@@ -49,15 +49,11 @@
         </v-col>
         <v-col cols="6">
           <span>Password :</span>
-          <span class="subtitle-1 text--primary d-block ml-3">
-            *********
-          </span>
+          <span class="subtitle-1 text--primary d-block ml-3"> ********* </span>
         </v-col>
       </v-row>
       <v-row v-else>
-        <v-col>
-          Does not have an account. Create one if she/he need it.
-        </v-col>
+        <v-col> Does not have an account. Create one if she/he need it. </v-col>
       </v-row>
     </v-card-text>
   </v-card>

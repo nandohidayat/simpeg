@@ -8,8 +8,7 @@
   >
     <div v-for="el in realValue" :key="el.id">
       <v-sheet outlined height="40" class="d-flex align-center pl-6">
-        <span style="width: 250px;"
-          >[{{ el.type.toString() }}] {{ el.key }}</span
+        <span style="width: 250px">[{{ el.type.toString() }}] {{ el.key }}</span
         >: {{ el.value ? el.value : '' }}
         <v-spacer></v-spacer>
         <v-btn icon color="teal" @click="editEmit(el)">

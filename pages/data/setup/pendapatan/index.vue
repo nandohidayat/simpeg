@@ -171,6 +171,14 @@ export default {
       return redirect('/404')
     }
   },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanlist/fetchItems', {
+        year: moment().year(),
+      }),
+      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
+    ])
+  },
   data() {
     return {
       submit: emptySubmit,
@@ -219,26 +227,6 @@ export default {
           text: 'Actions',
           value: 'action',
           filterable: false,
-        },
-      ],
-    }
-  },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('pendapatanlist/fetchItems', {
-        year: moment().year(),
-      }),
-      store.dispatch('pendapatanprofil/fetchProfils', { select: 1 }),
-    ])
-  },
-  head() {
-    return {
-      title: 'List Pendapatan',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Pajak Pendapatan',
         },
       ],
     }
@@ -335,6 +323,18 @@ export default {
     showDate(month) {
       return moment(month).format('DD MMMM YYYY')
     },
+  },
+  head() {
+    return {
+      title: 'List Pendapatan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Pajak Pendapatan',
+        },
+      ],
+    }
   },
 }
 </script>

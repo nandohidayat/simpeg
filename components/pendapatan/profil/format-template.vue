@@ -220,9 +220,10 @@ export default {
       try {
         await this.$store.dispatch('pendapatanprofil/updateProfil', {
           value: this.profil,
-          format: this.pendapatanprofil[
-            `${this.keuangan ? 'keuangan' : 'personalia'}`
-          ],
+          format:
+            this.pendapatanprofil[
+              `${this.keuangan ? 'keuangan' : 'personalia'}`
+            ],
           type: `${this.keuangan ? 'keuangan' : 'personalia'}`,
         })
 

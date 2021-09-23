@@ -60,6 +60,7 @@
 
 <script>
 export default {
+  layout: 'blank-center',
   data() {
     return {
       newUser: {
@@ -69,16 +70,6 @@ export default {
       dialog: false,
       error: false,
     }
-  },
-  methods: {
-    async login() {
-      this.$nuxt.$loading.start()
-      try {
-        await this.$store.dispatch('user/login', this.newUser)
-      } catch (e) {
-        this.error = true
-      }
-    },
   },
   head() {
     return {
@@ -92,6 +83,15 @@ export default {
       ],
     }
   },
-  layout: 'blank-center',
+  methods: {
+    async login() {
+      this.$nuxt.$loading.start()
+      try {
+        await this.$store.dispatch('user/login', this.newUser)
+      } catch (e) {
+        this.error = true
+      }
+    },
+  },
 }
 </script>

@@ -7,7 +7,7 @@
       dense
       :items-per-page="31"
     >
-      <template #item.masuk="{item}">
+      <template #item.masuk="{ item }">
         {{ item.masuk | time }}
       </template>
       <template #item.keluar="{ item }">

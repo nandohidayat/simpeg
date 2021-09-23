@@ -2,7 +2,7 @@
   <v-row
     justify="center"
     align="center"
-    style="min-height: 100vh;"
+    style="min-height: 100vh"
     class="maintenance"
   >
     <v-col cols="6" class="text-center">

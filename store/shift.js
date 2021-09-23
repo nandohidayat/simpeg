@@ -58,14 +58,16 @@ export const actions = {
 }
 
 export const getters = {
-  fShift: (state) => (nonull = false) => {
-    const shift = state.departemen.map((d) =>
-      state.shifts.find((s) => parseInt(s.id_shift) === parseInt(d))
-    )
-    return nonull
-      ? shift
-      : [{ id: undefined, kode: undefined, color: 'white' }, ...shift]
-  },
+  fShift:
+    (state) =>
+    (nonull = false) => {
+      const shift = state.departemen.map((d) =>
+        state.shifts.find((s) => parseInt(s.id_shift) === parseInt(d))
+      )
+      return nonull
+        ? shift
+        : [{ id: undefined, kode: undefined, color: 'white' }, ...shift]
+    },
   getKode: (state) => (id) => {
     const shift = state.shifts.find(
       (s) => parseInt(s.id_shift) === parseInt(id)

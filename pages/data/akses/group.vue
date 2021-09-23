@@ -24,7 +24,7 @@
             calculate-widths
             :items="group.groups"
           >
-            <template #item.akses="{item}">
+            <template #item.akses="{ item }">
               <div v-for="(a, i) in item.akses" :key="i">
                 {{ a.menu }}
                 <div v-for="(aa, idx) in a.akses" :key="idx" class="ml-1">
@@ -58,7 +58,7 @@
       bottom
       right
       rounded
-      style="bottom: 46px;"
+      style="bottom: 46px"
       @click="openDialog()"
       ><v-icon small class="mr-1">mdi-plus</v-icon>tambah group</v-btn
     >

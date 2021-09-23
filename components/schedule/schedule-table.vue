@@ -1,7 +1,7 @@
 <template>
   <v-card outlined>
-    <div style="max-height: 450px; overflow: auto;">
-      <div style="white-space: nowrap; display: table;">
+    <div style="max-height: 450px; overflow: auto">
+      <div style="white-space: nowrap; display: table">
         <schedule-header></schedule-header>
         <draggable v-model="schedule.order" group="nama" :disabled="!order">
           <schedule-row

@@ -16,13 +16,9 @@
           >
         </v-toolbar>
       </template>
-      <template #item.action="{item}">
-        <v-icon @click="openDialog(item)">
-          mdi-pencil
-        </v-icon>
-        <v-icon @click="deleteConfirm(item)">
-          mdi-delete
-        </v-icon>
+      <template #item.action="{ item }">
+        <v-icon @click="openDialog(item)"> mdi-pencil </v-icon>
+        <v-icon @click="deleteConfirm(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
     <base-confirm

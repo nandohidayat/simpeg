@@ -1,7 +1,9 @@
+import colors from 'vuetify/es5/util/colors'
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - ' + (process.env.npm_package_name || ''),
+    titleTemplate: '%s - ' + process.env.npm_package_name,
     title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
@@ -39,6 +41,7 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
+    // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
   ],
 
@@ -50,7 +53,7 @@ export default {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
-    '@nuxtjs/auth-next',
+    '@nuxtjs/auth',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -69,24 +72,34 @@ export default {
     manifest: {
       lang: 'en',
     },
-    fileName: '/simpeg/roemani.png',
+    source: '@/static/roemani.png',
+    fileName: 'roemani.png',
   },
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {},
 
+  // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
+  vuetify: {
+    customVariables: ['~/assets/variables.scss'],
+    theme: {
+      dark: false,
+      themes: {
+        dark: {
+          primary: colors.blue.darken2,
+          accent: colors.grey.darken3,
+          secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3,
+        },
+      },
+    },
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    babel: {
-      plugins: [
-        [
-          'import',
-          {
-            libraryName: 'ant-design-vue',
-          },
-        ],
-      ],
-    },
     transpile: ['vue-excel-editor'],
   },
   loading: {
