@@ -39,6 +39,7 @@
                     show-search
                     placeholder="Tipe"
                     option-filter-prop="label"
+                    allow-clear
                     :options="pendapatanprofil.tipe"
                     :filter-option="filterOption"
                     @change="onChangeTipe"
@@ -180,14 +181,6 @@ export default {
       return redirect('/404')
     }
   },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('pendapatanlist/fetchItems', {
-        select: 1,
-        year: moment().year(),
-      }),
-    ])
-  },
   data() {
     return {
       EmptyTable,
@@ -205,6 +198,26 @@ export default {
       disList: false,
       tipe: undefined,
       filter: 0,
+    }
+  },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('pendapatanlist/fetchItems', {
+        select: 1,
+        year: moment().year(),
+      }),
+    ])
+  },
+  head() {
+    return {
+      title: 'Pendapatan Karyawan',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Pendapatan Karyawan',
+        },
+      ],
     }
   },
   computed: {
@@ -303,18 +316,6 @@ export default {
       if (copy) this.isYear = undefined
       else this.year = undefined
     },
-  },
-  head() {
-    return {
-      title: 'Pendapatan Karyawan',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Pendapatan Karyawan',
-        },
-      ],
-    }
   },
 }
 </script>
