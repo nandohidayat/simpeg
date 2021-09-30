@@ -1,5 +1,5 @@
 <template>
-  <v-row class="pa-3">
+  <v-row class="pa-3 mt-1">
     <v-col cols="6">
       <table style="font-size: 10pt">
         <tr>
